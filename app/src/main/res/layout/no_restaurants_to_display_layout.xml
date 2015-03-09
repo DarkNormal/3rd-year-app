@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ff2b8bff">
+
+
+    <TextView
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:text="There were no restaurants to display. Please refine your search and make sure you have an internet connection."
+        android:id="@+id/errorMessage"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="187dp"
+        android:textColor="@android:color/black" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Try again"
+        android:id="@+id/tryAgainButton"
+        android:layout_below="@+id/errorMessage"
+        android:layout_centerHorizontal="true"
+        android:onClick="tryAgain"
+        android:textColor="@android:color/black"
+        android:background="#fffffdfd" />
+</RelativeLayout>

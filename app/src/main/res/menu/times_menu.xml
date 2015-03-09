@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/fiveOClock"
+        android:title="17:00"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/halffive"
+        android:title="17:30"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/sixOClock"
+        android:title="18:00"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/halfsix"
+        android:title="18:30"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/sevenOClock"
+        android:title="19:00"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/halfseven"
+        android:title="19:30"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/eightOClock"
+        android:title="20:00"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/halfeight"
+        android:title="20:30"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/nineOClock"
+        android:title="21:00"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/halfnine"
+        android:title="21:30"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/tenOClock"
+        android:title="22:00"
+        app:showAsAction="ifRoom" />
+
+</menu>

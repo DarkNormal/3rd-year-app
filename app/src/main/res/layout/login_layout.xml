@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ff2b8bff">
+
+    <ScrollView
+        android:scrollbars="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true"
+        android:layout_weight="1">
+
+        <RelativeLayout
+            android:orientation="vertical" android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#ff2b8bff">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign in"
+                android:id="@+id/signInButton"
+                android:background="#fffffbfd"
+                android:onClick="signIn"
+                android:layout_below="@+id/usersPassword"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="52dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:ems="10"
+                android:hint="Email"
+                android:id="@+id/usersEmail"
+                android:layout_marginTop="31dp"
+                android:layout_below="@+id/bourguestLogo"
+                android:layout_centerHorizontal="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:hint="Password"
+                android:id="@+id/usersPassword"
+                android:layout_marginTop="35dp"
+                android:layout_below="@+id/usersEmail"
+                android:layout_alignStart="@+id/usersEmail" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/bourguestLogo"
+                android:src="@drawable/waiter"
+                android:layout_marginTop="88dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Sign up"
+                android:id="@+id/signUpButton"
+                android:onClick="changeLayout"
+                android:background="#ffff2f14"
+                android:layout_below="@+id/signInButton"
+                android:layout_marginTop="50dp"
+                android:layout_alignParentStart="true" />
+
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

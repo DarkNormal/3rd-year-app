@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/search_by_wheelchair_access"
+        android:title="@string/wheelchairAccessibilityString"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/search_by_type"
+        android:title="@string/searchByTypeString"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/search_by_name"
+        android:title="@string/searchByNameString"
+        app:showAsAction="ifRoom" />
+
+</menu>
