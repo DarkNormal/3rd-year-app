@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,8 @@ public class RestaurantActivity extends ActionBarActivity {
     private GoogleMap map;
     private long date;
     private Reviews review;
+    TableLayout t;
+    private UserReviews userReview;
     private static String time;
     private Calendar calendar = Calendar.getInstance();
     private CalendarView cal;
@@ -54,8 +58,11 @@ public class RestaurantActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        setContentView(R.layout.restaurant_activity_display);
+        SharedPreferences settings = getSharedPreferences("LoginPrefs", 0);
+        String userID = settings.getString("email", "").toString();
         TextView rName = (TextView) findViewById(R.id.passedRestaurantName);
         rName.setText(convertToTitleCase(r.getName()));
+        db.getReview(userID,r.getId());
     }
 
     @Override
@@ -209,9 +216,12 @@ public class RestaurantActivity extends ActionBarActivity {
         else {
             if(third)
             {
-
                 tabbedLayout.addView(layoutInflater.inflate(R.layout.reviews_tab, null));
+                 t = (TableLayout) findViewById(R.id.tableLayout);
+
                 reviewLayout = (RelativeLayout)findViewById(R.id.reviewTab);
+                if(DatabaseOperations.isReviewExists() == true)
+                    t.setVisibility(View.INVISIBLE);
                 third = false;
             }
 
@@ -263,7 +273,9 @@ public class RestaurantActivity extends ActionBarActivity {
         if (v.getId() == R.id.fivestar) {
             rating = 5;
         }
-
+        SharedPreferences settings = getSharedPreferences("LoginPrefs", 0);
+        String userID = settings.getString("email", "").toString();
+        userReview = new UserReviews(userID,id);
         review = new Reviews(id,rating);
         reviewDialog(rating);
     }
@@ -277,8 +289,10 @@ public class RestaurantActivity extends ActionBarActivity {
 
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                db.sendReview(review);
+
+                db.sendReview(review,userReview);
                 System.out.println("SENT to DBOPERATIONS-------------------");
+                t.setVisibility(View.INVISIBLE);
             }
         });
 

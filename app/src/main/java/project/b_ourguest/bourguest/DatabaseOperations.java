@@ -22,7 +22,9 @@ public class DatabaseOperations {
     private static MobileServiceTable<Restaurants> restaurantsTable = StartActivity.getRestaurantsTable();
     private static MobileServiceTable<Users> usersTable = StartActivity.getUsersTable();
     private static MobileServiceTable<Reviews> reviewsTable = StartActivity.getReviewsTable();
+    private static MobileServiceTable<UserReviews> userReviewsTable = StartActivity.getUserReviewsTable();
     private ArrayList<Restaurants> restaurants = new ArrayList<Restaurants>();
+    private static boolean reviewExists;
     private boolean signIn;
     private static int signUpCode;
     private double distance = 0;
@@ -115,7 +117,7 @@ public class DatabaseOperations {
         System.out.println("This is return code CODE IS " + signUpCode + "--------------------------");
     }
 
-    public void sendReview(Reviews r)
+    public void sendReview(Reviews r,UserReviews u)
     {
         reviewsTable.insert(r, new TableOperationCallback<Reviews>() {
             public void onCompleted(Reviews entity,
@@ -126,6 +128,20 @@ public class DatabaseOperations {
                     System.out.println("REVIEW WAS SENT TO DB");
                 } else {
                     System.out.println("REVIEW WASNT SENT TO DB");
+                    exception.printStackTrace();
+                }
+            }
+        });
+
+        userReviewsTable.insert(u, new TableOperationCallback<UserReviews>() {
+            public void onCompleted(UserReviews entity,
+                                    Exception exception,
+                                    ServiceFilterResponse response) {
+
+                if (exception == null) {
+                    System.out.println("USERREVIEW WAS SENT TO DB");
+                } else {
+                    System.out.println("USERREVIEW WASNT SENT TO DB");
                     exception.printStackTrace();
                 }
             }
@@ -167,6 +183,31 @@ public class DatabaseOperations {
                 });
         System.out.println("number of restaurants with that type: " + restaurants.size());
         return restaurants;
+    }
+
+    public void getReview(String email,String restaurant)
+    {
+        System.out.println("GETTING REVIEW -------------------------------------");
+        userReviewsTable.where().field("userID").eq(email).and().field("restaurantID").eq(restaurant)
+                .execute(new TableQueryCallback<UserReviews>() {
+
+                    public void onCompleted(List<UserReviews> result, int count,
+                                            Exception exception, ServiceFilterResponse response) {
+                        if (exception == null) {
+                            if (result.size() == 0) //meaning the name typed was not found
+                            {
+                                System.out.println("NO REVIEW EXISTED---------------");
+                                reviewExists = false;
+                            } else {
+                                System.out.println("REVIEW EXISTS---------------");
+                                System.out.println(result.get(0).getUserID() + ", " + result.get(0).getRestaurantID());
+                                reviewExists = true;
+                            }
+                        }
+                    }
+                });
+        System.out.println("FINISHED GETTING REVIEWS---------------");
+
     }
 
     public ArrayList<Restaurants> searchDatabaseForWheelchairFriendlyRestaurants()
@@ -228,5 +269,8 @@ public class DatabaseOperations {
                 });
 
         return restaurants;
+    }
+    public static boolean isReviewExists() {
+        return reviewExists;
     }
 }

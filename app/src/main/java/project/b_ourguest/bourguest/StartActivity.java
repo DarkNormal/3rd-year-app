@@ -20,6 +20,7 @@ public class StartActivity extends ActionBarActivity{
     private static MobileServiceTable<Restaurants> restaurantsTable;
     private static MobileServiceTable<Users> usersTable;
     private static MobileServiceTable<Reviews> reviewsTable;
+    private static MobileServiceTable<UserReviews> userReviewsTable;
     //private GoogleApiClient mGoogleApiClient;
     //private final static int REQUEST_RESOLVE_ERROR = 1001;
     //private LocationRequest mLocationRequest;
@@ -97,10 +98,12 @@ public class StartActivity extends ActionBarActivity{
             restaurantsTable = mClient.getTable(Restaurants.class);
             usersTable = mClient.getTable(Users.class);
             reviewsTable = mClient.getTable(Reviews.class);
+            userReviewsTable = mClient.getTable(UserReviews.class);
         }catch(Exception e)
         {
             Toast.makeText(getApplicationContext(), "Client in StartActivity.java could not be initiated",
                     Toast.LENGTH_LONG).show();
+            System.out.println("START ACTIVITY ERROR");
             e.printStackTrace();
         }
     }
@@ -111,7 +114,9 @@ public class StartActivity extends ActionBarActivity{
     public static MobileServiceTable<Reviews> getReviewsTable() {
         return reviewsTable;
     }
-
+    public static MobileServiceTable<UserReviews> getUserReviewsTable() {
+        return userReviewsTable;
+    }
     public static List<Restaurants> getRestaurants() {
         return restaurants;
     }

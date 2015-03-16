@@ -22,7 +22,8 @@
         android:layout_marginTop="45dp" />
 
     <TableLayout  android:layout_width="match_parent"
-        android:layout_height="wrap_content"></TableLayout>
+        android:layout_height="wrap_content"
+        android:id="@+id/tableLayout">
 
     <TableRow
         android:id="@+id/tableRow"
@@ -124,5 +125,5 @@
 
     </TableRow>
 
-
+    </TableLayout>
 </RelativeLayout>
