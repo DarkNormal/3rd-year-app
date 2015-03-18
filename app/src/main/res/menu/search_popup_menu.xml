@@ -14,5 +14,8 @@
         android:id="@+id/search_by_name"
         android:title="@string/searchByNameString"
         app:showAsAction="ifRoom" />
-
+    <item
+        android:id="@+id/search_nearest"
+        android:title="Search nearest restaurants"
+        app:showAsAction="ifRoom" />
 </menu>

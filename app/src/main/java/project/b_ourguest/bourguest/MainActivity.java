@@ -189,6 +189,23 @@ public class MainActivity extends ActionBarActivity {
 
                         alert.show();
                     }
+                    else if(item.getItemId() == R.id.search_nearest)
+                    {
+                        tryAgain = 0;
+                        //query the database for restaurants that have wheelchair access
+                        restaurants = db.getRestaurants();
+                        pd = ProgressDialog.show(MainActivity.this, "Loading", "Searching for nearest restaurants");
+
+                        h.postDelayed(new Runnable() {
+                            public void run() {
+                                System.out.println("Size when result is returned is " + restaurants.size());
+                                determineActionBasedOnRestaurantsSize("Could not find any local restaurants",
+                                        "Nearest Restaurants");
+                                pd.dismiss();
+                                // To dismiss the dialog
+                            }
+                        }, 3000);
+                    }
                     else
                     {
                         searchNameDialog(); //creates a dialog for a user to enter the name
@@ -266,6 +283,7 @@ public class MainActivity extends ActionBarActivity {
             message = "Restaurants called " + name;
             restaurants = db.searchByName(name);
         }
+
         else {
             message = type[pos] + " Restaurants";
             restaurants = db.searchByType(type[pos]);

@@ -165,10 +165,17 @@ public class RestaurantActivity extends ActionBarActivity {
                 cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
                     public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                         //http://stackoverflow.com/questions/12641250/android-calendarview-ondatechangelistener?rq=1
+
                         if(cal.getDate() != date){
                             date = cal.getDate();
-                           if(month < calendar.getTime().getMonth() ||
-                                   (dayOfMonth < calendar.getTime().getDay() + 1 && month == calendar.getTime().getMonth()))
+
+
+                            System.out.println("day is :" + calendar.getTime().getDay() + " " + dayOfMonth);
+                            System.out.println("day is :" + calendar.getTime());
+
+                            if(month < calendar.getTime().getMonth())
+                               Toast.makeText(RestaurantActivity.this,"Cannot pick a date in the past",Toast.LENGTH_SHORT).show();
+                           else if(dayOfMonth < calendar.getTime().getDay() + 1 && month == calendar.getTime().getMonth())
                                Toast.makeText(RestaurantActivity.this,"Cannot pick a date in the past",Toast.LENGTH_SHORT).show();
                             else {
                                //Creating the instance of PopupMenu
