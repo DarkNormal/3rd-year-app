@@ -28,8 +28,6 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import com.microsoft.windowsazure.mobileservices.MobileServiceTable;
-import com.microsoft.windowsazure.mobileservices.ServiceFilterResponse;
-import com.microsoft.windowsazure.mobileservices.TableQueryCallback;
 import com.squareup.picasso.Picasso;
 
 
@@ -44,17 +42,17 @@ public class MainActivity extends ActionBarActivity {
     private Handler h = new Handler();
     DecimalFormat df = new DecimalFormat("##.###");
     private ProgressDialog pd;
-    private List<Restaurants> restaurants = StartActivity.getRestaurants();
+    private List<Restaurant> restaurants = StartActivity.getRestaurants();
     TextView searchedRestaurantsText;
-    private static Restaurants restaurantToPass;
-    String[] type = {"Indian","Italian","American","Chinese","Portuguese","Family Friendly"
+    private static Restaurant restaurantToPass;
+    String[] type = {"Indian","Italian","American","Asian", "Chinese","Portuguese","Family Friendly"
             ,"Traditional","Something different","Pizza","Healthy Option"};
     int pos = 0;
     String name = "";
     int tryAgain = 0;
     //private Location usersLocation;
     public final String PREFS_NAME = "LoginPrefs";
-    private static MobileServiceTable<Restaurants> restaurantsTable = StartActivity.getRestaurantsTable();
+    private static MobileServiceTable<Restaurant> restaurantsTable = StartActivity.getRestaurantsTable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +80,7 @@ public class MainActivity extends ActionBarActivity {
                     searchedRestaurantsText = (TextView) findViewById(R.id.searchedRestaurants);
                     searchedRestaurantsText.setText(message);
                     //populates the list view
-                    ArrayAdapter<Restaurants> adapter = new RestaurantsAdapter();
+                    ArrayAdapter<Restaurant> adapter = new RestaurantsAdapter();
                     ListView list = (ListView) findViewById(R.id.restaurantListView);
                     list.setAdapter(adapter);
 
@@ -146,7 +144,7 @@ public class MainActivity extends ActionBarActivity {
                             public void run() {
                                 System.out.println("Size when result is returned is " + restaurants.size());
                                 determineActionBasedOnRestaurantsSize("Could not find any wheelchair accessible restaurants",
-                                        "Wheelchair Accessible Restaurants");
+                                        "Wheelchair Accessible Restaurant");
                                 pd.dismiss();
                                 // To dismiss the dialog
                             }
@@ -168,13 +166,13 @@ public class MainActivity extends ActionBarActivity {
                             restaurants = db.searchByType(type[position]);
                             tryAgain = 2;
                             pd = ProgressDialog.show(MainActivity.this, "Loading", "Searching for " + type[position]
-                            + " Restaurants");
+                            + " Restaurant");
 
                             h.postDelayed(new Runnable() {
                                 public void run() {
                                     System.out.println("Size when result is returned is " + restaurants.size());
                                     determineActionBasedOnRestaurantsSize("No restaurants matched that type",
-                                            type[pos] + " Restaurants");
+                                            type[pos] + " Restaurant");
                                     pd.dismiss();
                                     // To dismiss the dialog
                                 }
@@ -200,7 +198,7 @@ public class MainActivity extends ActionBarActivity {
                             public void run() {
                                 System.out.println("Size when result is returned is " + restaurants.size());
                                 determineActionBasedOnRestaurantsSize("Could not find any local restaurants",
-                                        "Nearest Restaurants");
+                                        "Nearest Restaurant");
                                 pd.dismiss();
                                 // To dismiss the dialog
                             }
@@ -271,21 +269,21 @@ public class MainActivity extends ActionBarActivity {
         String message = "";
 
         if(tryAgain == 0) {
-            message = "Nearest Restaurants";
+            message = "Nearest Restaurant";
             restaurants = db.getRestaurants();
         }
         else if(tryAgain == 1) {
-            message = "Wheelchair Accessible Restaurants";
+            message = "Wheelchair Accessible Restaurant";
             restaurants = db.searchDatabaseForWheelchairFriendlyRestaurants();
         }
         else if(tryAgain == 2)
         {
-            message = "Restaurants called " + name;
+            message = "Restaurant called " + name;
             restaurants = db.searchByName(name);
         }
 
         else {
-            message = type[pos] + " Restaurants";
+            message = type[pos] + " Restaurant";
             restaurants = db.searchByType(type[pos]);
         }
         pd = ProgressDialog.show(MainActivity.this, "Loading", "Wait while loading...");
@@ -323,7 +321,7 @@ public class MainActivity extends ActionBarActivity {
                     public void run() {
                         System.out.println("Size when result is returned is " + restaurants.size());
                         determineActionBasedOnRestaurantsSize("No restaurants matched that name",
-                                "Restaurants called " + name);
+                                "Restaurant called " + name);
                         pd.dismiss();
                         // To dismiss the dialog
                     }
@@ -341,7 +339,7 @@ public class MainActivity extends ActionBarActivity {
         alert.show();
     }
 
-    public static Restaurants getRestaurantToPass() {
+    public static Restaurant getRestaurantToPass() {
         return restaurantToPass;
     }
 
@@ -360,7 +358,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    private class RestaurantsAdapter extends ArrayAdapter<Restaurants> {
+    private class RestaurantsAdapter extends ArrayAdapter<Restaurant> {
 
         public RestaurantsAdapter() {
             super(MainActivity.this,R.layout.restaurants_listview_layout,restaurants);
@@ -377,21 +375,21 @@ public class MainActivity extends ActionBarActivity {
             }
             String nameDisplayed;
             //populate the list
-            Restaurants r = restaurants.get(position);
+            Restaurant r = restaurants.get(position);
 
             TextView restName = (TextView) v.findViewById(R.id.restaurantName);
             restName.setText(convertToTitleCase(r.getName()));
 
-            if(r.getWheelchairAccessible() == 'Y')
+            if(r.getWheelchairAccessible() == true)
                 System.out.println(r.getName() + "  " + r.getWheelchairAccessible() + "--------------------------");
 
             TextView dist = (TextView) v.findViewById(R.id.restaurantDistance);
             dist.setText(df.format(r.getDistance()) + "km from current location");
 
-            ImageView im = (ImageView) v.findViewById(R.id.restaurantImage);
-            Picasso.with(MainActivity.this)
-                    .load(r.getAppImage())
-                    .resize(100, 100).into(im);
+//            ImageView im = (ImageView) v.findViewById(R.id.restaurantImage);
+//            Picasso.with(MainActivity.this)
+//                    .load(r.getAppImage())
+//                    .resize(100, 100).into(im);
 
             return v;
         }

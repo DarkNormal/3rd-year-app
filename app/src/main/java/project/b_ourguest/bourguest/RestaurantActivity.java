@@ -1,23 +1,17 @@
 package project.b_ourguest.bourguest;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.CalendarView;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
@@ -30,7 +24,6 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 
@@ -40,7 +33,7 @@ import java.util.Calendar;
 public class RestaurantActivity extends ActionBarActivity {
 //http://stackoverflow.com/questions/3496269/how-to-put-a-border-around-an-android-textview
     //link that helped with borders on textviews
-    Restaurants r = MainActivity.getRestaurantToPass();
+    Restaurant r = MainActivity.getRestaurantToPass();
     DatabaseOperations db = new DatabaseOperations();
     private GoogleMap map;
     private long date;
@@ -108,13 +101,13 @@ public class RestaurantActivity extends ActionBarActivity {
                     map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
                             .getMap();
 
-                    Marker loc = map.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(MainActivity.getRestaurantToPass().getLongitude()),
-                            Double.parseDouble(MainActivity.getRestaurantToPass().getLatitude())))
+                    Marker loc = map.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(MainActivity.getRestaurantToPass().getLatitude()),
+                            Double.parseDouble(MainActivity.getRestaurantToPass().getLongitude())))
                             .title(r.getName()));
 
                     // Move the camera instantly to RESTAURANTS_LOCATION with a zoom of 15.
-                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(MainActivity.getRestaurantToPass().getLongitude()),
-                            Double.parseDouble(MainActivity.getRestaurantToPass().getLatitude())), 15));
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(MainActivity.getRestaurantToPass().getLatitude()),
+                            Double.parseDouble(MainActivity.getRestaurantToPass().getLongitude())), 15));
 
                     // Zoom in, animating the camera.
                     map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);

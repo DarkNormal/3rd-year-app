@@ -17,7 +17,7 @@ public class StartActivity extends ActionBarActivity{
 
     private Handler h = new Handler();
     private static MobileServiceClient mClient;
-    private static MobileServiceTable<Restaurants> restaurantsTable;
+    private static MobileServiceTable<Restaurant> restaurantsTable;
     private static MobileServiceTable<Users> usersTable;
     private static MobileServiceTable<Reviews> reviewsTable;
     private static MobileServiceTable<UserReviews> userReviewsTable;
@@ -25,7 +25,7 @@ public class StartActivity extends ActionBarActivity{
     //private final static int REQUEST_RESOLVE_ERROR = 1001;
     //private LocationRequest mLocationRequest;
     //private boolean loggedIn = true;
-    private static List<Restaurants> restaurants;
+    private static List<Restaurant> restaurants;
 
 
     @Override
@@ -90,12 +90,8 @@ public class StartActivity extends ActionBarActivity{
 
     private void initiateClient() {
         try {
-            mClient = new MobileServiceClient(
-                    "https://bourguest.azure-mobile.net/",
-                    "tsAfQHCRADQqWwFAYuMgUqHBVqburZ80",
-                    this
-            );
-            restaurantsTable = mClient.getTable(Restaurants.class);
+            mClient = new MobileServiceClient( "https://bourguestmob.azure-mobile.net/", "bWGQkSjHvPINwcDVyVhsDkNjpWTltx78", this );
+            restaurantsTable = mClient.getTable(Restaurant.class);
             usersTable = mClient.getTable(Users.class);
             reviewsTable = mClient.getTable(Reviews.class);
             userReviewsTable = mClient.getTable(UserReviews.class);
@@ -108,7 +104,7 @@ public class StartActivity extends ActionBarActivity{
         }
     }
 
-    public static MobileServiceTable<Restaurants> getRestaurantsTable() {
+    public static MobileServiceTable<Restaurant> getRestaurantsTable() {
         return restaurantsTable;
     }
     public static MobileServiceTable<Reviews> getReviewsTable() {
@@ -117,7 +113,7 @@ public class StartActivity extends ActionBarActivity{
     public static MobileServiceTable<UserReviews> getUserReviewsTable() {
         return userReviewsTable;
     }
-    public static List<Restaurants> getRestaurants() {
+    public static List<Restaurant> getRestaurants() {
         return restaurants;
     }
     public static MobileServiceTable<Users> getUsersTable() {

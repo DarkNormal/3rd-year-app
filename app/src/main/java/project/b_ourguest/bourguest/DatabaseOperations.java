@@ -1,10 +1,5 @@
 package project.b_ourguest.bourguest;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.os.Handler;
-import android.widget.Toast;
-
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.MobileServiceTable;
 import com.microsoft.windowsazure.mobileservices.ServiceFilterResponse;
@@ -19,11 +14,11 @@ import java.util.List;
  */
 public class DatabaseOperations {
     private static MobileServiceClient mClient = StartActivity.getMobileServiceClient();
-    private static MobileServiceTable<Restaurants> restaurantsTable = StartActivity.getRestaurantsTable();
+    private static MobileServiceTable<Restaurant> restaurantsTable = StartActivity.getRestaurantsTable();
     private static MobileServiceTable<Users> usersTable = StartActivity.getUsersTable();
     private static MobileServiceTable<Reviews> reviewsTable = StartActivity.getReviewsTable();
     private static MobileServiceTable<UserReviews> userReviewsTable = StartActivity.getUserReviewsTable();
-    private ArrayList<Restaurants> restaurants = new ArrayList<Restaurants>();
+    private ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
     private static boolean reviewExists;
     private boolean signIn;
     private static int signUpCode;
@@ -33,14 +28,14 @@ public class DatabaseOperations {
     //http://azure.microsoft.com/en-us/documentation/articles/mobile-services-android-how-to-use-client-library/
     //https://msdn.microsoft.com/library/azure/jj554212.aspx
 
-    public ArrayList<Restaurants> getRestaurants() //should get nearest restaurants
+    public ArrayList<Restaurant> getRestaurants() //should get nearest restaurants
     {
-        restaurantsTable.execute(new TableQueryCallback<Restaurants>() {
-            public void onCompleted(List<Restaurants> result, int count,
+        restaurantsTable.execute(new TableQueryCallback<Restaurant>() {
+            public void onCompleted(List<Restaurant> result, int count,
                                     Exception exception, ServiceFilterResponse response) {
                 if (exception == null) {
                     restaurants.clear();
-                    for (Restaurants item : result) {
+                    for (Restaurant item : result) {
                         getDistanceBasedOnUsersLocation(item);
                         if(distance < 3)
                         {
@@ -49,6 +44,7 @@ public class DatabaseOperations {
                         }
                         System.out.println("Restaurant name: " + item.getName() + "\nRestaurant ID: " + item.getId());
                         System.out.println("Distance: " + distance);
+                        System.out.println("SIZE OF RESTAURANT ARRAY " + restaurants.size());
                     }
                 }
                 else
@@ -60,13 +56,13 @@ public class DatabaseOperations {
         return restaurants;
     }
 
-    public void getDistanceBasedOnUsersLocation(Restaurants item)
+    public void getDistanceBasedOnUsersLocation(Restaurant item)
     {
-        distance = 6371 * Math.acos( Math.cos( Math.toRadians(Double.parseDouble(item.getLatitude())) )
+        distance = 6371 * Math.acos( Math.cos( Math.toRadians(Double.parseDouble(item.getLongitude())) )
                 * Math.cos( Math.toRadians( -6.391252 ) )
                 * Math.cos( Math.toRadians( 53.284412 )
-                -  Math.toRadians(Double.parseDouble(item.getLongitude())) )
-                +  Math.sin( Math.toRadians(Double.parseDouble(item.getLatitude())) )
+                -  Math.toRadians(Double.parseDouble(item.getLatitude())) )
+                +  Math.sin( Math.toRadians(Double.parseDouble(item.getLongitude())) )
                 * Math.sin( Math.toRadians( -6.391252 ) ) );
     }
 
@@ -149,13 +145,13 @@ public class DatabaseOperations {
     }
 
 
-    public ArrayList<Restaurants> searchByType(String type)
+    public ArrayList<Restaurant> searchByType(String type)
     {
         System.out.println(type + "-------------------------------------");
         restaurantsTable.where().field("type").eq(type)
-                .execute(new TableQueryCallback<Restaurants>() {
+                .execute(new TableQueryCallback<Restaurant>() {
 
-                    public void onCompleted(List<Restaurants> result, int count,
+                    public void onCompleted(List<Restaurant> result, int count,
                                             Exception exception, ServiceFilterResponse response) {
                         if (exception == null) {
                             if(result.size() == 0) //meaning the name typed was not found
@@ -165,7 +161,7 @@ public class DatabaseOperations {
                             else {
                                 restaurants.clear();
                                 System.out.println("found restaurants with that type");
-                                for(Restaurants item : result)
+                                for(Restaurant item : result)
                                 {
                                     getDistanceBasedOnUsersLocation(item);
                                     item.setDistance(distance);
@@ -210,13 +206,13 @@ public class DatabaseOperations {
 
     }
 
-    public ArrayList<Restaurants> searchDatabaseForWheelchairFriendlyRestaurants()
+    public ArrayList<Restaurant> searchDatabaseForWheelchairFriendlyRestaurants()
     {
         System.out.println("IN METHOD");
-        restaurantsTable.where().field("wheelchairAccessible").eq("Y")
-                .execute(new TableQueryCallback<Restaurants>() {
+        restaurantsTable.where().field("wheelchair").eq(true)
+                .execute(new TableQueryCallback<Restaurant>() {
 
-                    public void onCompleted(List<Restaurants> result, int count,
+                    public void onCompleted(List<Restaurant> result, int count,
                                             Exception exception, ServiceFilterResponse response) {
                         if (exception == null) {
                             if (result.size() == 0) //meaning wheelchair accessible restaurants couldn't be found
@@ -225,7 +221,7 @@ public class DatabaseOperations {
                             } else {
                                 System.out.println("GOT SOMETHING");
                                 restaurants.clear();
-                                for (Restaurants item : result) {
+                                for (Restaurant item : result) {
                                     getDistanceBasedOnUsersLocation(item);
                                     item.setDistance(distance);
                                     restaurants.add(item);
@@ -243,13 +239,13 @@ public class DatabaseOperations {
         return signUpCode;
     }
 
-    public ArrayList<Restaurants> searchByName(String name)
+    public ArrayList<Restaurant> searchByName(String name)
     {
         name.toLowerCase();
         restaurantsTable.where().field("name").eq(name)
-                .execute(new TableQueryCallback<Restaurants>() {
+                .execute(new TableQueryCallback<Restaurant>() {
 
-                    public void onCompleted(List<Restaurants> result, int count,
+                    public void onCompleted(List<Restaurant> result, int count,
                                             Exception exception, ServiceFilterResponse response) {
                         if (exception == null) {
                             if(result.size() == 0) //meaning the name typed was not found
@@ -258,7 +254,7 @@ public class DatabaseOperations {
                             }
                             else {
                                 restaurants.clear();
-                                for (Restaurants item : result) {
+                                for (Restaurant item : result) {
                                     getDistanceBasedOnUsersLocation(item);
                                     item.setDistance(distance);
                                     restaurants.add(item);

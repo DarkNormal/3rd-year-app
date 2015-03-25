@@ -3,25 +3,25 @@ package project.b_ourguest.bourguest;
 /**
  * Created by Robbie on 16/12/2014.
  */
-public class Restaurants {
+public class Restaurant {
     private String id;
-    private String name;
+    private String restaurantName;
     private String bio;
     private String longitude;
     private String latitude;
     private String type;
-    private char wheelchairAccessible;
+    private boolean wheelchair;
     private String appImage;
     private double distance;
 
-    public Restaurants(String id,String name,String bio,String longitude,String latitude,String type,char wcA,String appImage){
+    public Restaurant(String id, String name, String bio, String longitude, String latitude, String type, boolean wcA, String appImage){
         this.id = id;
-        this.name = name;
+        this.restaurantName = name;
         this.bio = bio;
         this.longitude = longitude;
         this.latitude = latitude;
         this.type = type;
-        this.wheelchairAccessible = wcA;
+        this.wheelchair = wcA;
         this.appImage = appImage;
     }
 
@@ -34,11 +34,11 @@ public class Restaurants {
     }
 
     public String getName() {
-        return name;
+        return restaurantName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.restaurantName = name;
     }
 
     public String getBio() {
@@ -73,12 +73,12 @@ public class Restaurants {
         this.type = type;
     }
 
-    public char getWheelchairAccessible() {
-        return wheelchairAccessible;
+    public boolean getWheelchairAccessible() {
+        return wheelchair;
     }
 
-    public void setWheelchairAccessible(char wheelchairAccessible) {
-        this.wheelchairAccessible = wheelchairAccessible;
+    public void setWheelchairAccessible(boolean wheelchairAccessible) {
+        this.wheelchair = wheelchairAccessible;
     }
 
     public String getAppImage() {
