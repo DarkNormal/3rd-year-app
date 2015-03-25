@@ -92,7 +92,7 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-    private void handleClicks() {
+    public void handleClicks() {
         ListView list = (ListView) findViewById(R.id.restaurantListView);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
