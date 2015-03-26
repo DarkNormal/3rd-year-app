@@ -12,6 +12,6 @@
     <!-- ActionBar styles -->
     <style name="ActionBar"
         parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">#1976D2</item>
+        <item name="android:background">#ff2b8bff</item>
     </style>
 </resources>
