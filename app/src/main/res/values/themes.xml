@@ -13,5 +13,6 @@
     <style name="ActionBar"
         parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="android:background">#ff2b8bff</item>
+        <item name="android:icon">@drawable/waiterweb1</item>
     </style>
 </resources>
