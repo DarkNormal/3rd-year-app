@@ -10,7 +10,6 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="99dp"
-        android:paddingLeft="20dp"
         android:divider="@null"
         android:dividerHeight="10dp"
         android:listSelector="@android:color/transparent"

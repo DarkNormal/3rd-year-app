@@ -17,11 +17,13 @@
         android:allowBackup="true"
         android:icon="@drawable/waiterweb1"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/MyTheme" >
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <activity
+
+            android:theme="@style/MyTheme"
             android:name=".StartActivity"
             android:label="@string/app_name" >
             <intent-filter>
@@ -32,7 +34,9 @@
         </activity>
         <activity android:name=".SignInActivity">
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:theme="@style/MyTheme">
+
         </activity>
         <activity android:name=".RestaurantActivity">
         </activity>
