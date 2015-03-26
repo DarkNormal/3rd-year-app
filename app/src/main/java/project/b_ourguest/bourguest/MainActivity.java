@@ -26,7 +26,6 @@ import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.util.List;
-
 import com.microsoft.windowsazure.mobileservices.MobileServiceTable;
 import com.squareup.picasso.Picasso;
 
@@ -80,6 +79,7 @@ public class MainActivity extends ActionBarActivity {
                     searchedRestaurantsText = (TextView) findViewById(R.id.searchedRestaurants);
                     searchedRestaurantsText.setText(message);
                     //populates the list view
+
                     ArrayAdapter<Restaurant> adapter = new RestaurantsAdapter();
                     ListView list = (ListView) findViewById(R.id.restaurantListView);
                     list.setAdapter(adapter);
