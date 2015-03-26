@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
-    android:padding="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     android:gravity="center"
-    android:background="#E0EEEE">
+    android:background="#F5F5F5">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,6 +17,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="4dp"
         android:id="@+id/restaurantImage"
         android:src="@drawable/ic_launcher"
         android:layout_alignParentTop="true"
@@ -27,7 +29,8 @@
         android:text="New Text"
         android:id="@+id/restaurantName"
         android:layout_marginLeft="89dp"
-        android:layout_marginTop="12dp"/>
+        android:paddingBottom="4dp"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -36,6 +39,7 @@
         android:text="Description"
         android:id="@+id/restaurantDistance"
         android:layout_marginLeft="89dp"
+        android:paddingBottom="4dp"
         android:layout_marginTop="32dp"/>
     </RelativeLayout>
 
