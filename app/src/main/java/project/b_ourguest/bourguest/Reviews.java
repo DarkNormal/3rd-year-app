@@ -14,6 +14,12 @@ public class Reviews {
         id = s;
         reviews = d;
     }
+    public Reviews(String s,double d, double crap)
+    {
+        id = s;
+        rating = crap;
+        
+    }
 
     public double getRating() {
         return rating;

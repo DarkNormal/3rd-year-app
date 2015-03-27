@@ -15,7 +15,7 @@ import java.util.List;
 public class BackgroundOperations extends AsyncTask<List<Restaurant>, Void, List<Restaurant>> {
     private static MobileServiceTable<Restaurant> restaurantsTable = StartActivity.getRestaurantsTable();
     private List<Restaurant> restaurants = new ArrayList<Restaurant>();
-
+    
     @Override
     protected List<Restaurant> doInBackground(List<Restaurant>... params) {
         //retrieve data from azure database

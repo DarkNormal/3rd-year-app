@@ -3,17 +3,12 @@
     <!-- Base application theme. -->
     <style name="MyTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="actionBarStyle">@style/ActionBar</item>
-        <item name="colorPrimary">#3F51B5</item>
-        <item name="android:textColorPrimary">#212121</item>
-        <item name="colorPrimaryDark">#303F9F</item>
+        <item name="colorPrimary">#2979FF</item>
+        <item name="colorPrimaryDark">#2962FF</item>
         <!-- Adding a comment to test git-->
     </style>
 
-    <!-- ActionBar styles -->
-    <style name="ActionBar"
-        parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">#ff2b8bff</item>
-        <item name="android:icon">@drawable/waiterweb1</item>
+    <style name="MyTheme2" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimaryDark">#448AFF</item>
     </style>
 </resources>

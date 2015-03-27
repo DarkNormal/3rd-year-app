@@ -9,9 +9,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="90dp"
         android:layout_gravity="center"
-        android:gravity="center"
 
         android:background="@drawable/selector_card_background">
     <ImageView
@@ -31,6 +30,15 @@
         android:layout_marginLeft="89dp"
         android:paddingBottom="4dp"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/restaurantRating"
+        android:text="Overall Rating"
+        android:layout_below="@+id/restaurantName"
+        android:layout_alignStart="@+id/restaurantName" />
+
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -38,9 +46,9 @@
         android:maxLines="4"
         android:text="Description"
         android:id="@+id/restaurantDistance"
-        android:layout_marginLeft="89dp"
         android:paddingBottom="4dp"
-        android:layout_marginTop="32dp"/>
+        android:layout_below="@+id/restaurantRating"
+        android:layout_alignStart="@+id/restaurantRating" />
     </RelativeLayout>
 
 </LinearLayout>
