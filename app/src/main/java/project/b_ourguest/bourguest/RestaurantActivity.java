@@ -160,36 +160,24 @@ public class RestaurantActivity extends ActionBarActivity {
                         
                         if(cal.getDate() != date){
                             date = cal.getDate();
-                            
-                            
-                            System.out.println("day is :" + calendar.getTime().getDay() + " " + dayOfMonth);
-                            System.out.println("day is :" + calendar.getTime());
-                            
-                            if(month < calendar.getTime().getMonth())
+
+                            if(month < calendar.get(Calendar.MONTH))
                                 Toast.makeText(RestaurantActivity.this,"Cannot pick a date in the past",Toast.LENGTH_SHORT).show();
-                            else if(dayOfMonth < calendar.getTime().getDay() + 1 && month == calendar.getTime().getMonth())
+                            else if(year < calendar.get(Calendar.YEAR))
                                 Toast.makeText(RestaurantActivity.this,"Cannot pick a date in the past",Toast.LENGTH_SHORT).show();
+                            else if(dayOfMonth < calendar.get(Calendar.DAY_OF_MONTH) && month == calendar.get(Calendar.MONTH))
+                                Toast.makeText(RestaurantActivity.this,"Cannot pick a date in the past",Toast.LENGTH_SHORT).show();
+                            else if(month > calendar.get(Calendar.MONTH) + 3)
+                                Toast.makeText(RestaurantActivity.this,"Cannot pick a date too far in advance",Toast.LENGTH_SHORT).show();
+                            else if(year > calendar.get(Calendar.YEAR))
+                            {
+                                if(calendar.get(Calendar.MONTH) >= 10 && month < month - 10)
+                                    createPopUp();
+                                else
+                                Toast.makeText(RestaurantActivity.this,"Cannot pick a date too far in advance",Toast.LENGTH_SHORT).show();
+                            }
                             else {
-                                //Creating the instance of PopupMenu
-                                View v = (View) findViewById(R.id.passedRestaurantName);
-                                PopupMenu popup = new PopupMenu(getApplicationContext(), v);
-                                //Inflating the Popup using xml file
-                                popup.getMenuInflater().inflate(R.menu.times_menu, popup.getMenu());
-                                
-                                //registering popup with OnMenuItemClickListener
-                                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                                    public boolean onMenuItemClick(MenuItem item) {
-                                        
-                                        time = item.getTitle().toString();
-                                        Intent intent = new Intent(RestaurantActivity.this, BookingActivity.class);
-                                        startActivity(intent);
-                                        
-                                        
-                                        return true;
-                                    }
-                                });
-                                
-                                popup.show();//showing popup menu
+                                createPopUp();
                             }
                         }
                     }
@@ -239,7 +227,30 @@ public class RestaurantActivity extends ActionBarActivity {
         }
         
     }
-    
+
+    private void createPopUp() {
+        //Creating the instance of PopupMenu
+        View v = (View) findViewById(R.id.passedRestaurantName);
+        PopupMenu popup = new PopupMenu(getApplicationContext(), v);
+        //Inflating the Popup using xml file
+        popup.getMenuInflater().inflate(R.menu.times_menu, popup.getMenu());
+
+        //registering popup with OnMenuItemClickListener
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+
+                time = item.getTitle().toString();
+                Intent intent = new Intent(RestaurantActivity.this, BookingActivity.class);
+                startActivity(intent);
+
+
+                return true;
+            }
+        });
+
+        popup.show();//showing popup menu
+    }
+
     public void submitReview(View v)
     {
         String id = r.getId();

@@ -380,36 +380,22 @@ public class MainActivity extends ActionBarActivity {
                 v = getLayoutInflater().inflate(R.layout.restaurants_listview_layout, parent, false);
             }
             //populate the list
-            int pos = 0;
+
             Restaurant r = restaurants.get(position);
+            rat = (TextView) v.findViewById(R.id.restaurantRating);
+            rat.setText(convertToTitleCase(r.getName()) + " has no reviews");
+
             for(int i = 0; i < reviews.size();i++)
             {
-                if(r.getId() == reviews.get(i).getId());
-                pos = i;
+                if(reviews.get(i).getId().equals(r.getId()))
+                    rat.setText(reviews.get(i).getRating() + " stars");
             }
-            if(r.getId() == reviews.get(pos).getId())
-                re = reviews.get(pos);
-            else
-                re = new Reviews("0",0,0);
+
             TextView restName = (TextView) v.findViewById(R.id.restaurantName);
             restName.setText(convertToTitleCase(r.getName()));
-            
-            
-            
-            
-            rat = (TextView) v.findViewById(R.id.restaurantRating);
-            
-            System.out.println("position is: " + position);
-            if(re.getId().equals(r.getId())){
-                rat.setText(reviews.get(position).getRating() + " stars");
-            }
-            else{
-                rat.setText("This restaurant has no reviews");
-            }
-            
-            if(r.getWheelchairAccessible() == true)
-                System.out.println(r.getName() + "  " + r.getWheelchairAccessible() + "--------------------------");
-            
+
+
+
             TextView dist = (TextView) v.findViewById(R.id.restaurantDistance);
             dist.setText(df.format(r.getDistance()) + "km from current location");
             
