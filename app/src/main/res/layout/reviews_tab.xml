@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:id="@+id/reviewTab">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="You Are In The Reviews Tab"
+        android:id="@+id/textView"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -25,105 +34,106 @@
         android:layout_height="wrap_content"
         android:id="@+id/tableLayout">
 
-    <TableRow
-        android:id="@+id/tableRow"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:gravity="center_horizontal"
-        android:layout_below="@+id/rating"
-        android:layout_alignParentStart="true">
-        <ImageView
-            android:layout_width="wrap_content"
+        <TableRow
+            android:id="@+id/tableRow"
             android:layout_height="wrap_content"
-            android:id="@+id/onestar"
-            android:layout_marginTop="43dp"
-            android:src="@drawable/small_gold_star2"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
             android:layout_below="@+id/rating"
-            android:layout_toStartOf="@+id/textView2"
-            android:clickable="true"
-            android:onClick="submitReview"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/onehalfstar"
-            android:layout_marginTop="43dp"
-            android:src="@drawable/half_star"
-            android:layout_below="@+id/rating"
-            android:layout_toStartOf="@+id/textView2"
-            android:clickable="true"
-            android:onClick="submitReview"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/twostar"
-            android:layout_marginTop="43dp"
-            android:src="@drawable/small_gold_star2"
-            android:layout_below="@+id/rating"
-            android:layout_toStartOf="@+id/textView2"
-            android:clickable="true"
-            android:onClick="submitReview"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/twohalfstar"
-            android:layout_marginTop="43dp"
-            android:src="@drawable/half_star"
-            android:layout_below="@+id/rating"
-            android:layout_toStartOf="@+id/textView2"
-            android:clickable="true"
-            android:onClick="submitReview"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/threestar"
-            android:layout_marginTop="43dp"
-            android:src="@drawable/small_gold_star2"
-            android:layout_below="@+id/rating"
-            android:layout_toStartOf="@+id/textView2"
-            android:clickable="true"
-            android:onClick="submitReview"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/threehalfstar"
-            android:layout_marginTop="43dp"
-            android:src="@drawable/half_star"
-            android:layout_below="@+id/rating"
-            android:layout_toStartOf="@+id/textView2"
-            android:clickable="true"
-            android:onClick="submitReview"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/fourstar"
-            android:layout_marginTop="43dp"
-            android:src="@drawable/small_gold_star2"
-            android:layout_below="@+id/rating"
-            android:layout_toStartOf="@+id/textView2"
-            android:clickable="true"
-            android:onClick="submitReview"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/fourhalfstar"
-            android:layout_marginTop="43dp"
-            android:src="@drawable/half_star"
-            android:layout_below="@+id/rating"
-            android:layout_toStartOf="@+id/textView2"
-            android:clickable="true"
-            android:onClick="submitReview"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/fivestar"
-            android:layout_marginTop="43dp"
-            android:src="@drawable/small_gold_star2"
-            android:layout_below="@+id/rating"
-            android:layout_toStartOf="@+id/textView2"
-            android:clickable="true"
-            android:onClick="submitReview"/>
+            android:layout_alignParentStart="true">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/onestar"
+                android:layout_marginTop="43dp"
+                android:src="@drawable/small_gold_star2"
+                android:layout_below="@+id/rating"
+                android:layout_toStartOf="@+id/textView2"
+                android:clickable="true"
+                android:onClick="submitReview"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/onehalfstar"
+                android:layout_marginTop="43dp"
+                android:src="@drawable/half_star"
+                android:layout_below="@+id/rating"
+                android:layout_toStartOf="@+id/textView2"
+                android:clickable="true"
+                android:onClick="submitReview"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/twostar"
+                android:layout_marginTop="43dp"
+                android:src="@drawable/small_gold_star2"
+                android:layout_below="@+id/rating"
+                android:layout_toStartOf="@+id/textView2"
+                android:clickable="true"
+                android:onClick="submitReview"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/twohalfstar"
+                android:layout_marginTop="43dp"
+                android:src="@drawable/half_star"
+                android:layout_below="@+id/rating"
+                android:layout_toStartOf="@+id/textView2"
+                android:clickable="true"
+                android:onClick="submitReview"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/threestar"
+                android:layout_marginTop="43dp"
+                android:src="@drawable/small_gold_star2"
+                android:layout_below="@+id/rating"
+                android:layout_toStartOf="@+id/textView2"
+                android:clickable="true"
+                android:onClick="submitReview"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/threehalfstar"
+                android:layout_marginTop="43dp"
+                android:src="@drawable/half_star"
+                android:layout_below="@+id/rating"
+                android:layout_toStartOf="@+id/textView2"
+                android:clickable="true"
+                android:onClick="submitReview"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/fourstar"
+                android:layout_marginTop="43dp"
+                android:src="@drawable/small_gold_star2"
+                android:layout_below="@+id/rating"
+                android:layout_toStartOf="@+id/textView2"
+                android:clickable="true"
+                android:onClick="submitReview"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/fourhalfstar"
+                android:layout_marginTop="43dp"
+                android:src="@drawable/half_star"
+                android:layout_below="@+id/rating"
+                android:layout_toStartOf="@+id/textView2"
+                android:clickable="true"
+                android:onClick="submitReview"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/fivestar"
+                android:layout_marginTop="43dp"
+                android:src="@drawable/small_gold_star2"
+                android:layout_below="@+id/rating"
+                android:layout_toStartOf="@+id/textView2"
+                android:clickable="true"
+                android:onClick="submitReview"/>
 
-    </TableRow>
+        </TableRow>
 
     </TableLayout>
+
 </RelativeLayout>

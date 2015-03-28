@@ -38,17 +38,16 @@
             android:theme="@style/MyTheme">
 
         </activity>
-        <activity android:name=".RestaurantActivity">
+        <activity android:name=".RestaurantActivity"
+            android:theme="@style/MyTheme">
         </activity>
         <activity android:name=".BookingActivity">
         </activity>
-        <activity android:name=".TabTestActivity"
-            android:theme="@style/RestaurantActivityTheme">
-        </activity>
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyAS-2nwfqxcjjktjFTCzALGQjN8ho8bXH8" />
+            android:value="AIzaSyDqAIR_0nLUaDAMkTZuc6G1uUSqG3mhFxU" />
 
     </application>
 
 </manifest>
+

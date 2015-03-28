@@ -45,7 +45,6 @@ public class MainActivity extends ActionBarActivity {
     private TextView rat;
     private List<Restaurant> restaurants = StartActivity.getRestaurants();
     private ArrayList<Reviews> reviews = StartActivity.getReviews();
-    private Reviews re;
     TextView searchedRestaurantsText;
     private static Restaurant restaurantToPass;
     String[] type = {"Indian","Italian","American","Asian", "Chinese","Portuguese","Family Friendly"
@@ -104,7 +103,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
                 restaurantToPass = restaurants.get(position);
-                Intent intent =  new Intent(getApplicationContext(),TabTestActivity.class);
+                Intent intent =  new Intent(getApplicationContext(),RestaurantActivity.class);
                 startActivity(intent);
             }
         });

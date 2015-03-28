@@ -12,5 +12,6 @@
     <string name="searchByTypeString">Search by type</string>
     <string name="searchByNameString">Search by name</string>
     <string name="logOut">Log out</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>

@@ -135,6 +135,7 @@ public class DatabaseOperations {
     
     public void sendReview(Reviews r,UserReviews u)
     {
+        System.out.println(r.getId() + " " + r.getRating() + " " + u.getId() + " " + u.getRestaurantID()+" " + u.getUserID());
         reviewsTable.insert(r, new TableOperationCallback<Reviews>() {
             public void onCompleted(Reviews entity,
                                     Exception exception,
@@ -214,15 +215,18 @@ public class DatabaseOperations {
                     {
                         System.out.println("NO REVIEW EXISTED---------------");
                         reviewExists = false;
+                        System.out.println(reviewExists + " no review existed");
                     } else {
                         System.out.println("REVIEW EXISTS---------------");
                         System.out.println(result.get(0).getUserID() + ", " + result.get(0).getRestaurantID());
                         reviewExists = true;
+                        System.out.println(reviewExists+ " review existed");
                     }
                 }
             }
         });
         System.out.println("FINISHED GETTING REVIEWS---------------");
+        System.out.println(reviewExists);
         
     }
     
@@ -287,6 +291,7 @@ public class DatabaseOperations {
         return restaurants;
     }
     public static boolean isReviewExists() {
+        System.out.println(reviewExists + " IS REVIEWEXISTS");
         return reviewExists;
     }
 }

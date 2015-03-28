@@ -3,4 +3,8 @@
     <color name="second_grey">#ff999999</color>
     <color name="card_white">#ffffffff</color>
     <color name="card_shadow">#8c666666</color>
+
+    <color name="ColorPrimary">#2979FF</color>
+    <color name="ColorPrimaryDark">#2962FF</color>
+    <color name="tabsScrollColor">#303F9F</color>
 </resources>

@@ -1,35 +1,35 @@
-package project.b_ourguest.bourguest;
-
+package project.b_ourguest.bourguest.ui;
+/**
+ * Created by Mark on 3/28/2015.
+ */
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.PopupMenu;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
 
-/**
- * Created by Robbie on 28/03/2015.
- */
-public class BookingTab extends Fragment {
+import project.b_ourguest.bourguest.BookingActivity;
+import project.b_ourguest.bourguest.R;
+
+public class booking_tab extends Fragment {
     private Calendar calendar = Calendar.getInstance();
     private CalendarView cal;
     private long date;
     private static String time;
-    View view;
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState){
-         view = inflater.inflate(R.layout.booking_frag, container, false);
+    @Override
+    public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.booking_tab,container,false);
 
-        cal = (CalendarView) view.findViewById(R.id.calendar);
+        cal = (CalendarView) v.findViewById(R.id.calendar);
         //The background color for the selected week.
         cal.setSelectedWeekBackgroundColor(Color.parseColor("#ff2b8bff"));
 
@@ -64,12 +64,12 @@ public class BookingTab extends Fragment {
             }
         });
 
-        return view;
+    return v;
     }
 
     private void createPopUp() {
         //Creating the instance of PopupMenu
-        View v = (View) getView().findViewById(R.id.anchor);
+        View v =  getView().findViewById(R.id.anchor);
         PopupMenu popup = new PopupMenu(getActivity(), v);
         //Inflating the Popup using xml file
         popup.getMenuInflater().inflate(R.menu.times_menu, popup.getMenu());
