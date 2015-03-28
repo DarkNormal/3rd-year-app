@@ -104,7 +104,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
                 restaurantToPass = restaurants.get(position);
-                Intent intent =  new Intent(getApplicationContext(),RestaurantActivity.class);
+                Intent intent =  new Intent(getApplicationContext(),TabTestActivity.class);
                 startActivity(intent);
             }
         });
