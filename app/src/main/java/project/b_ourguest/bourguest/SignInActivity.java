@@ -16,6 +16,8 @@ import android.widget.Toast;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import project.b_ourguest.bourguest.DB.DatabaseOperations;
+
 /**
  * Created by Robbie on 30/01/2015.
  */

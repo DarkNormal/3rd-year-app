@@ -22,7 +22,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import project.b_ourguest.bourguest.MainActivity;
 import project.b_ourguest.bourguest.R;
-import project.b_ourguest.bourguest.Restaurant;
+import project.b_ourguest.bourguest.Model.Restaurant;
 
 public class info_tab extends Fragment {
     Restaurant r = MainActivity.getRestaurantToPass();

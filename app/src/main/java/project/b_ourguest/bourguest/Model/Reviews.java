@@ -1,4 +1,4 @@
-package project.b_ourguest.bourguest;
+package project.b_ourguest.bourguest.Model;
 
 /**
  * Created by Robbie on 07/03/2015.

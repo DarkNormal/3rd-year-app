@@ -13,6 +13,12 @@ import com.microsoft.windowsazure.mobileservices.MobileServiceTable;
 import java.util.ArrayList;
 import java.util.List;
 
+import project.b_ourguest.bourguest.DB.DatabaseOperations;
+import project.b_ourguest.bourguest.Model.Restaurant;
+import project.b_ourguest.bourguest.Model.Reviews;
+import project.b_ourguest.bourguest.Model.UserReviews;
+import project.b_ourguest.bourguest.Model.Users;
+
 
 public class StartActivity extends ActionBarActivity{
     

@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -28,8 +27,10 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import com.microsoft.windowsazure.mobileservices.MobileServiceTable;
-import com.squareup.picasso.Picasso;
 
+import project.b_ourguest.bourguest.DB.DatabaseOperations;
+import project.b_ourguest.bourguest.Model.Restaurant;
+import project.b_ourguest.bourguest.Model.Reviews;
 
 
 /**
@@ -45,7 +46,8 @@ public class MainActivity extends ActionBarActivity {
     private TextView rat;
     private List<Restaurant> restaurants = StartActivity.getRestaurants();
     private ArrayList<Reviews> reviews = StartActivity.getReviews();
-    TextView searchedRestaurantsText;
+    private TextView searchedRestaurantsText;
+    private String userID;
     private static Restaurant restaurantToPass;
     String[] type = {"Indian","Italian","American","Asian", "Chinese","Portuguese","Family Friendly"
     ,"Traditional","Something different","Pizza","Healthy Option"};
@@ -65,7 +67,8 @@ public class MainActivity extends ActionBarActivity {
         {
             displayRestaurants("Nearest Restaurants");
         }
-        
+        SharedPreferences settings = getSharedPreferences("LoginPrefs", 0);
+         userID = settings.getString("email", "").toString();
     }
     
     private boolean isNetworkAvailable() {
@@ -103,6 +106,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
                 restaurantToPass = restaurants.get(position);
+                db.getReview(userID,restaurantToPass.getId());
                 Intent intent =  new Intent(getApplicationContext(),RestaurantActivity.class);
                 startActivity(intent);
             }
@@ -203,7 +207,7 @@ public class MainActivity extends ActionBarActivity {
                             public void run() {
                                 System.out.println("Size when result is returned is " + restaurants.size());
                                 determineActionBasedOnRestaurantsSize("Could not find any local restaurants",
-                                                                      "Nearest Restaurant");
+                                                                      "Nearest Restaurants");
                                 pd.dismiss();
                                 // To dismiss the dialog
                             }

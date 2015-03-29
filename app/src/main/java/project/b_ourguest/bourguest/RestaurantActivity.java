@@ -1,8 +1,10 @@
 package project.b_ourguest.bourguest;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -10,9 +12,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 
+import project.b_ourguest.bourguest.DB.DatabaseOperations;
+import project.b_ourguest.bourguest.Model.Restaurant;
+import project.b_ourguest.bourguest.Model.Reviews;
+import project.b_ourguest.bourguest.Model.UserReviews;
 import project.b_ourguest.bourguest.ui.SlidingTabLayout;
 import project.b_ourguest.bourguest.ui.ViewPagerAdapter;
 
@@ -23,10 +33,12 @@ public class RestaurantActivity extends ActionBarActivity {
     // Declaring Your View and Variables
     Restaurant r = MainActivity.getRestaurantToPass();
     DatabaseOperations db = new DatabaseOperations();
-
+    private Handler h = new Handler();
     private Reviews review;
+    private  double rating;
     TableLayout tableLayout;
     private UserReviews userReview;
+    private  Dialog dialog;
 
     ViewPager pager;
     ViewPagerAdapter adapter;
@@ -39,33 +51,32 @@ public class RestaurantActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.restaurant_activity_display);
         getSupportActionBar().setElevation(0);
-        SharedPreferences settings = getSharedPreferences("LoginPrefs", 0);
-        String userID = settings.getString("email", "").toString();
         setTitle(convertToTitleCase(r.getName()));
-        db.getReview(userID, r.getId());
 
 
-        // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
-        adapter = new ViewPagerAdapter(getSupportFragmentManager(), Titles, Numboftabs);
+// Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
+                adapter = new ViewPagerAdapter(getSupportFragmentManager(), Titles, Numboftabs);
 
-        // Assigning ViewPager View and setting the adapter
-        pager = (ViewPager) findViewById(R.id.pager);
-        pager.setAdapter(adapter);
+                // Assigning ViewPager View and setting the adapter
+                pager = (ViewPager) findViewById(R.id.pager);
+                pager.setAdapter(adapter);
 
-        // Assiging the Sliding Tab Layout View
-        tabs = (SlidingTabLayout) findViewById(R.id.tabs);
-        tabs.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
+                // Assiging the Sliding Tab Layout View
+                tabs = (SlidingTabLayout) findViewById(R.id.tabs);
+                tabs.setDistributeEvenly(true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
 
-        // Setting Custom Color for the Scroll bar indicator of the Tab View
-        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
-            @Override
-            public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.tabsScrollColor);
-            }
-        });
+                // Setting Custom Color for the Scroll bar indicator of the Tab View
+                tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+                    @Override
+                    public int getIndicatorColor(int position) {
+                        return getResources().getColor(R.color.tabsScrollColor);
+                    }
+                });
+                // Setting the ViewPager For the SlidingTabsLayout
+                tabs.setViewPager(pager);
 
-        // Setting the ViewPager For the SlidingTabsLayout
-        tabs.setViewPager(pager);
+
+
 
 
     }
@@ -107,43 +118,134 @@ public class RestaurantActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void rate()
+    {
+        ImageView im = (ImageView) dialog.findViewById(R.id.onestar);
+        im.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                rating = 1;
+                submitReviewToDB();
+
+            }
+        });
+
+        ImageView im2 = (ImageView) dialog.findViewById(R.id.onehalfstar);
+        im2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                rating = 1.5;
+                submitReviewToDB();
+
+            }
+        });
+        ImageView im3 = (ImageView) dialog.findViewById(R.id.twostar);
+        im3.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                rating = 2;
+                submitReviewToDB();
+
+            }
+        });
+        ImageView im4 = (ImageView) dialog.findViewById(R.id.twohalfstar);
+        im4.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                rating = 2.5;
+                submitReviewToDB();
+
+            }
+        });
+        ImageView im5 = (ImageView) dialog.findViewById(R.id.threestar);
+        im5.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                rating = 3;
+                submitReviewToDB();
+
+            }
+        });
+        ImageView im6 = (ImageView) dialog.findViewById(R.id.threehalfstar);
+        im6.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                rating = 3.5;
+                submitReviewToDB();
+
+            }
+        });
+        ImageView im7 = (ImageView) dialog.findViewById(R.id.fourstar);
+        im7.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                rating = 4;
+                submitReviewToDB();
+
+            }
+        });
+        ImageView im8 = (ImageView) dialog.findViewById(R.id.fourhalfstar);
+        im8.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                rating = 4.5;
+                submitReviewToDB();
+
+            }
+        });
+        ImageView im9 = (ImageView) dialog.findViewById(R.id.fivestar);
+        im9.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                rating = 5;
+                submitReviewToDB();
+
+            }
+        });
+    }
+
     public void submitReview(View v)
     {
-        String id = r.getId();
-        double rating = 0;
+        if(DatabaseOperations.isReviewExists())
+        {
+            TextView t = (TextView) findViewById(R.id.reviewText);
+            t.setText("You have already submitted your review for this restaurant");
+        }
+        else {
+            //set up dialog
+            dialog = new Dialog(RestaurantActivity.this);
+            dialog.setContentView(R.layout.rating_dialog);
+            dialog.setTitle("Choose a rating");
+            rate();
+            dialog.setCancelable(true);
+            dialog.show();
+        }
 
-        if (v.getId() == R.id.onestar) {
-            rating = 1;
-        }
-        if (v.getId() == R.id.onehalfstar) {
-            rating = 1.5;
-        }
-        if (v.getId() == R.id.twostar) {
-            rating = 2;
-        }
-        if (v.getId() == R.id.twohalfstar) {
-            rating = 2.5;
-        }
-        if (v.getId() == R.id.threestar) {
-            rating = 3;
-        }
-        if (v.getId() == R.id.threehalfstar) {
-            rating = 3.5;
-        }
-        if (v.getId() == R.id.fourstar) {
-            rating = 4;
-        }
-        if (v.getId() == R.id.fourhalfstar) {
-            rating = 4.5;
-        }
-        if (v.getId() == R.id.fivestar) {
-            rating = 5;
-        }
+    }
+
+    public void submitReviewToDB()
+    {
         SharedPreferences settings = getSharedPreferences("LoginPrefs", 0);
         String userID = settings.getString("email", "").toString();
-        userReview = new UserReviews(userID,id);
-        review = new Reviews(id,rating);
-        reviewDialog(rating);
+        userReview = new UserReviews(userID,r.getId());
+        review = new Reviews(r.getId(),rating);
+
+        dialog.setTitle("Submit " + rating + " star rating");
+        TableRow t = (TableRow) dialog.findViewById(R.id.tableRow);
+        t.setVisibility(View.INVISIBLE);
+        Button b = (Button) dialog.findViewById(R.id.cancel);
+        b.setVisibility(View.VISIBLE);
+
+        b.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        Button bu = (Button) dialog.findViewById(R.id.ok);
+        bu.setVisibility(View.VISIBLE);
+
+        bu.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                db.sendReview(review,userReview);
+                System.out.println("SENT to DBOPERATIONS-------------------");
+                dialog.dismiss();
+                TextView t = (TextView) findViewById(R.id.reviewText);
+                t.setText("You're review of " + rating + " stars for " + convertToTitleCase(r.getName()) + " was submitted");
+                t.setClickable(false);
+            }
+        });
     }
 
     public void reviewDialog(double rating)
@@ -158,8 +260,7 @@ public class RestaurantActivity extends ActionBarActivity {
 
                 db.sendReview(review,userReview);
                 System.out.println("SENT to DBOPERATIONS-------------------");
-                tableLayout = (TableLayout) findViewById(R.id.tableLayout);
-                tableLayout.setVisibility(View.INVISIBLE);
+                dialog.dismiss();
             }
         });
 
@@ -168,7 +269,5 @@ public class RestaurantActivity extends ActionBarActivity {
                 // Canceled.
             }
         });
-
-        alert.show();
     }
 }

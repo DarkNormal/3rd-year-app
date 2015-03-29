@@ -9,6 +9,8 @@ import com.microsoft.windowsazure.mobileservices.TableQueryCallback;
 import java.util.ArrayList;
 import java.util.List;
 
+import project.b_ourguest.bourguest.Model.Restaurant;
+
 /**
  * Created by Robbie on 31/01/2015.
  */

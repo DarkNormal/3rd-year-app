@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="wrap_content">
+
+
+
+    <TableRow
+        android:id="@+id/tableRow"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="center_horizontal"
+
+        android:layout_alignParentStart="true">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/onestar"
+
+            android:src="@drawable/small_gold_star2"
+            android:layout_below="@+id/rating"
+            android:layout_toStartOf="@+id/textView2"
+            android:clickable="true"
+           />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/onehalfstar"
+
+            android:src="@drawable/half_star"
+            android:layout_below="@+id/rating"
+            android:layout_toStartOf="@+id/textView2"
+            android:clickable="true"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/twostar"
+
+            android:src="@drawable/small_gold_star2"
+            android:layout_below="@+id/rating"
+            android:layout_toStartOf="@+id/textView2"
+            android:clickable="true"
+           />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/twohalfstar"
+
+            android:src="@drawable/half_star"
+            android:layout_below="@+id/rating"
+            android:layout_toStartOf="@+id/textView2"
+            android:clickable="true"
+           />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/threestar"
+
+            android:src="@drawable/small_gold_star2"
+            android:layout_below="@+id/rating"
+            android:layout_toStartOf="@+id/textView2"
+            android:clickable="true"></ImageView>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/threehalfstar"
+
+            android:src="@drawable/half_star"
+            android:layout_below="@+id/rating"
+            android:layout_toStartOf="@+id/textView2"
+            android:clickable="true"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fourstar"
+
+            android:src="@drawable/small_gold_star2"
+            android:layout_below="@+id/rating"
+            android:layout_toStartOf="@+id/textView2"
+            android:clickable="true"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fourhalfstar"
+
+            android:src="@drawable/half_star"
+            android:layout_below="@+id/rating"
+            android:layout_toStartOf="@+id/textView2"
+            android:clickable="true"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fivestar"
+
+            android:src="@drawable/small_gold_star2"
+            android:layout_below="@+id/rating"
+            android:layout_toStartOf="@+id/textView2"
+            android:clickable="true"
+           />
+
+    </TableRow>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:id="@+id/cancel"
+        android:layout_below="@+id/tableRow"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="44dp"
+        android:visibility="invisible"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OK"
+        android:id="@+id/ok"
+        android:layout_below="@+id/tableRow"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="56dp"
+        android:visibility="invisible" />
+
+
+</RelativeLayout>

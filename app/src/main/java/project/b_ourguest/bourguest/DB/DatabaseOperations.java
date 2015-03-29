@@ -1,4 +1,4 @@
-package project.b_ourguest.bourguest;
+package project.b_ourguest.bourguest.DB;
 
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.MobileServiceTable;
@@ -8,6 +8,12 @@ import com.microsoft.windowsazure.mobileservices.TableQueryCallback;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import project.b_ourguest.bourguest.Model.Restaurant;
+import project.b_ourguest.bourguest.Model.Reviews;
+import project.b_ourguest.bourguest.StartActivity;
+import project.b_ourguest.bourguest.Model.UserReviews;
+import project.b_ourguest.bourguest.Model.Users;
 
 /**
  * Created by Robbie on 06/02/2015.
