@@ -20,6 +20,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
+import java.text.DecimalFormat;
+
 import project.b_ourguest.bourguest.MainActivity;
 import project.b_ourguest.bourguest.R;
 import project.b_ourguest.bourguest.Model.Restaurant;
@@ -28,7 +30,7 @@ public class info_tab extends Fragment {
     Restaurant r = MainActivity.getRestaurantToPass();
     MapView mMapView;
     GoogleMap map;
-
+    DecimalFormat df = new DecimalFormat("##.###");
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
@@ -54,14 +56,31 @@ public class info_tab extends Fragment {
         //Zoom may get a bit annoying, consider setting it to pre-zoomed / no animation
         Marker loc = map.addMarker(new MarkerOptions().position(location).title(r.getName()));
         map.animateCamera(cameraUpdate);
+        TextView about = (TextView) view.findViewById(R.id.about);
+        about.setText("About " + convertToTitleCase(r.getName()));
         TextView bio = (TextView) view.findViewById(R.id.restaurantBio);
         bio.setText(r.getBio());
-        TextView bio2 = (TextView) view.findViewById(R.id.test);
-        bio2.setText(r.getBio());
+        TextView bio2 = (TextView) view.findViewById(R.id.distance);
+        bio2.setText(df.format(r.getDistance()) + "km from you");
 
 
         return view;
     }
+
+    public String convertToTitleCase(String name) {
+        String[] partOfName = name.split(" ");
+        char upperCaseLetter;
+        name = "";
+        String sub;
+        for(int i = 0; i < partOfName.length; i++)
+        {
+            upperCaseLetter = Character.toUpperCase(partOfName[i].charAt(0));
+            sub = partOfName[i].substring(1,partOfName[i].length());
+            name = name + (upperCaseLetter + sub) + " ";
+        }
+        return name;
+    }
+
     @Override
     public void onResume(){
         super.onResume();

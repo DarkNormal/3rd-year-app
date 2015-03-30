@@ -2,9 +2,11 @@ package project.b_ourguest.bourguest.ui;
 /**
  * Created by Mark on 3/28/2015.
  */
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -17,13 +19,20 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 import project.b_ourguest.bourguest.BookingActivity;
+import project.b_ourguest.bourguest.DB.DatabaseOperations;
+import project.b_ourguest.bourguest.MainActivity;
 import project.b_ourguest.bourguest.R;
+import project.b_ourguest.bourguest.RestaurantActivity;
 
 public class booking_tab extends Fragment {
     private Calendar calendar = Calendar.getInstance();
     private CalendarView cal;
     private long date;
-    private static String time;
+    private DatabaseOperations db = new DatabaseOperations();
+    private String time;
+    private int day,mon,yr;
+    private Handler h = new Handler();
+    private ProgressDialog pd;
 
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
@@ -41,7 +50,9 @@ public class booking_tab extends Fragment {
 
                 if(cal.getDate() != date){
                     date = cal.getDate();
-
+                    day = dayOfMonth;
+                    mon = month;
+                    yr = year;
                     if(month < calendar.get(Calendar.MONTH))
                         Toast.makeText(getActivity().getApplicationContext(), "Cannot pick a date in the past", Toast.LENGTH_SHORT).show();
                     else if(year < calendar.get(Calendar.YEAR))
@@ -77,10 +88,18 @@ public class booking_tab extends Fragment {
         //registering popup with OnMenuItemClickListener
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
-
                 time = item.getTitle().toString();
-                Intent intent = new Intent(getActivity().getApplicationContext(), BookingActivity.class);
-                startActivity(intent);
+                db.getFloorplans(time,day,mon,yr, MainActivity.getRestaurantToPass().getId());
+                pd = ProgressDialog.show(getActivity(), "Loading", "Building floorplan");
+                h.postDelayed(new Runnable() {
+                    public void run() {
+                        Intent intent = new Intent(getActivity().getApplicationContext(), BookingActivity.class);
+                        startActivity(intent);
+                        pd.dismiss();
+                        // To dismiss the dialog
+                    }
+                }, 3500);
+
 
 
                 return true;

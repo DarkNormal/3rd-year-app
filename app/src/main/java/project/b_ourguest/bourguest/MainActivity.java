@@ -41,7 +41,6 @@ public class MainActivity extends ActionBarActivity {
     //azure services
     DatabaseOperations db = new DatabaseOperations();
     private Handler h = new Handler();
-    DecimalFormat df = new DecimalFormat("##.###");
     private ProgressDialog pd;
     private TextView rat;
     private List<Restaurant> restaurants = StartActivity.getRestaurants();
@@ -50,7 +49,7 @@ public class MainActivity extends ActionBarActivity {
     private String userID;
     private static Restaurant restaurantToPass;
     String[] type = {"Indian","Italian","American","Asian", "Chinese","Portuguese","Family Friendly"
-    ,"Traditional","Something different","Pizza","Healthy Option"};
+    ,"Traditional","Something Different","Pizza","Healthy Option"};
     int pos = 0;
     String name = "";
     int tryAgain = 0;
@@ -400,7 +399,14 @@ public class MainActivity extends ActionBarActivity {
 
 
             TextView dist = (TextView) v.findViewById(R.id.restaurantDistance);
-            dist.setText(df.format(r.getDistance()) + "km from current location");
+            if(r.getDistance() > 2)
+                dist.setText("less than 3 km from current location");
+            else if(r.getDistance() > 1 && r.getDistance() < 2)
+                dist.setText("less than 2 km from current location");
+            else if(r.getDistance() < 1)
+                dist.setText("less than 1 km from current location");
+            else
+                dist.setText("greater than 3 km from current location");
             
             //            ImageView im = (ImageView) v.findViewById(R.id.restaurantImage);
             //            Picasso.with(MainActivity.this)

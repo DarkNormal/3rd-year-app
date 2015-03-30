@@ -14,10 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import project.b_ourguest.bourguest.DB.DatabaseOperations;
+import project.b_ourguest.bourguest.Model.Floorplan;
 import project.b_ourguest.bourguest.Model.Restaurant;
 import project.b_ourguest.bourguest.Model.Reviews;
 import project.b_ourguest.bourguest.Model.UserReviews;
 import project.b_ourguest.bourguest.Model.Users;
+import project.b_ourguest.bourguest.Model.tableObject;
+import project.b_ourguest.bourguest.Model.tableObjectBookings;
 
 
 public class StartActivity extends ActionBarActivity{
@@ -28,6 +31,9 @@ public class StartActivity extends ActionBarActivity{
     private static MobileServiceTable<Users> usersTable;
     private static MobileServiceTable<Reviews> reviewsTable;
     private static MobileServiceTable<UserReviews> userReviewsTable;
+    private static MobileServiceTable<Floorplan> floorplanTable;
+    private static MobileServiceTable<tableObject> tableObjectsTable;
+    private static MobileServiceTable<tableObjectBookings> tableObjectBookingsTable;
     //private GoogleApiClient mGoogleApiClient;
     //private final static int REQUEST_RESOLVE_ERROR = 1001;
     //private LocationRequest mLocationRequest;
@@ -73,6 +79,7 @@ public class StartActivity extends ActionBarActivity{
         
         DatabaseOperations db = new DatabaseOperations();
         restaurants = db.getRestaurants();
+        System.out.println("GETTING REVIEWS----------");
         reviews = db.getRating();
         
         
@@ -103,11 +110,14 @@ public class StartActivity extends ActionBarActivity{
     
     private void initiateClient() {
         try {
-            mClient = new MobileServiceClient( "https://bourguestmob.azure-mobile.net/", "bWGQkSjHvPINwcDVyVhsDkNjpWTltx78", this );
+            mClient = new MobileServiceClient( "https://bourguestmob.azure-mobile.net/", "jgeHXHepyaTFHjINloskvXXzhueGbG47", this );
             restaurantsTable = mClient.getTable(Restaurant.class);
             usersTable = mClient.getTable(Users.class);
             reviewsTable = mClient.getTable(Reviews.class);
             userReviewsTable = mClient.getTable(UserReviews.class);
+            floorplanTable = mClient.getTable(Floorplan.class);
+            tableObjectsTable = mClient.getTable(tableObject.class);
+            tableObjectBookingsTable = mClient.getTable(tableObjectBookings.class);
         }catch(Exception e)
         {
             Toast.makeText(getApplicationContext(), "Client in StartActivity.java could not be initiated",
@@ -132,6 +142,16 @@ public class StartActivity extends ActionBarActivity{
     public static MobileServiceTable<Users> getUsersTable() {
         return usersTable;
     }
+    public static MobileServiceTable<Floorplan> getFloorplanTable() {
+        return floorplanTable;
+    }
+    public static MobileServiceTable<tableObject> getTableObjectsTable() {
+        return tableObjectsTable;
+    }
+    public static MobileServiceTable<tableObjectBookings> getTableObjectBookingsTable() {
+        return tableObjectBookingsTable;
+    }
+
     public static ArrayList<Reviews> getReviews() {return reviews;}
     
     /*@Override

@@ -247,27 +247,4 @@ public class RestaurantActivity extends ActionBarActivity {
             }
         });
     }
-
-    public void reviewDialog(double rating)
-    {
-        AlertDialog.Builder alert = new AlertDialog.Builder(RestaurantActivity.this);
-
-        alert.setTitle("Submit review");
-        alert.setMessage("Submit " + rating + " star rating of " + convertToTitleCase(r.getName()));
-
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-
-                db.sendReview(review,userReview);
-                System.out.println("SENT to DBOPERATIONS-------------------");
-                dialog.dismiss();
-            }
-        });
-
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                // Canceled.
-            }
-        });
-    }
 }

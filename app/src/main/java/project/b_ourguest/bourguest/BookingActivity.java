@@ -9,11 +9,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import project.b_ourguest.bourguest.DB.DatabaseOperations;
+
 
 /**
  * Created by Robbie on 05/03/2015.
  */
 public class BookingActivity extends ActionBarActivity {
+    private DatabaseOperations db = new DatabaseOperations();
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -28,7 +31,6 @@ public class BookingActivity extends ActionBarActivity {
                 }
 
             });
-
         }
 
         @Override
