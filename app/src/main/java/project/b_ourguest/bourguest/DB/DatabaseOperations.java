@@ -31,18 +31,21 @@ public class DatabaseOperations {
     private static MobileServiceTable<tableObject> tableObjectsTable = StartActivity.getTableObjectsTable();
     private static MobileServiceTable<tableObjectBookings> tableObjectBookingsTable = StartActivity.getTableObjectBookingsTable();
     private ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
-    private ArrayList<Floorplan> floorplans = new ArrayList<Floorplan>();
+
+    private static ArrayList<Floorplan> floorplans = new ArrayList<Floorplan>();
+    private static ArrayList<tableObject> tables = new ArrayList<tableObject>();
     private static boolean reviewExists;
     private boolean signIn;
     private static int signUpCode;
     private double distance = 0;
+    private tableObject tob;
     private ArrayList<Reviews> rev = new ArrayList<Reviews>();
     
     public DatabaseOperations(){};
     //http://azure.microsoft.com/en-us/documentation/articles/mobile-services-android-how-to-use-client-library/
     //https://msdn.microsoft.com/library/azure/jj554212.aspx
     private String time;
-    private int day,month,year;
+    private int day,month,year, intTime, i =0;
     
     public ArrayList<Restaurant> getRestaurants() //should get nearest restaurants
     {
@@ -106,10 +109,13 @@ public class DatabaseOperations {
 
     public ArrayList<Floorplan> getFloorplans(String t,int d,int m,int y,String restID)
     {
-        time = t;
+        time = t.substring(0,2) + t.substring(3,5);
+        intTime = Integer.parseInt(time);
+        System.out.println(time);
         day = d;
         month = m;
         year = y;
+
         floorplanTable.where().field("restID").eq(restID).execute(new TableQueryCallback<Floorplan>() {
             public void onCompleted(List<Floorplan> result, int count,
                                     Exception exception, ServiceFilterResponse response) {
@@ -126,38 +132,11 @@ public class DatabaseOperations {
                                                     Exception exception, ServiceFilterResponse response) {
                                 System.out.println("SEARCHING tableObjectsTable");
                                 if (exception == null) {
+                                    tables.clear();
+                                    for (tableObject table : result) {
+                                        table.setColor(1);
+                                        tables.add(table);
 
-                                    for (tableObject item : result) {
-                                        //create an array to hold these tableObjects
-                                        //when you retrieve the bookings on a table object set the colour of it by using
-                                        //setColor(int) attribute
-                                        System.out.println("id: " + item.getId() + "\nfloorplan id: " + item.getFloorplanID() +
-                                                "\nType: " + item.getObjType() + "\nXcord: " + item.getXcoord() +
-                                                "\nYcord: " + item.getYcoord());
-
-                                        tableObjectBookingsTable.where().field("tabObjID").eq(item.getId()).and().field("time")
-                                                .eq(time).and().field("day").eq(day).and().field("month").eq(month).and()
-                                                .field("year").eq(year)
-                                                .execute(new TableQueryCallback<tableObjectBookings>() {
-                                            public void onCompleted(List<tableObjectBookings> result, int count,
-                                                                    Exception exception, ServiceFilterResponse response) {
-                                                System.out.println("SEARCHING tableObjectsTable");
-                                                if (exception == null) {
-
-                                                    for (tableObjectBookings item : result) {
-
-                                                        System.out.println("id: " + item.getId() + "\ntable id: " + item.getTabObjID() +
-                                                                "\nday: " + item.getDay() + "\nmonth: " + item.getMonth() +
-                                                                "\nyear: " + item.getYear());
-
-
-                                                    }
-                                                } else {
-                                                    System.out.println("ERROR SEARCHING TABLEOBJECT TABLE");
-                                                    exception.printStackTrace();
-                                                }
-                                            }
-                                        });
                                     }
                                 } else {
                                     System.out.println("ERROR SEARCHING TABLEOBJECT TABLE");
@@ -165,6 +144,7 @@ public class DatabaseOperations {
                                 }
                             }
                         });
+                        System.out.println("FINISHED GETTING TABLES");
                     }
                 } else {
                     System.out.println("ERROR SEARCHING FLOORPLAN TABLE");
@@ -173,6 +153,41 @@ public class DatabaseOperations {
             }
         });
         return floorplans;
+    }
+    public void getObjBookings(){
+        for (;i < tables.size(); i ++){
+            System.out.println(i);
+
+            tableObjectBookingsTable.where().field("tabObjID").eq(tables.get(i).getId()).and().field("time")
+                    .eq(intTime).and().field("day").eq(day).and().field("month").eq(month).and()
+                    .field("year").eq(year)
+                    .execute(new TableQueryCallback<tableObjectBookings>() {
+                        public void onCompleted(List<tableObjectBookings> result, int count,
+                                                Exception exception, ServiceFilterResponse response) {
+                            System.out.println(i + " fanny");
+                            if (exception == null) {
+                                System.out.println(i + " willis ");
+                                for (tableObjectBookings item : result) {
+
+for(int j = 0; j < tables.size();j++)
+{
+    if(tables.get(j).getId() == item.getTabObjID())
+    {
+System.out.println("HEYA---------------------------");
+        tables.get(j).setColor(2);
+    }
+
+}
+
+                                }
+                            } else {
+                                System.out.println("ERROR SEARCHING TABLEOBJECT TABLE");
+                                exception.printStackTrace();
+                            }
+                        }
+                    });
+        }
+
     }
     
     public ArrayList<Reviews> getRating(){
@@ -380,5 +395,11 @@ public class DatabaseOperations {
     public static boolean isReviewExists() {
         System.out.println(reviewExists + " IS REVIEWEXISTS");
         return reviewExists;
+    }
+    public static ArrayList<tableObject> getTables() {
+        return tables;
+    }
+    public static ArrayList<Floorplan> getFloorplans() {
+        return floorplans;
     }
 }

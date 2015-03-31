@@ -6,7 +6,7 @@ package project.b_ourguest.bourguest.Model;
 public class tableObject {
     private int id,xcoord,ycoord,objType,floorplanID;
     private boolean available;
-    private int color;
+    private int color = 1;
 
     public tableObject(int id, int xcoord, int ycoord, int objType, int floorplanID, boolean available) {
         this.id = id;
