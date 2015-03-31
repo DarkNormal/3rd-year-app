@@ -17,7 +17,7 @@ public class Restaurant {
     private double distance;
     private String phoneNum;
     private String openingHours;
-    private String email;
+    private String Email;
     
     public Restaurant(String id, String name, String bio, String longitude, String latitude, String t1, boolean wcA,
                       String appImage,String t2,String t3,String p,String o,String e){
@@ -32,12 +32,12 @@ public class Restaurant {
         this.type2 = t2;
         this.type3 = t3;
         this.phoneNum = p;
-        this.email = e;
+        this.Email = e;
         this.openingHours = o;
     }
 
     public String getEmail() {
-        return email;
+        return Email;
     }
     public String getOpeningHours() {
         return openingHours;

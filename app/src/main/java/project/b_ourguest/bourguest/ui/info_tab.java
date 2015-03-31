@@ -3,6 +3,9 @@ package project.b_ourguest.bourguest.ui;
 /**
  * Created by Mark on 3/28/2015.
  */
+import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -60,9 +63,22 @@ public class info_tab extends Fragment {
         about.setText("About " + convertToTitleCase(r.getName()));
         TextView bio = (TextView) view.findViewById(R.id.restaurantBio);
         bio.setText(r.getBio());
-        TextView bio2 = (TextView) view.findViewById(R.id.distance);
-        bio2.setText(df.format(r.getDistance()) + "km from you");
+        TextView dist = (TextView) view.findViewById(R.id.distance);
+        dist.setText(df.format(r.getDistance()) + "km from you");
+        final TextView phone = (TextView) view.findViewById(R.id.phoneNum);
+        phone.setText(r.getPhoneNum());
+        phone.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                phone.setTextColor(Color.BLUE);
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                callIntent.setData(Uri.parse("tel:" + r.getPhoneNum()));
+                startActivity(callIntent);
+                phone.setTextColor(Color.parseColor("#ff8bd1ff"));
+            }
+        });
 
+        TextView email = (TextView) view.findViewById(R.id.email);
+        email.setText(r.getEmail());
 
         return view;
     }
