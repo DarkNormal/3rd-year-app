@@ -107,7 +107,7 @@ public class BookingActivity extends ActionBarActivity {
             TableRow tableRow = new TableRow(this);
             tableRow.setBackgroundColor(Color.WHITE);
             for(int i = 0; i < columnCount; i ++){
-                ImageView im = new ImageView(this);
+                final ImageView im = new ImageView(this);
                 im.setImageResource(R.drawable.blank);
                 for (int j = 0; j < tableview.size(); j++){
                     //  textView.setText(String.valueOf(j));
@@ -117,6 +117,22 @@ public class BookingActivity extends ActionBarActivity {
 
                         if(tableview.get(j).getColor() == 1) {
                             im.setImageResource(R.drawable.greentable);
+                            im.setTag(R.drawable.greentable);
+
+                            im.setOnClickListener(new View.OnClickListener() {
+                                public void onClick(View v) {
+                                    if(im.getTag().toString().equals("2130837587"))
+                                    {
+                                        im.setImageResource(R.drawable.blutable);
+                                        im.setTag(R.drawable.blutable);
+                                    }
+                                    else {
+                                        im.setImageResource(R.drawable.greentable);
+                                        im.setTag(R.drawable.greentable);
+                                    }
+
+                                }
+                            });
                             System.out.println("color is set to 1");
                         }
                         else{
@@ -126,11 +142,11 @@ public class BookingActivity extends ActionBarActivity {
                     }
 
                 }
-                System.out.println("Added view to row");
+
                 tableRow.addView(im, tableRowParams);
 
             }
-            System.out.println("Added row to table");
+
             tableLayout.addView(tableRow, tableLayoutParams);
         }
 
