@@ -1,5 +1,10 @@
 package project.b_ourguest.bourguest.DB;
 
+import android.util.Pair;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.microsoft.windowsazure.mobileservices.ApiJsonOperationCallback;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.MobileServiceTable;
 import com.microsoft.windowsazure.mobileservices.ServiceFilterResponse;
@@ -153,33 +158,65 @@ public class DatabaseOperations {
     }
 
     public void getObjBookings() {
-        for (; i < tables.size(); i++) {
-            System.out.println("Time: " + intTime + "\nDay: " + day + "\nMonth: " + month + "\nYear: " + year + "\nID:" + tables.get(i).getId());
+        System.out.println(tables.size() + " is the tables array size");
+        for (int i =0; i < tables.size(); i++) {
 
-            tableObjectBookingsTable.where().field("tabObjID").eq(tables.get(i).getId())
-                    .and().field("day").eq(day).and().field("month").eq(month).and()
-                    .field("year").eq(year)
-                    .and().field("time").lt(intTime).or().field("time").eq(intTime).and().field("depart").gt(intTime)
-                    .or().field("time").lt(intTime + 200).and().field("depart").gt(intTime + 200).or().field("depart").eq(intTime + 200)
-                    .execute(new TableQueryCallback<tableObjectBookings>() {
-                        public void onCompleted(List<tableObjectBookings> result, int count,
-                                                Exception exception, ServiceFilterResponse response) {
-                            if (exception == null) {
-                                System.out.println("FOUND BOOKINGS ON A TABLE");
-                                for (tableObjectBookings item : result) {
-                                    System.out.println(item.getId() + " ------------");
-                                    for (int j = 0; j < tables.size(); j++) {
-                                        if (tables.get(j).getId() == item.getTabObjID()) {
-                                            tables.get(j).setColor(2);
-                                        }
-                                    }
-                                }
-                            } else {
-                                System.out.println("ERROR SEARCHING TABLEOBJECT TABLE");
-                                exception.printStackTrace();
-                            }
+//            JsonObject request = new JsonObject();
+//            request.addProperty("tabob", 28);
+//            request.addProperty("dayTime", 30);
+//            request.addProperty("monthTime", 3);
+//            request.addProperty("yearTime", 2015);
+//            request.addProperty("arrival", 1930);
+//            request.addProperty("leaving", 2130);
+            ArrayList<Pair<String, String>> parameters = new ArrayList<Pair<String, String>>();
+            parameters.add(new Pair<String, String>("tabob", Integer.toString(tables.get(i).getId())));
+            parameters.add(new Pair<String, String>("dayTime", Integer.toString(day)));
+            parameters.add(new Pair<String, String>("monthTime", Integer.toString(month)));
+            parameters.add(new Pair<String, String>("yearTime", Integer.toString(year)));
+            parameters.add(new Pair<String, String>("arrival", Integer.toString(intTime)));
+            parameters.add(new Pair<String, String>("leaving", Integer.toString(intTime + 200)));
+            mClient.invokeApi("tablebookings",null, "GET", parameters, new ApiJsonOperationCallback() {
+                @Override
+                public void onCompleted(JsonElement result, Exception e, ServiceFilterResponse response) {
+                    System.out.println(result);
+                    String tableIDJSON;
+                    for(int j = 0; j < result.getAsJsonArray().size(); j++) {
+                        try {
+                            tableIDJSON = result.getAsJsonArray().get(j).getAsJsonObject().get("tabObjID").toString();
+                            System.out.println(tableIDJSON + " is the json table id i got ya bish");
+                        } catch (Exception error) {
+                            error.printStackTrace();
                         }
-                    });
+                    }
+
+                }
+            });
+//            System.out.println("Time: " + intTime + "\nDay: " + day + "\nMonth: " + month + "\nYear: " + year + "\nID:" + tables.get(i).getId());
+//
+//            tableObjectBookingsTable.where().field("tabObjID").eq(tables.get(i).getId())
+//                    .and().field("day").eq(day).and().field("month").eq(month).and()
+//                    .field("year").eq(year)
+//                    .and().field("time").lt(intTime).or().field("time").eq(intTime).and().field("depart").gt(intTime)
+//                    .or().field("time").lt(intTime + 200).and().field("depart").gt(intTime + 200).or().field("depart").eq(intTime + 200)
+//                    .execute(new TableQueryCallback<tableObjectBookings>() {
+//                        public void onCompleted(List<tableObjectBookings> result, int count,
+//                                                Exception exception, ServiceFilterResponse response) {
+//                            if (exception == null) {
+//                                System.out.println("FOUND BOOKINGS ON A TABLE");
+//                                for (tableObjectBookings item : result) {
+//                                    System.out.println(item.getId() + " ------------");
+//                                    for (int j = 0; j < tables.size(); j++) {
+//                                        if (tables.get(j).getId() == item.getTabObjID()) {
+//                                            tables.get(j).setColor(2);
+//                                        }
+//                                    }
+//                                }
+//                            } else {
+//                                System.out.println("ERROR SEARCHING TABLEOBJECT TABLE");
+//                                exception.printStackTrace();
+//                            }
+//                        }
+//                    });
         }
 
     }

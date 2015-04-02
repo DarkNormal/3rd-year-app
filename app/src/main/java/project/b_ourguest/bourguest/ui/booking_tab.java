@@ -93,11 +93,12 @@ public class booking_tab extends Fragment {
                 pd = ProgressDialog.show(getActivity(), "Loading", "Building floorplan");
                 h.postDelayed(new Runnable() {
                     public void run() {
+                        System.out.println("GET OBJBOOKINGS CALLED");
                         db.getObjBookings();
 
                         // To dismiss the dialog
                     }
-                }, 3500);
+                }, 2500);
                 h.postDelayed(new Runnable() {
                     public void run() {
                         Intent intent = new Intent(getActivity().getApplicationContext(), BookingActivity.class);
@@ -105,7 +106,7 @@ public class booking_tab extends Fragment {
                         pd.dismiss();
                         // To dismiss the dialog
                     }
-                }, 9500);
+                }, 6000);
 
 
 
