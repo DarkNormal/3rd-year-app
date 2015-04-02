@@ -89,7 +89,9 @@ public class booking_tab extends Fragment {
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 time = item.getTitle().toString();
-                db.getFloorplans(time,day,mon,yr, MainActivity.getRestaurantToPass().getId());
+                String t = time.substring(0, 2) + time.substring(3, 5);
+                final int intTime = Integer.parseInt(t);
+                db.getFloorplans(intTime,day,mon,yr, MainActivity.getRestaurantToPass().getId());
                 pd = ProgressDialog.show(getActivity(), "Loading", "Building floorplan");
                 h.postDelayed(new Runnable() {
                     public void run() {
@@ -98,15 +100,20 @@ public class booking_tab extends Fragment {
 
                         // To dismiss the dialog
                     }
-                }, 2500);
+                }, 3500);
                 h.postDelayed(new Runnable() {
                     public void run() {
                         Intent intent = new Intent(getActivity().getApplicationContext(), BookingActivity.class);
+                        intent.putExtra("day", day);
+                        intent.putExtra("month", mon);
+                        intent.putExtra("year", yr);
+                        intent.putExtra("time", intTime);
+
                         startActivity(intent);
                         pd.dismiss();
                         // To dismiss the dialog
                     }
-                }, 6000);
+                }, 7000);
 
 
 

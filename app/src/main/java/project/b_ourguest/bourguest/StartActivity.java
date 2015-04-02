@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import project.b_ourguest.bourguest.DB.DatabaseOperations;
+import project.b_ourguest.bourguest.Model.Bookings;
 import project.b_ourguest.bourguest.Model.Floorplan;
 import project.b_ourguest.bourguest.Model.Restaurant;
 import project.b_ourguest.bourguest.Model.Reviews;
@@ -31,6 +32,7 @@ public class StartActivity extends ActionBarActivity{
     private static MobileServiceTable<Users> usersTable;
     private static MobileServiceTable<Reviews> reviewsTable;
     private static MobileServiceTable<UserReviews> userReviewsTable;
+    private static MobileServiceTable<Bookings> bookingsTable;
     private static MobileServiceTable<Floorplan> floorplanTable;
     private static MobileServiceTable<tableObject> tableObjectsTable;
     private static MobileServiceTable<tableObjectBookings> tableObjectBookingsTable;
@@ -118,6 +120,7 @@ public class StartActivity extends ActionBarActivity{
             floorplanTable = mClient.getTable(Floorplan.class);
             tableObjectsTable = mClient.getTable(tableObject.class);
             tableObjectBookingsTable = mClient.getTable(tableObjectBookings.class);
+            bookingsTable = mClient.getTable(Bookings.class);
         }catch(Exception e)
         {
             Toast.makeText(getApplicationContext(), "Client in StartActivity.java could not be initiated",
@@ -150,6 +153,9 @@ public class StartActivity extends ActionBarActivity{
     }
     public static MobileServiceTable<tableObjectBookings> getTableObjectBookingsTable() {
         return tableObjectBookingsTable;
+    }
+    public static MobileServiceTable<Bookings> getBookingsTable(){
+        return bookingsTable;
     }
 
     public static ArrayList<Reviews> getReviews() {return reviews;}

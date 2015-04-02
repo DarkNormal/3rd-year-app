@@ -350,7 +350,7 @@ public class MainActivity extends ActionBarActivity {
     public static Restaurant getRestaurantToPass() {
         return restaurantToPass;
     }
-    
+
     public String convertToTitleCase(String name) {
         String[] partOfName = name.split(" ");
         char upperCaseLetter;

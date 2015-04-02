@@ -14,6 +14,7 @@ import com.microsoft.windowsazure.mobileservices.TableQueryCallback;
 import java.util.ArrayList;
 import java.util.List;
 
+import project.b_ourguest.bourguest.Model.Bookings;
 import project.b_ourguest.bourguest.Model.Floorplan;
 import project.b_ourguest.bourguest.Model.Restaurant;
 import project.b_ourguest.bourguest.Model.Reviews;
@@ -33,16 +34,18 @@ public class DatabaseOperations {
     private static MobileServiceTable<Users> usersTable = StartActivity.getUsersTable();
     private static MobileServiceTable<Reviews> reviewsTable = StartActivity.getReviewsTable();
     private static MobileServiceTable<UserReviews> userReviewsTable = StartActivity.getUserReviewsTable();
+    private static MobileServiceTable<Bookings> bookingsTable = StartActivity.getBookingsTable();
     private static MobileServiceTable<tableObject> tableObjectsTable = StartActivity.getTableObjectsTable();
     private static MobileServiceTable<tableObjectBookings> tableObjectBookingsTable = StartActivity.getTableObjectBookingsTable();
     private ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
-
+    private static String returnString = "Tables ";
     private static ArrayList<Floorplan> floorplans = new ArrayList<Floorplan>();
     private static ArrayList<tableObject> tables = new ArrayList<tableObject>();
     private static boolean reviewExists;
     private boolean signIn;
     private static int signUpCode;
     private double distance = 0;
+    private static boolean found = false;
     private tableObject tob;
     private ArrayList<Reviews> rev = new ArrayList<Reviews>();
 
@@ -110,9 +113,9 @@ public class DatabaseOperations {
         return signIn;
     }
 
-    public ArrayList<Floorplan> getFloorplans(String t, int d, int m, int y, String restID) {
-        time = t.substring(0, 2) + t.substring(3, 5);
-        intTime = Integer.parseInt(time);
+    public ArrayList<Floorplan> getFloorplans(int t, int d, int m, int y, String restID) {
+
+        intTime = t;
         System.out.println(time);
         day = d;
         month = m;
@@ -124,6 +127,7 @@ public class DatabaseOperations {
                 System.out.println("SEARCHING FLOORPLAN TABLE");
                 if (exception == null) {
                     floorplans.clear();
+                    tables.clear();
                     for (Floorplan item : result) {
                         floorplans.add(item);
                         System.out.println("floorplan id: " + item.getId() + "\nHeight: " + item.getHeight() +
@@ -134,7 +138,7 @@ public class DatabaseOperations {
                                                     Exception exception, ServiceFilterResponse response) {
                                 System.out.println("SEARCHING tableObjectsTable");
                                 if (exception == null) {
-                                    tables.clear();
+
                                     for (tableObject table : result) {
                                         table.setColor(1);
                                         tables.add(table);
@@ -154,36 +158,76 @@ public class DatabaseOperations {
                 }
             }
         });
+        System.out.println("day: " + day + " month " + month + " year " + year);
         return floorplans;
     }
 
-    public void getObjBookings() {
-        System.out.println(tables.size() + " is the tables array size");
-        for (int i =0; i < tables.size(); i++) {
-
-//            JsonObject request = new JsonObject();
-//            request.addProperty("tabob", 28);
-//            request.addProperty("dayTime", 30);
-//            request.addProperty("monthTime", 3);
-//            request.addProperty("yearTime", 2015);
-//            request.addProperty("arrival", 1930);
-//            request.addProperty("leaving", 2130);
+    public void postBooking(ArrayList<tableObject> selected, String userID, int day, int month, int year, int time) {
+        System.out.println("day: " + day + " month " + month + " year " + year);
+        for (int i = 0; i < selected.size(); i++) {
             ArrayList<Pair<String, String>> parameters = new ArrayList<Pair<String, String>>();
-            parameters.add(new Pair<String, String>("tabob", Integer.toString(tables.get(i).getId())));
-            parameters.add(new Pair<String, String>("dayTime", Integer.toString(day)));
-            parameters.add(new Pair<String, String>("monthTime", Integer.toString(month)));
-            parameters.add(new Pair<String, String>("yearTime", Integer.toString(year)));
-            parameters.add(new Pair<String, String>("arrival", Integer.toString(intTime)));
-            parameters.add(new Pair<String, String>("leaving", Integer.toString(intTime + 200)));
-            mClient.invokeApi("tablebookings",null, "GET", parameters, new ApiJsonOperationCallback() {
+            parameters.add(new Pair<>("day", Integer.toString(day)));
+            parameters.add(new Pair<>("month", Integer.toString(month)));
+            parameters.add(new Pair<>("year", Integer.toString(year)));
+            parameters.add(new Pair<>("tabObjID", Integer.toString(selected.get(i).getId())));
+            parameters.add(new Pair<>("time", Integer.toString(time)));
+            parameters.add(new Pair<>("depart", Integer.toString(time + 200)));
+            mClient.invokeApi("insertintotablebookings", null, "POST", parameters, new ApiJsonOperationCallback() {
+                @Override
+                public void onCompleted(JsonElement result, Exception exception, ServiceFilterResponse response) {
+                    try {
+                        System.out.println(result);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+        Bookings b = new Bookings(selected.size(), userID);
+        bookingsTable.insert(b, new TableOperationCallback<Bookings>() {
+            public void onCompleted(Bookings entity,
+                                    Exception exception,
+                                    ServiceFilterResponse response) {
+
+                if (exception == null) {
+                    System.out.println("Inserted booking to booking tables");
+                } else {
+                    System.out.println("didnt insert booking to booking tables");
+                    exception.printStackTrace();
+                }
+            }
+        });
+
+    }
+
+
+    public void getObjBookings() {
+        System.out.println(tables.size() + " is the tables array size and i is " + i);
+
+        for (i = 0; i < tables.size(); i++) {
+            ArrayList<Pair<String, String>> parameters = new ArrayList<Pair<String, String>>();
+            parameters.add(new Pair<>("tabob", Integer.toString(tables.get(i).getId())));
+            parameters.add(new Pair<>("dayTime", Integer.toString(day)));
+            parameters.add(new Pair<>("monthTime", Integer.toString(month)));
+            parameters.add(new Pair<>("yearTime", Integer.toString(year)));
+            parameters.add(new Pair<>("arrival", Integer.toString(intTime)));
+            parameters.add(new Pair<>("leaving", Integer.toString(intTime + 200)));
+            mClient.invokeApi("tablebookings", null, "GET", parameters, new ApiJsonOperationCallback() {
                 @Override
                 public void onCompleted(JsonElement result, Exception e, ServiceFilterResponse response) {
                     System.out.println(result);
-                    String tableIDJSON;
-                    for(int j = 0; j < result.getAsJsonArray().size(); j++) {
+                    int tableIDJSON;
+                    for (int j = 0; j < result.getAsJsonArray().size(); j++) {
                         try {
-                            tableIDJSON = result.getAsJsonArray().get(j).getAsJsonObject().get("tabObjID").toString();
+                            tableIDJSON = result.getAsJsonArray().get(j).getAsJsonObject().get("tabObjID").getAsInt();
                             System.out.println(tableIDJSON + " is the json table id i got ya bish");
+                            for (int k = 0; k < tables.size(); k++) {
+                                if (tables.get(k).getId() == tableIDJSON) {
+                                    System.out.println("got a match with JSON ya bish");
+                                    tables.get(k).setColor(2);
+                                }
+                            }
+
                         } catch (Exception error) {
                             error.printStackTrace();
                         }
@@ -191,34 +235,48 @@ public class DatabaseOperations {
 
                 }
             });
-//            System.out.println("Time: " + intTime + "\nDay: " + day + "\nMonth: " + month + "\nYear: " + year + "\nID:" + tables.get(i).getId());
-//
-//            tableObjectBookingsTable.where().field("tabObjID").eq(tables.get(i).getId())
-//                    .and().field("day").eq(day).and().field("month").eq(month).and()
-//                    .field("year").eq(year)
-//                    .and().field("time").lt(intTime).or().field("time").eq(intTime).and().field("depart").gt(intTime)
-//                    .or().field("time").lt(intTime + 200).and().field("depart").gt(intTime + 200).or().field("depart").eq(intTime + 200)
-//                    .execute(new TableQueryCallback<tableObjectBookings>() {
-//                        public void onCompleted(List<tableObjectBookings> result, int count,
-//                                                Exception exception, ServiceFilterResponse response) {
-//                            if (exception == null) {
-//                                System.out.println("FOUND BOOKINGS ON A TABLE");
-//                                for (tableObjectBookings item : result) {
-//                                    System.out.println(item.getId() + " ------------");
-//                                    for (int j = 0; j < tables.size(); j++) {
-//                                        if (tables.get(j).getId() == item.getTabObjID()) {
-//                                            tables.get(j).setColor(2);
-//                                        }
-//                                    }
-//                                }
-//                            } else {
-//                                System.out.println("ERROR SEARCHING TABLEOBJECT TABLE");
-//                                exception.printStackTrace();
-//                            }
-//                        }
-//                    });
         }
 
+    }
+
+    public void confimBookings(final ArrayList<tableObject> bookings) {
+        System.out.println(bookings.size() + " is the bookings array size and i is " + i);
+        found = false;
+
+        for (i = 0; i < bookings.size(); i++) {
+            ArrayList<Pair<String, String>> parameters = new ArrayList<Pair<String, String>>();
+            parameters.add(new Pair<>("tabob", Integer.toString(bookings.get(i).getId())));
+            parameters.add(new Pair<>("dayTime", Integer.toString(day)));
+            parameters.add(new Pair<>("monthTime", Integer.toString(month)));
+            parameters.add(new Pair<>("yearTime", Integer.toString(year)));
+            parameters.add(new Pair<>("arrival", Integer.toString(intTime)));
+            parameters.add(new Pair<>("leaving", Integer.toString(intTime + 200)));
+            mClient.invokeApi("tablebookings", null, "GET", parameters, new ApiJsonOperationCallback() {
+                @Override
+                public void onCompleted(JsonElement result, Exception e, ServiceFilterResponse response) {
+                    System.out.println(result);
+                    int tableIDJSON;
+                    for (int j = 0; j < result.getAsJsonArray().size(); j++) {
+                        try {
+                            tableIDJSON = result.getAsJsonArray().get(j).getAsJsonObject().get("tabObjID").getAsInt();
+                            System.out.println(tableIDJSON + " is the json table id i got ya bish");
+                            for (int k = 0; k < bookings.size(); k++) {
+                                if (bookings.get(k).getId() == tableIDJSON) {
+                                    System.out.println("got a match with JSON ya bish");
+                                    found = true;
+                                    returnString += bookings.get(k).getId() + ",";
+                                }
+                            }
+                            returnString += " have already been booked";
+
+                        } catch (Exception error) {
+                            error.printStackTrace();
+                        }
+                    }
+
+                }
+            });
+        }
     }
 
     public ArrayList<Reviews> getRating() {
@@ -415,9 +473,17 @@ public class DatabaseOperations {
         return restaurants;
     }
 
+    public static boolean isFound() {
+        return found;
+    }
+
     public static boolean isReviewExists() {
         System.out.println(reviewExists + " IS REVIEWEXISTS");
         return reviewExists;
+    }
+
+    public static String getReturnString() {
+        return returnString;
     }
 
     public static ArrayList<tableObject> getTables() {
