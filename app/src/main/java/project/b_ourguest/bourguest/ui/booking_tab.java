@@ -50,6 +50,7 @@ public class booking_tab extends Fragment {
 
                 if(cal.getDate() != date){
                     date = cal.getDate();
+                    System.out.println("DATE: " + date);
                     day = dayOfMonth;
                     mon = month;
                     yr = year;
@@ -108,7 +109,7 @@ public class booking_tab extends Fragment {
                         intent.putExtra("month", mon);
                         intent.putExtra("year", yr);
                         intent.putExtra("time", intTime);
-
+                        intent.putExtra("timeInMillis",date);
                         startActivity(intent);
                         pd.dismiss();
                         // To dismiss the dialog
@@ -123,4 +124,6 @@ public class booking_tab extends Fragment {
 
         popup.show();//showing popup menu
     }
+
+
 }

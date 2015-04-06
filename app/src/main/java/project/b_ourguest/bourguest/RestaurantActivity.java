@@ -39,7 +39,6 @@ public class RestaurantActivity extends ActionBarActivity {
     TableLayout tableLayout;
     private UserReviews userReview;
     private  Dialog dialog;
-
     ViewPager pager;
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;

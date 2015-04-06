@@ -53,6 +53,7 @@ public class MainActivity extends ActionBarActivity {
     int pos = 0;
     String name = "";
     int tryAgain = 0;
+    public static int resumeCheck = 1;
     //private Location usersLocation;
     public final String PREFS_NAME = "LoginPrefs";
     private static MobileServiceTable<Restaurant> restaurantsTable = StartActivity.getRestaurantsTable();
@@ -245,6 +246,12 @@ public class MainActivity extends ActionBarActivity {
                         Intent intent = new Intent(MainActivity.this,SignInActivity.class);
                         startActivity(intent);
                         finish();
+                    }
+                    else
+                    {
+                        Intent intent = new Intent(MainActivity.this,User_Bookings_Activity.class);
+                        intent.putExtra("fromBooking",false);
+                        startActivity(intent);
                     }
                     
                     return true;

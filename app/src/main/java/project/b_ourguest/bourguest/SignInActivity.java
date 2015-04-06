@@ -13,10 +13,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import project.b_ourguest.bourguest.DB.DatabaseOperations;
+import project.b_ourguest.bourguest.Model.Bookings;
+import project.b_ourguest.bourguest.Model.Restaurant;
 
 /**
  * Created by Robbie on 30/01/2015.
@@ -26,8 +29,7 @@ public class SignInActivity extends Activity {
     private DatabaseOperations db = new DatabaseOperations();
     private ProgressDialog pd;
     private Handler h = new Handler();
-    private int code;
-
+    private static List<Bookings> bookings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,9 @@ public class SignInActivity extends Activity {
             //code for SharedPreferences was taken from
             //https://github.com/junal/Android-SharedPreferences/blob/master/SharedPreferences/src/junalontherun/com/Login.java
             SharedPreferences settings = getSharedPreferences("LoginPrefs", 0);
+            String userID = settings.getString("email", "").toString();
+            System.out.println("USER ID WHEN SETTING CONTENT VIEW OF SIGN IN: " + userID);
+            bookings = db.getBookingsForIndividualUser(userID);
             if (settings.getString("loggedIn", "").toString().equals("loggedIn")) {
                 Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                 startActivity(intent);
@@ -70,13 +75,17 @@ public class SignInActivity extends Activity {
                     Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
+
                 }
+
         h.postDelayed(new Runnable() {
             public void run() {
 
                     if(db.validateSignIn(email.getText().toString(),password.getText().toString()))
                     {
                         keepUserLoggedIn(email.getText().toString());
+                        System.out.println("USER ID IN SIGN IN ACTIVITY2: " + email.getText().toString());
+                        bookings = db.getBookingsForIndividualUser(email.getText().toString());
                         Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();
@@ -102,7 +111,7 @@ public class SignInActivity extends Activity {
 
         final EditText pword = (EditText) findViewById(R.id.signUpPassword);
         if (!isValidPassword(pword.getText().toString())) {
-            pword.setError("Invalid Password");
+            pword.setError("Invalid Password\nPassword must be greater than 6 characters");
         }
 
 
@@ -115,6 +124,7 @@ public class SignInActivity extends Activity {
                     public void run() {
                         if (DatabaseOperations.getSignUpCode() == 1) {
                             keepUserLoggedIn(email.getText().toString());
+                            bookings = db.getBookingsForIndividualUser(email.getText().toString());
                             Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();
@@ -145,6 +155,10 @@ public class SignInActivity extends Activity {
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    public static List<Bookings> getBookings() {
+        return bookings;
     }
 
     public void keepUserLoggedIn(String email)

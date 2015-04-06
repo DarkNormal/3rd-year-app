@@ -41,9 +41,6 @@ public class StartActivity extends ActionBarActivity{
     //private LocationRequest mLocationRequest;
     //private boolean loggedIn = true;
     private static List<Restaurant> restaurants;
-    
-    
-    
     private static ArrayList<Reviews> reviews;
     
     

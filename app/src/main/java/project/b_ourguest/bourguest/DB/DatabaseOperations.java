@@ -1,5 +1,6 @@
 package project.b_ourguest.bourguest.DB;
 
+import android.os.AsyncTask;
 import android.util.Pair;
 
 import com.google.gson.JsonElement;
@@ -38,6 +39,7 @@ public class DatabaseOperations {
     private static MobileServiceTable<tableObject> tableObjectsTable = StartActivity.getTableObjectsTable();
     private static MobileServiceTable<tableObjectBookings> tableObjectBookingsTable = StartActivity.getTableObjectBookingsTable();
     private ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
+    private ArrayList<Bookings> bookings = new ArrayList<Bookings>();
     private static String returnString = "Tables ";
     private static ArrayList<Floorplan> floorplans = new ArrayList<Floorplan>();
     private static ArrayList<tableObject> tables = new ArrayList<tableObject>();
@@ -46,7 +48,6 @@ public class DatabaseOperations {
     private static int signUpCode;
     private double distance = 0;
     private static boolean found = false;
-    private tableObject tob;
     private ArrayList<Reviews> rev = new ArrayList<Reviews>();
 
     public DatabaseOperations() {
@@ -57,6 +58,7 @@ public class DatabaseOperations {
     //https://msdn.microsoft.com/library/azure/jj554212.aspx
     private String time;
     private int day, month, year, intTime, i = 0;
+    String u;
 
     public ArrayList<Restaurant> getRestaurants() //should get nearest restaurants
     {
@@ -113,10 +115,43 @@ public class DatabaseOperations {
         return signIn;
     }
 
+    public ArrayList<Bookings> getBookingsForIndividualUser(String userID)
+    {
+        u = userID;
+        System.out.println("USER ID IN DB CLASS : " + u);
+        bookings.clear();
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                bookingsTable.where().field("userID").eq(u)
+
+                        .execute(new TableQueryCallback<Bookings>() {
+
+                            public void onCompleted(List<Bookings> result, int count,
+                                                    Exception exception, ServiceFilterResponse response) {
+                                if (exception == null) {
+                                    System.out.println("NO ERROR WHEN SEARCHING FOR BOOKINGS");
+
+                                    for (Bookings item : result) {
+                                        bookings.add(item);
+
+                                    }
+                                } else {
+                                    System.out.println("ERROR GETTING BOOKINGS");
+                                    exception.printStackTrace();
+                                }
+                            }
+                        });
+                return null;
+            }
+        }.execute();
+        return bookings;
+    }
+
     public ArrayList<Floorplan> getFloorplans(int t, int d, int m, int y, String restID) {
 
         intTime = t;
-        System.out.println(time);
+
         day = d;
         month = m;
         year = y;
