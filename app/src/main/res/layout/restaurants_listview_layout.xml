@@ -20,7 +20,9 @@
         android:id="@+id/restaurantImage"
         android:src="@drawable/ic_launcher"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/restaurantRating" />
 
     <TextView
         android:layout_width="wrap_content"
