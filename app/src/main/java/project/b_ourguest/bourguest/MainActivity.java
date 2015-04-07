@@ -397,7 +397,7 @@ public class MainActivity extends ActionBarActivity {
             ImageView im = (ImageView) v.findViewById(R.id.restaurantImage);
             System.out.println("REST APPIMAGE FILE LINK: " + r.getAppImage());
             Picasso.with(MainActivity.this)
-                    .load("https://bourguestblob.blob.core.windows.net/images/images/image_b4fcdf50-6ab3-4564-9a09-9b39a488d365.jpg")
+                    .load(r.getAppImage())
                     .placeholder(R.drawable.ic_launcher)
                     .resize(100,100)
                     .into(im);
