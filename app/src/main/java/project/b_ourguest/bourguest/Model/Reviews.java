@@ -5,20 +5,15 @@ package project.b_ourguest.bourguest.Model;
  */
 public class Reviews {
     private String id;
+    private String restID;
     private double rating;
     private double numReviews;
     private double reviews;
 
     public Reviews(String s,double d)
     {
-        id = s;
+        restID = s;
         reviews = d;
-    }
-    public Reviews(String s,double d, double crap)
-    {
-        id = s;
-        rating = crap;
-        
     }
 
     public double getRating() {

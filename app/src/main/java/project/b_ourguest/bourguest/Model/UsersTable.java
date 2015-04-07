@@ -3,19 +3,19 @@ package project.b_ourguest.bourguest.Model;
 /**
  * Created by Robbie on 30/01/2015.
  */
-public class Users {
+public class UsersTable {
 
 
     private String id;
     private String password;
 
-    public Users(String id,String p)
+    public UsersTable(String id,String p)
     {
         this.id = id;
         this.password = p;
     }
 
-    public Users()
+    public UsersTable()
     {
 
     }

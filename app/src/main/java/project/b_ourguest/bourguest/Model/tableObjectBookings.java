@@ -10,6 +10,7 @@ public class tableObjectBookings {
     private int year;
     private int tabObjID;
     private String time;
+    private String userID;
 
     public tableObjectBookings(int id, int day, int month, int year,int tabObjID, String time) {
         this.id = id;
@@ -20,7 +21,9 @@ public class tableObjectBookings {
         this.time = time;
     }
 
-
+    public String getUserID() {
+        return userID;
+    }
     public int getTabObjID() {
         return tabObjID;
     }

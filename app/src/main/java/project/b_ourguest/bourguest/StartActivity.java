@@ -19,7 +19,7 @@ import project.b_ourguest.bourguest.Model.Floorplan;
 import project.b_ourguest.bourguest.Model.Restaurant;
 import project.b_ourguest.bourguest.Model.Reviews;
 import project.b_ourguest.bourguest.Model.UserReviews;
-import project.b_ourguest.bourguest.Model.Users;
+import project.b_ourguest.bourguest.Model.UsersTable;
 import project.b_ourguest.bourguest.Model.tableObject;
 import project.b_ourguest.bourguest.Model.tableObjectBookings;
 
@@ -29,7 +29,7 @@ public class StartActivity extends ActionBarActivity{
     private Handler h = new Handler();
     private static MobileServiceClient mClient;
     private static MobileServiceTable<Restaurant> restaurantsTable;
-    private static MobileServiceTable<Users> usersTable;
+    private static MobileServiceTable<UsersTable> usersTable;
     private static MobileServiceTable<Reviews> reviewsTable;
     private static MobileServiceTable<UserReviews> userReviewsTable;
     private static MobileServiceTable<Bookings> bookingsTable;
@@ -111,7 +111,7 @@ public class StartActivity extends ActionBarActivity{
         try {
             mClient = new MobileServiceClient( "https://bourguestmob.azure-mobile.net/", "jgeHXHepyaTFHjINloskvXXzhueGbG47", this );
             restaurantsTable = mClient.getTable(Restaurant.class);
-            usersTable = mClient.getTable(Users.class);
+            usersTable = mClient.getTable(UsersTable.class);
             reviewsTable = mClient.getTable(Reviews.class);
             userReviewsTable = mClient.getTable(UserReviews.class);
             floorplanTable = mClient.getTable(Floorplan.class);
@@ -139,7 +139,7 @@ public class StartActivity extends ActionBarActivity{
     public static List<Restaurant> getRestaurants() {
         return restaurants;
     }
-    public static MobileServiceTable<Users> getUsersTable() {
+    public static MobileServiceTable<UsersTable> getUsersTable() {
         return usersTable;
     }
     public static MobileServiceTable<Floorplan> getFloorplanTable() {

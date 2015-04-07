@@ -19,11 +19,11 @@ import project.b_ourguest.bourguest.Model.Bookings;
 import project.b_ourguest.bourguest.Model.Floorplan;
 import project.b_ourguest.bourguest.Model.Restaurant;
 import project.b_ourguest.bourguest.Model.Reviews;
+import project.b_ourguest.bourguest.Model.UsersTable;
 import project.b_ourguest.bourguest.Model.tableObject;
 import project.b_ourguest.bourguest.Model.tableObjectBookings;
 import project.b_ourguest.bourguest.StartActivity;
 import project.b_ourguest.bourguest.Model.UserReviews;
-import project.b_ourguest.bourguest.Model.Users;
 
 /**
  * Created by Robbie on 06/02/2015.
@@ -32,7 +32,7 @@ public class DatabaseOperations {
     private static MobileServiceClient mClient = StartActivity.getMobileServiceClient();
     private static MobileServiceTable<Restaurant> restaurantsTable = StartActivity.getRestaurantsTable();
     private static MobileServiceTable<Floorplan> floorplanTable = StartActivity.getFloorplanTable();
-    private static MobileServiceTable<Users> usersTable = StartActivity.getUsersTable();
+    private static MobileServiceTable<UsersTable> usersTable = StartActivity.getUsersTable();
     private static MobileServiceTable<Reviews> reviewsTable = StartActivity.getReviewsTable();
     private static MobileServiceTable<UserReviews> userReviewsTable = StartActivity.getUserReviewsTable();
     private static MobileServiceTable<Bookings> bookingsTable = StartActivity.getBookingsTable();
@@ -97,9 +97,9 @@ public class DatabaseOperations {
     public boolean validateSignIn(String email, String password) {
         usersTable.where().field("id").eq(email)
                 .and().field("password").eq(password)
-                .execute(new TableQueryCallback<Users>() {
+                .execute(new TableQueryCallback<UsersTable>() {
 
-                    public void onCompleted(List<Users> result, int count,
+                    public void onCompleted(List<UsersTable> result, int count,
                                             Exception exception, ServiceFilterResponse response) {
                         if (exception == null) {
                             if (result.size() == 0) //was not found
@@ -207,6 +207,7 @@ public class DatabaseOperations {
             parameters.add(new Pair<>("tabObjID", Integer.toString(selected.get(i).getId())));
             parameters.add(new Pair<>("time", Integer.toString(time)));
             parameters.add(new Pair<>("depart", Integer.toString(time + 200)));
+            parameters.add(new Pair<>("userID",userID));
             mClient.invokeApi("insertintotablebookings", null, "POST", parameters, new ApiJsonOperationCallback() {
                 @Override
                 public void onCompleted(JsonElement result, Exception exception, ServiceFilterResponse response) {
@@ -335,10 +336,10 @@ public class DatabaseOperations {
     }
 
     public void signUserUp(String email, String password) {
-        Users u = new Users(email, password);
+        UsersTable u = new UsersTable(email, password);
         System.out.println("HEYA_--------------------------");
-        usersTable.insert(u, new TableOperationCallback<Users>() {
-            public void onCompleted(Users entity,
+        usersTable.insert(u, new TableOperationCallback<UsersTable>() {
+            public void onCompleted(UsersTable entity,
                                     Exception exception,
                                     ServiceFilterResponse response) {
 
