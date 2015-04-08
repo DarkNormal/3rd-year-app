@@ -375,7 +375,7 @@ public class MainActivity extends ActionBarActivity {
             rat.setText(convertToTitleCase(r.getName()) + " has no reviews");
 
             for (int i = 0; i < reviews.size(); i++) {
-                if (reviews.get(i).getId().equals(r.getId()))
+                if (reviews.get(i).getRestID().equals(r.getId()))
                     rat.setText(reviews.get(i).getRating() + " stars");
             }
 

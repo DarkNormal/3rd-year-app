@@ -31,4 +31,8 @@ public class Reviews {
     public void setId(String id) {
         this.id = id;
     }
+
+    public String getRestID() {
+        return restID;
+    }
 }
