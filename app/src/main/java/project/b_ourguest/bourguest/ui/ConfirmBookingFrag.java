@@ -39,9 +39,16 @@ public class ConfirmBookingFrag extends Fragment {
         int year = getArguments().getInt("year");
         long timeInMillis = getArguments().getLong("timeInMillis");
         TextView t = (TextView) v.findViewById(R.id.confirmation);
-        t.setText("Booking Confirmed For\nTime: " + time + "\nDate: " + day + "/" + (month + 1) + "/" + year);
-        System.out.println("TIME: " + time);
-        System.out.println("TIME: " + time * 1000);
+        String ti = "" + time;
+        String string = "";
+        for(int i = 0; i < ti.length(); i++)
+        {
+            string += ti.charAt(i);
+            if(i == 1)
+                string += ":";
+        }
+
+        t.setText("Booking Confirmed For\nTime: " + string + "\nDate: " + day + "/" + (month + 1) + "/" + year);
         timeInMillis += (time * 10) * 60 * 60;
         long endDate = timeInMillis + 2000 * 60 * 60;
         addReminder("Your reservation for " + MainActivity.getRestaurantToPass().getName(),"Reservation for "
@@ -74,6 +81,7 @@ public class ConfirmBookingFrag extends Fragment {
         reminders.put(CalendarContract.Reminders.EVENT_ID, eventID);
         reminders.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
         reminders.put(CalendarContract.Reminders.MINUTES, 30);
+
 
         Uri uri2 = cr.insert(CalendarContract.Reminders.CONTENT_URI, reminders);
     }

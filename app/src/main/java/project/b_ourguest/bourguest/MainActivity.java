@@ -126,6 +126,11 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -171,7 +176,7 @@ public class MainActivity extends ActionBarActivity {
                                 pos = position;
                                 restaurants.clear();
                                 restaurants = db.searchByType(type[position]);
-                                tryAgain = 2;
+                                tryAgain = 3;
                                 pd = ProgressDialog.show(MainActivity.this, "Loading", "Searching for " + type[position]
                                         + " Restaurant");
 
@@ -310,7 +315,7 @@ public class MainActivity extends ActionBarActivity {
                 name = input.getText().toString();
                 restaurants.clear();
                 restaurants = db.searchByName(name);
-                tryAgain = 3;
+                tryAgain = 2;
                 pd = ProgressDialog.show(MainActivity.this, "Loading", "Searching for " + name);
 
                 h.postDelayed(new Runnable() {
@@ -321,7 +326,7 @@ public class MainActivity extends ActionBarActivity {
                         pd.dismiss();
                         // To dismiss the dialog
                     }
-                }, 3000);
+                }, 3500);
 
             }
         });

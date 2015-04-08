@@ -485,26 +485,67 @@ public class DatabaseOperations {
 
     public ArrayList<Restaurant> searchByName(String name) {
         name.toLowerCase();
-        restaurantsTable.where().field("name").eq(name)
-                .execute(new TableQueryCallback<Restaurant>() {
+//        restaurantsTable.where().field("name").eq(name)
+//                .execute(new TableQueryCallback<Restaurant>() {
+//
+//                    public void onCompleted(List<Restaurant> result, int count,
+//                                            Exception exception, ServiceFilterResponse response) {
+//                        if (exception == null) {
+//                            if (result.size() == 0) //meaning the name typed was not found
+//                            {
+//
+//                            } else {
+//                                restaurants.clear();
+//                                for (Restaurant item : result) {
+//                                    getDistanceBasedOnUsersLocation(item);
+//                                    item.setDistance(distance);
+//                                    restaurants.add(item);
+//                                }
+//                            }
+//                        }
+//                    }
+//                });
 
-                    public void onCompleted(List<Restaurant> result, int count,
-                                            Exception exception, ServiceFilterResponse response) {
-                        if (exception == null) {
-                            if (result.size() == 0) //meaning the name typed was not found
-                            {
+        ArrayList<Pair<String, String>> parameters = new ArrayList<Pair<String, String>>();
+        parameters.add(new Pair<>("name",name));
 
-                            } else {
-                                restaurants.clear();
-                                for (Restaurant item : result) {
-                                    getDistanceBasedOnUsersLocation(item);
-                                    item.setDistance(distance);
-                                    restaurants.add(item);
-                                }
+        mClient.invokeApi("searchname", null, "GET", parameters, new ApiJsonOperationCallback() {
+            @Override
+            public void onCompleted(JsonElement result, Exception exception, ServiceFilterResponse response) {
+                try {
+                    restaurants.clear();
+                    Restaurant r;
+                    System.out.println(result);
+                    for (int j = 0; j < result.getAsJsonArray().size(); j++) {
+                        try {
+                            r = new Restaurant(result.getAsJsonArray().get(j).getAsJsonObject().get("id").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("restaurantName").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("bio").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("longitude").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("latitude").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("type1").toString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("wheelchair").getAsBoolean(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("appImage").toString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("type2").toString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("type3").toString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("phoneNum").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("openClose").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("Email").getAsString()
+                                    );
+                            getDistanceBasedOnUsersLocation(r);
+                            r.setDistance(distance);
+                            restaurants.add(r);
+
+                        }catch(Exception e){
+                            System.out.println("IN THIS CATCH");
+                            e.printStackTrace();
                             }
-                        }
                     }
-                });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         return restaurants;
     }

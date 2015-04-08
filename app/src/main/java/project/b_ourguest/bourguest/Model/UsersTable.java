@@ -15,11 +15,6 @@ public class UsersTable {
         this.password = p;
     }
 
-    public UsersTable()
-    {
-
-    }
-
     public String getPassword() {
         return password;
     }
