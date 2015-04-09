@@ -32,23 +32,6 @@ public class reviews_tab extends Fragment {
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         System.out.println("IN THE REVIEWS TAB------------------------------------");
         View v = inflater.inflate(R.layout.reviews_tab,container,false);
-        t = (TextView) v.findViewById(R.id.ratingText);
-        im = (ImageView) v.findViewById(R.id.rating);
-        for(int i = 0; i < reviews.size();i++)
-        {
-            if(reviews.get(i).getId().equals(r.getId()))
-            {
-                hasReview = true;
-                t.setText(reviews.get(i).getRating() + " stars");
-            }
-
-        }
-
-        if(!hasReview)
-        {
-            im.setVisibility(View.INVISIBLE);
-            t.setText("Be the first to post a review of " + convertToTitleCase(r.getName()));
-        }
         return v;
     }
 

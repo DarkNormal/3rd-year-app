@@ -530,7 +530,9 @@ public class DatabaseOperations {
                                     result.getAsJsonArray().get(j).getAsJsonObject().get("type3").toString(),
                                     result.getAsJsonArray().get(j).getAsJsonObject().get("phoneNum").getAsString(),
                                     result.getAsJsonArray().get(j).getAsJsonObject().get("openClose").getAsString(),
-                                    result.getAsJsonArray().get(j).getAsJsonObject().get("Email").getAsString()
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("Email").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("wifi").getAsBoolean(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("vegan").getAsBoolean()
                                     );
                             getDistanceBasedOnUsersLocation(r);
                             r.setDistance(distance);

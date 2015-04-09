@@ -84,7 +84,7 @@ public class BookingActivity extends ActionBarActivity {
                     rlp.addRule(RelativeLayout.CENTER_HORIZONTAL);
                     te = new TextView(this);
                     te.setId(View.generateViewId());
-                    te.setText("HEYA");
+                    te.setText(fplan.get(a).getPlanName());
                     te.setLayoutParams(rlp);
                     rel.addView(te);
                 } else {
@@ -95,7 +95,7 @@ public class BookingActivity extends ActionBarActivity {
                     rlp.addRule(RelativeLayout.BELOW, sv.getId());
                     te = new TextView(this);
                     te.setId(View.generateViewId());
-                    te.setText("HEYA");
+                    te.setText(fplan.get(a).getPlanName());
                     te.setLayoutParams(rlp);
                     rel.addView(te);
                 }
@@ -187,6 +187,7 @@ public class BookingActivity extends ActionBarActivity {
                                             SignInActivity.getBookings().add(b);
                                             Intent intent = new Intent(BookingActivity.this, User_Bookings_Activity.class);
                                             intent.putExtra("time",time);
+                                            intent.putExtra("userID",userID);
                                             intent.putExtra("day",day);
                                             intent.putExtra("month",month);
                                             intent.putExtra("year",year);

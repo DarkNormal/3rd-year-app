@@ -19,9 +19,33 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-
+        android:id="@+id/infoTabRelativLayout"
         android:layout_alignTop="@+id/scrollView"
         android:layout_alignParentStart="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/wifiLogo"
+            android:src="@drawable/ic_wifi"
+            android:layout_marginTop="8dp"
+             />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/wheelchairLogo"
+            android:src="@drawable/ic_wheelchair"
+            android:layout_alignTop="@+id/leafLogo"
+            android:layout_toStartOf="@+id/leafLogo" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/leafLogo"
+            android:src="@drawable/ic_leaf"
+            android:layout_above="@+id/about"
+            android:layout_alignEnd="@+id/contactDetails" />
 
 
         <TextView
@@ -29,7 +53,8 @@
             android:layout_height="wrap_content"
             android:text="New Text"
             android:id="@+id/restaurantBio"
-            android:layout_marginTop="28dp" />
+            android:layout_marginTop="2dp"
+            android:layout_below="@+id/about"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -43,7 +68,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/about"
-            android:layout_alignParentStart="true"
+            android:text="Distance from you"
+            android:layout_below="@+id/wifiLogo"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#2979FF" />
 

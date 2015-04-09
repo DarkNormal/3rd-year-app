@@ -51,15 +51,13 @@ public class MainActivity extends ActionBarActivity {
     private TextView searchedRestaurantsText;
     private String userID;
     private static Restaurant restaurantToPass;
-    String[] type = {"Indian", "Italian", "American", "Asian", "Chinese", "Portuguese", "Family Friendly"
-            , "Traditional", "Something Different", "Pizza", "Healthy Option"};
+    String[] type = {"American","BBQ", "Chinese", "Family Friendly","Healthy Option","Indian", "Italian",
+            "Portuguese","Seafood","Something Different","Steakhouse", "Thai","Traditional"};
     int pos = 0;
     String name = "";
     int tryAgain = 0;
-    public static int resumeCheck = 1;
     //private Location usersLocation;
     public final String PREFS_NAME = "LoginPrefs";
-    private static MobileServiceTable<Restaurant> restaurantsTable = StartActivity.getRestaurantsTable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

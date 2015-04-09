@@ -3,37 +3,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-
-
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/rating"
-        android:src="@drawable/emptystar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="45dp" />
-
-    <TextView
-        android:id="@+id/ratingText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="42dp"
-        android:layout_alignTop="@+id/rating"
-        android:layout_centerHorizontal="true"
-        android:textColor="#2979FF" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Submit Review"
         android:id="@+id/reviewText"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
         android:clickable="true"
-        android:onClick="submitReview"/>
+        android:onClick="submitReview"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="64dp" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:id="@+id/ratingBarLayout"
+        android:layout_below="@id/reviewText"
+        android:visibility="invisible">
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="1.0"
+            android:rating="1.0"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@+id/ratingBar"
+            android:layout_centerHorizontal="true"
+            android:textColor="#fffdffe9"
+            android:background="#2979FF" />
+    </RelativeLayout>
 
 
 </RelativeLayout>

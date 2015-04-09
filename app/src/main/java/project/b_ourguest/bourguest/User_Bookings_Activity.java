@@ -29,6 +29,7 @@ public class User_Bookings_Activity extends ActionBarActivity {
     private long timeInMillis;
     private FragmentManager fragmentManager;
     private ConfirmBookingFrag frag;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class User_Bookings_Activity extends ActionBarActivity {
         setContentView(R.layout.user_bookings_layout);
 
         Bundle extras = getIntent().getExtras();
+        userID = extras.getString("userID");
         fromBooking = extras.getBoolean("fromBooking");
         time = extras.getInt("time");
         day = extras.getInt("day");
@@ -47,6 +49,7 @@ public class User_Bookings_Activity extends ActionBarActivity {
         if(fromBooking == true)
         {
             Bundle bundle = new Bundle();
+            bundle.putString("userID",userID);
             bundle.putInt("time", time);
             bundle.putInt("day", day);
             bundle.putInt("month", month);

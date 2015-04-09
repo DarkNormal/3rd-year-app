@@ -18,5 +18,7 @@
         android:id="@+id/OK"
         android:layout_below="@+id/confirmation"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="57dp" />
+        android:layout_marginTop="57dp"
+        android:textColor="#fffdffe9"
+        android:background="#2979FF"/>
 </RelativeLayout>

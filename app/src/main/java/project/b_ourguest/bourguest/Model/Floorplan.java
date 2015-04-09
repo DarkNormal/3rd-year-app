@@ -5,6 +5,7 @@ package project.b_ourguest.bourguest.Model;
  */
 public class Floorplan {
     private int id,height,width,numObjects,restID;
+    private String planName;
 
     public Floorplan(int i,int h,int w,int n,int r)
     {
@@ -14,7 +15,9 @@ public class Floorplan {
         numObjects = n;
         restID = r;
     }
-
+    public String getPlanName() {
+        return planName;
+    }
     public int getId() {
         return id;
     }

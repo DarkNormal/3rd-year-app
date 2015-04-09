@@ -5,11 +5,16 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#2979FF</item>
         <item name="colorPrimaryDark">#2962FF</item>
+        <item name="popupMenuStyle">@style/MyPopupMenu</item>
         <!-- Adding a comment to test git-->
     </style>
 
     <style name="MyTheme2" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimaryDark">#448AFF</item>
+    </style>
+
+    <style name="MyPopupMenu" parent="@style/Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">#2962FF</item>
     </style>
 
     <style name="RestaurantActivityTheme" parent="@android:style/Theme.Holo.Light">

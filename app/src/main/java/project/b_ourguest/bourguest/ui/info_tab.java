@@ -11,6 +11,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -59,8 +61,24 @@ public class info_tab extends Fragment {
         //Zoom may get a bit annoying, consider setting it to pre-zoomed / no animation
         Marker loc = map.addMarker(new MarkerOptions().position(location).title(r.getName()));
         map.animateCamera(cameraUpdate);
+        if(!r.isWifi())
+        {
+            ImageView im = (ImageView) view.findViewById(R.id.wifiLogo);
+            im.setVisibility(View.INVISIBLE);
+        }
+        if(!r.getWheelchairAccessible())
+        {
+            ImageView im = (ImageView) view.findViewById(R.id.wheelchairLogo);
+            im.setVisibility(View.INVISIBLE);
+        }
+        if(!r.isVegan())
+        {
+            ImageView im = (ImageView) view.findViewById(R.id.leafLogo);
+            im.setVisibility(View.INVISIBLE);
+        }
         TextView about = (TextView) view.findViewById(R.id.about);
         about.setText("About " + convertToTitleCase(r.getName()));
+
         TextView bio = (TextView) view.findViewById(R.id.restaurantBio);
         bio.setText(r.getBio());
         TextView dist = (TextView) view.findViewById(R.id.distance);

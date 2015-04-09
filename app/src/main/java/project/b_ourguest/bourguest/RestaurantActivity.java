@@ -14,9 +14,12 @@ import android.view.View;
 
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import project.b_ourguest.bourguest.DB.DatabaseOperations;
@@ -44,6 +47,9 @@ public class RestaurantActivity extends ActionBarActivity {
     SlidingTabLayout tabs;
     CharSequence Titles[] = {"Info", "Reviews", "Book"};
     int Numboftabs = 3;
+    private RatingBar ratingBar;
+    private TextView txtRatingValue;
+    private Button btnSubmit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,17 +79,6 @@ public class RestaurantActivity extends ActionBarActivity {
                 });
                 // Setting the ViewPager For the SlidingTabsLayout
                 tabs.setViewPager(pager);
-
-
-
-
-
-    }
-
-    @Override
-    public void onBackPressed() {
-        finish(); //this will finish the activity when the back button is pressed
-        super.onBackPressed();
     }
 
     public String convertToTitleCase(String name) {
@@ -118,82 +113,7 @@ public class RestaurantActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void rate()
-    {
-        ImageView im = (ImageView) dialog.findViewById(R.id.onestar);
-        im.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                rating = 1;
-                submitReviewToDB();
 
-            }
-        });
-
-        ImageView im2 = (ImageView) dialog.findViewById(R.id.onehalfstar);
-        im2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                rating = 1.5;
-                submitReviewToDB();
-
-            }
-        });
-        ImageView im3 = (ImageView) dialog.findViewById(R.id.twostar);
-        im3.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                rating = 2;
-                submitReviewToDB();
-
-            }
-        });
-        ImageView im4 = (ImageView) dialog.findViewById(R.id.twohalfstar);
-        im4.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                rating = 2.5;
-                submitReviewToDB();
-
-            }
-        });
-        ImageView im5 = (ImageView) dialog.findViewById(R.id.threestar);
-        im5.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                rating = 3;
-                submitReviewToDB();
-
-            }
-        });
-        ImageView im6 = (ImageView) dialog.findViewById(R.id.threehalfstar);
-        im6.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                rating = 3.5;
-                submitReviewToDB();
-
-            }
-        });
-        ImageView im7 = (ImageView) dialog.findViewById(R.id.fourstar);
-        im7.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                rating = 4;
-                submitReviewToDB();
-
-            }
-        });
-        ImageView im8 = (ImageView) dialog.findViewById(R.id.fourhalfstar);
-        im8.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                rating = 4.5;
-                submitReviewToDB();
-
-            }
-        });
-        ImageView im9 = (ImageView) dialog.findViewById(R.id.fivestar);
-        im9.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                rating = 5;
-                submitReviewToDB();
-
-            }
-        });
-    }
 
     public void submitReview(View v)
     {
@@ -203,14 +123,27 @@ public class RestaurantActivity extends ActionBarActivity {
             t.setText("You have already submitted your review for this restaurant");
         }
         else {
-            //set up dialog
-            dialog = new Dialog(RestaurantActivity.this);
-            dialog.setContentView(R.layout.rating_dialog);
-            dialog.setTitle("Choose a rating");
-            rate();
-            dialog.setCancelable(true);
-            dialog.show();
+            TextView t = (TextView) findViewById(R.id.reviewText);
+            t.setVisibility(View.INVISIBLE);
+            RelativeLayout rel = (RelativeLayout) findViewById(R.id.ratingBarLayout);
+            rel.setVisibility(View.VISIBLE);
+            addListenerOnButton();
         }
+
+    }
+
+    public void addListenerOnButton() {
+
+        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+        btnSubmit = (Button) findViewById(R.id.btnSubmit);
+        //if click on me, then display the current rating value.
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rating = ratingBar.getRating();
+                submitReviewToDB();
+            }
+        });
 
     }
 
@@ -220,30 +153,14 @@ public class RestaurantActivity extends ActionBarActivity {
         String userID = settings.getString("email", "").toString();
         userReview = new UserReviews(userID,r.getId());
         review = new Reviews(r.getId(),rating);
+        db.sendReview(review,userReview);
+        System.out.println("SENT to DBOPERATIONS-------------------");
+        TextView t = (TextView) findViewById(R.id.reviewText);
+        t.setVisibility(View.VISIBLE);
+        t.setText("You're review of " + rating + " stars for " + convertToTitleCase(r.getName()) + " was submitted");
+        t.setClickable(false);
+        RelativeLayout rel = (RelativeLayout) findViewById(R.id.ratingBarLayout);
+        rel.setVisibility(View.INVISIBLE);
 
-        dialog.setTitle("Submit " + rating + " star rating");
-        TableRow t = (TableRow) dialog.findViewById(R.id.tableRow);
-        t.setVisibility(View.INVISIBLE);
-        Button b = (Button) dialog.findViewById(R.id.cancel);
-        b.setVisibility(View.VISIBLE);
-
-        b.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        Button bu = (Button) dialog.findViewById(R.id.ok);
-        bu.setVisibility(View.VISIBLE);
-
-        bu.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                db.sendReview(review,userReview);
-                System.out.println("SENT to DBOPERATIONS-------------------");
-                dialog.dismiss();
-                TextView t = (TextView) findViewById(R.id.reviewText);
-                t.setText("You're review of " + rating + " stars for " + convertToTitleCase(r.getName()) + " was submitted");
-                t.setClickable(false);
-            }
-        });
     }
 }

@@ -18,9 +18,11 @@ public class Restaurant {
     private String phoneNum;
     private String openingHours;
     private String Email;
+    private boolean wifi;
+    private boolean vegan;
     
     public Restaurant(String id, String name, String bio, String longitude, String latitude, String t1, boolean wcA,
-                      String appImage,String t2,String t3,String p,String o,String e){
+                      String appImage,String t2,String t3,String p,String o,String e,boolean wifi,boolean vegan){
         this.id = id;
         this.restaurantName = name;
         this.bio = bio;
@@ -32,10 +34,18 @@ public class Restaurant {
         this.type2 = t2;
         this.type3 = t3;
         this.phoneNum = p;
-        this.Email = e;
         this.openingHours = o;
+        this.Email = e;
+        this.wifi = wifi;
+        this.vegan = vegan;
     }
 
+    public boolean isWifi() {
+        return wifi;
+    }
+    public boolean isVegan() {
+        return vegan;
+    }
     public String getEmail() {
         return Email;
     }
