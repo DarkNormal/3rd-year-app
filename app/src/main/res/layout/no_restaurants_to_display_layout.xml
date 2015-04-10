@@ -2,27 +2,29 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ff2b8bff">
+    android:background="#fffffffb">
 
 
     <TextView
         android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:text="There were no restaurants to display. Please refine your search and make sure you have an internet connection."
+        android:text="Oops there was a problem retrieving restaurants. Please try again or refine your search."
         android:id="@+id/errorMessage"
+        android:layout_marginTop="116dp"
+        android:textColor="@android:color/black"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="187dp"
-        android:textColor="@android:color/black" />
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Try again"
+        android:background="@drawable/button_shape"
         android:id="@+id/tryAgainButton"
+        android:onClick="tryAgain"
+        android:textColor="#fffcfffd"
         android:layout_below="@+id/errorMessage"
         android:layout_centerHorizontal="true"
-        android:onClick="tryAgain"
-        android:textColor="@android:color/black"
-        android:background="#fffffdfd" />
+        android:layout_marginTop="66dp" />
 </RelativeLayout>

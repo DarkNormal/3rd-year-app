@@ -4,6 +4,7 @@ package project.b_ourguest.bourguest.ui;
  */
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,11 +34,12 @@ public class booking_tab extends Fragment {
     private int day,mon,yr;
     private Handler h = new Handler();
     private ProgressDialog pd;
-
+    private boolean accountVerified;
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.booking_tab,container,false);
-
+        SharedPreferences settings = getActivity().getSharedPreferences("LoginPrefs", 0);
+        accountVerified = settings.getBoolean("accountVerified", false);
         cal = (CalendarView) v.findViewById(R.id.calendar);
         //The background color for the selected week.
         cal.setSelectedWeekBackgroundColor(Color.parseColor("#ff2b8bff"));
@@ -54,24 +56,27 @@ public class booking_tab extends Fragment {
                     day = dayOfMonth;
                     mon = month;
                     yr = year;
-                    if(month < calendar.get(Calendar.MONTH))
-                        Toast.makeText(getActivity().getApplicationContext(), "Cannot pick a date in the past", Toast.LENGTH_SHORT).show();
-                    else if(year < calendar.get(Calendar.YEAR))
-                        Toast.makeText(getActivity().getApplicationContext(),"Cannot pick a date in the past",Toast.LENGTH_SHORT).show();
-                    else if(dayOfMonth < calendar.get(Calendar.DAY_OF_MONTH) && month == calendar.get(Calendar.MONTH))
-                        Toast.makeText(getActivity().getApplicationContext(),"Cannot pick a date in the past",Toast.LENGTH_SHORT).show();
-                    else if(month > calendar.get(Calendar.MONTH) + 3)
-                        Toast.makeText(getActivity().getApplicationContext(),"Cannot pick a date too far in advance",Toast.LENGTH_SHORT).show();
-                    else if(year > calendar.get(Calendar.YEAR))
-                    {
-                        if(calendar.get(Calendar.MONTH) >= 10 && month < month - 10)
+                    if(accountVerified) {
+                        if (month < calendar.get(Calendar.MONTH))
+                            Toast.makeText(getActivity().getApplicationContext(), "Cannot pick a date in the past", Toast.LENGTH_SHORT).show();
+                        else if (year < calendar.get(Calendar.YEAR))
+                            Toast.makeText(getActivity().getApplicationContext(), "Cannot pick a date in the past", Toast.LENGTH_SHORT).show();
+                        else if (dayOfMonth < calendar.get(Calendar.DAY_OF_MONTH) && month == calendar.get(Calendar.MONTH))
+                            Toast.makeText(getActivity().getApplicationContext(), "Cannot pick a date in the past", Toast.LENGTH_SHORT).show();
+                        else if (month > calendar.get(Calendar.MONTH) + 3)
+                            Toast.makeText(getActivity().getApplicationContext(), "Cannot pick a date too far in advance", Toast.LENGTH_SHORT).show();
+                        else if (year > calendar.get(Calendar.YEAR)) {
+                            if (calendar.get(Calendar.MONTH) >= 10 && month < month - 10)
+                                createPopUp();
+                            else
+                                Toast.makeText(getActivity().getApplicationContext(), "Cannot pick a date too far in advance", Toast.LENGTH_SHORT).show();
+                        } else {
                             createPopUp();
-                        else
-                            Toast.makeText(getActivity().getApplicationContext(),"Cannot pick a date too far in advance",Toast.LENGTH_SHORT).show();
+                        }
                     }
-                    else {
-                        createPopUp();
-                    }
+                    else
+                        Toast.makeText(getActivity().getApplicationContext(), "Please verify your account if you wish to make a booking.\n" +
+                                "Check your email for a confirmation email.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

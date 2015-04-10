@@ -20,5 +20,5 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="57dp"
         android:textColor="#fffdffe9"
-        android:background="#2979FF"/>
+        android:background="@drawable/button_shape"/>
 </RelativeLayout>

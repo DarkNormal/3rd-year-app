@@ -97,7 +97,8 @@ public class info_tab extends Fragment {
 
         TextView email = (TextView) view.findViewById(R.id.email);
         email.setText(r.getEmail());
-
+        TextView open = (TextView) view.findViewById(R.id.openingHours);
+        open.setText(r.getOpeningHours());
         return view;
     }
 

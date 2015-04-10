@@ -7,9 +7,4 @@
         android:title="@string/search"
         app:showAsAction="ifRoom"/>
 
-    <item android:id="@+id/action_options"
-        android:icon="@drawable/ic_burger_menu"
-        android:title="Options"
-        app:showAsAction="ifRoom" />
-
 </menu>

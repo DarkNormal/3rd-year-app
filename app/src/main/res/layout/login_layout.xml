@@ -23,11 +23,12 @@
                 android:layout_height="wrap_content"
                 android:text="Sign in"
                 android:id="@+id/signInButton"
-                android:background="#fffffbfd"
+                android:background="@drawable/button_shape"
                 android:onClick="signIn"
                 android:layout_below="@+id/usersPassword"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="52dp" />
+                android:layout_marginTop="52dp"
+                android:textColor="#fff7ffeb" />
 
             <EditText
                 android:layout_width="wrap_content"
@@ -66,9 +67,10 @@
                 android:text="Sign up"
                 android:id="@+id/signUpButton"
                 android:onClick="changeLayout"
-                android:background="#ffff2f14"
-                android:layout_below="@+id/signInButton"
-                android:layout_marginTop="50dp"
+                android:background="@drawable/signup_button_shape"
+                android:textColor="#fffcfdff"
+                android:layout_marginBottom="1dp"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true" />
 
         </RelativeLayout>

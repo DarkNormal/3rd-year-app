@@ -8,13 +8,18 @@ public class UsersTable {
 
     private String id;
     private String password;
+    private boolean accountVerified;
 
-    public UsersTable(String id,String p)
+    public UsersTable(String id,String p,boolean v)
     {
         this.id = id;
         this.password = p;
+        this.accountVerified = v;
     }
 
+    public boolean isAccountVerified() {
+        return accountVerified;
+    }
     public String getPassword() {
         return password;
     }

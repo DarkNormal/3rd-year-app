@@ -37,9 +37,11 @@
         android:text="Sign up"
         android:id="@+id/signUpButton2"
         android:onClick="signUp"
+        android:background="@drawable/button_shape"
         android:layout_marginTop="48dp"
         android:layout_below="@+id/signUpPassword"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textColor="#fffafff9" />
 
     <ImageView
         android:layout_width="wrap_content"

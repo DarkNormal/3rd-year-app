@@ -16,7 +16,7 @@ public class Restaurant {
     private String appImage;
     private double distance;
     private String phoneNum;
-    private String openingHours;
+    private String openClose;
     private String Email;
     private boolean wifi;
     private boolean vegan;
@@ -34,7 +34,7 @@ public class Restaurant {
         this.type2 = t2;
         this.type3 = t3;
         this.phoneNum = p;
-        this.openingHours = o;
+        this.openClose = o;
         this.Email = e;
         this.wifi = wifi;
         this.vegan = vegan;
@@ -50,7 +50,7 @@ public class Restaurant {
         return Email;
     }
     public String getOpeningHours() {
-        return openingHours;
+        return openClose;
     }
     public String getType3() {
         return type3;

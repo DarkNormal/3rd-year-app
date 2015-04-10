@@ -1,5 +1,7 @@
 package project.b_ourguest.bourguest.DB;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Pair;
 
@@ -49,11 +51,14 @@ public class DatabaseOperations {
     private double distance = 0;
     private static boolean found = false;
     private ArrayList<Reviews> rev = new ArrayList<Reviews>();
-
+    private Context c;
     public DatabaseOperations() {
     }
+    public DatabaseOperations(Context ctx) {
+        c = ctx;
+    }
 
-    ;
+
     //http://azure.microsoft.com/en-us/documentation/articles/mobile-services-android-how-to-use-client-library/
     //https://msdn.microsoft.com/library/azure/jj554212.aspx
     private String time;
@@ -106,6 +111,15 @@ public class DatabaseOperations {
                             {
                                 signIn = false;
                             } else {
+                                SharedPreferences settings = c.getSharedPreferences("LoginPrefs", 0);
+
+                                if(result.get(0).isAccountVerified() == true)
+                                {
+                                    settings.edit().putBoolean("accountVerified", true).apply();
+                                }
+                                else
+                                    settings.edit().putBoolean("accountVerified", false).apply();
+                                System.out.println("HELOOOOOOOOOOOOOOOOO" + settings.getBoolean("accountVerified", true));
                                 signIn = true;
 
                             }
@@ -336,7 +350,7 @@ public class DatabaseOperations {
     }
 
     public void signUserUp(String email, String password) {
-        UsersTable u = new UsersTable(email, password);
+        UsersTable u = new UsersTable(email, password,false);
         System.out.println("HEYA_--------------------------");
         usersTable.insert(u, new TableOperationCallback<UsersTable>() {
             public void onCompleted(UsersTable entity,

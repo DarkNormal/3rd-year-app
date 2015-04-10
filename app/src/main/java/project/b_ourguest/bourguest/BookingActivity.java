@@ -83,6 +83,7 @@ public class BookingActivity extends ActionBarActivity {
                             RelativeLayout.LayoutParams.WRAP_CONTENT);
                     rlp.addRule(RelativeLayout.CENTER_HORIZONTAL);
                     te = new TextView(this);
+                    te.setTextAppearance(this,android.R.style.TextAppearance_Large);
                     te.setId(View.generateViewId());
                     te.setText(fplan.get(a).getPlanName());
                     te.setLayoutParams(rlp);
@@ -94,6 +95,7 @@ public class BookingActivity extends ActionBarActivity {
                     rlp.addRule(RelativeLayout.CENTER_HORIZONTAL);
                     rlp.addRule(RelativeLayout.BELOW, sv.getId());
                     te = new TextView(this);
+                    te.setTextAppearance(this,android.R.style.TextAppearance_Large);
                     te.setId(View.generateViewId());
                     te.setText(fplan.get(a).getPlanName());
                     te.setLayoutParams(rlp);
@@ -261,7 +263,7 @@ public class BookingActivity extends ActionBarActivity {
                                 im.setOnClickListener(new View.OnClickListener() {
                                     public void onClick(View v) {
                                         System.out.println(im.getContentDescription() + " conent desc");
-                                        if (im.getTag().toString().equals("2130837587")) {
+                                        if (im.getTag().toString().equals("2130837586")) {
                                             im.setImageResource(R.drawable.blutable);
                                             im.setTag(R.drawable.blutable);
                                             selected.add(tableview.get(Integer.parseInt("" + im.getContentDescription())));

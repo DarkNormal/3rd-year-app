@@ -5,7 +5,6 @@
     <string name="search">Search</string>
     <string name="refresh">Refresh</string>
     <string name="test">Test</string>
-    <string name="loadingText">Calculating nearest restaurants...</string>
 
     <!--used for popup menu in RestaurantList activity when search button is pressed-->
     <string name="wheelchairAccessibilityString">Wheelchair accessible restaurants</string>
@@ -13,5 +12,7 @@
     <string name="searchByNameString">Search by name</string>
     <string name="logOut">Log out</string>
     <string name="title_activity_maps">Map</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 
 </resources>

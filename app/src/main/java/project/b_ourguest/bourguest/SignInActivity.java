@@ -27,9 +27,11 @@ import project.b_ourguest.bourguest.Model.Restaurant;
 public class SignInActivity extends Activity {
     private int counter = 0;
     private DatabaseOperations db = new DatabaseOperations();
+    private DatabaseOperations db2 = new DatabaseOperations(this);
     private ProgressDialog pd;
     private Handler h = new Handler();
     private static List<Bookings> bookings;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,7 @@ public class SignInActivity extends Activity {
 
             //code for SharedPreferences was taken from
             //https://github.com/junal/Android-SharedPreferences/blob/master/SharedPreferences/src/junalontherun/com/Login.java
-            SharedPreferences settings = getSharedPreferences("LoginPrefs", 0);
+             SharedPreferences settings = getSharedPreferences("LoginPrefs", 0);
             String userID = settings.getString("email", "").toString();
             System.out.println("USER ID WHEN SETTING CONTENT VIEW OF SIGN IN: " + userID);
             bookings = db.getBookingsForIndividualUser(userID);
@@ -69,7 +71,7 @@ public class SignInActivity extends Activity {
         final EditText password = (EditText) findViewById(R.id.usersPassword);
         pd = ProgressDialog.show(SignInActivity.this, "Singing in....", "Verifying details");
 
-                if(db.validateSignIn(email.getText().toString(),password.getText().toString()))
+                if(db2.validateSignIn(email.getText().toString(),password.getText().toString()))
                 {
                     keepUserLoggedIn(email.getText().toString());
                     Intent intent = new Intent(SignInActivity.this, MainActivity.class);
@@ -81,7 +83,7 @@ public class SignInActivity extends Activity {
         h.postDelayed(new Runnable() {
             public void run() {
 
-                    if(db.validateSignIn(email.getText().toString(),password.getText().toString()))
+                    if(db2.validateSignIn(email.getText().toString(),password.getText().toString()))
                     {
                         keepUserLoggedIn(email.getText().toString());
                         System.out.println("USER ID IN SIGN IN ACTIVITY2: " + email.getText().toString());
@@ -119,10 +121,12 @@ public class SignInActivity extends Activity {
                 pd = ProgressDialog.show(SignInActivity.this, "Signing up", "Verifying details");
                 db.signUserUp(email.getText().toString(), pword.getText().toString());
 
-
                 h.postDelayed(new Runnable() {
                     public void run() {
                         if (DatabaseOperations.getSignUpCode() == 1) {
+                            SharedPreferences settings = getSharedPreferences("LoginPrefs", 0);
+                            SharedPreferences.Editor editor = settings.edit();
+                            editor.putBoolean("accountVerified",false);
                             keepUserLoggedIn(email.getText().toString());
                             bookings = db.getBookingsForIndividualUser(email.getText().toString());
                             Intent intent = new Intent(SignInActivity.this, MainActivity.class);
@@ -179,7 +183,7 @@ public class SignInActivity extends Activity {
             counter = 0;
         }
         else
-            super.onBackPressed();
+            moveTaskToBack(true);
     }
 
     public void changeLayout(View v)

@@ -6,11 +6,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,11 +54,16 @@ public class MainActivity extends ActionBarActivity {
     private TextView searchedRestaurantsText;
     private String userID;
     private static Restaurant restaurantToPass;
-    String[] type = {"American","BBQ", "Chinese", "Family Friendly","Healthy Option","Indian", "Italian",
-            "Portuguese","Seafood","Something Different","Steakhouse", "Thai","Traditional"};
+    String[] type = {"American", "BBQ", "Chinese", "Family Friendly", "Healthy Option", "Indian", "Italian",
+            "Portuguese", "Seafood", "Something Different", "Steakhouse", "Thai", "Traditional"};
     int pos = 0;
     String name = "";
     int tryAgain = 0;
+    private ListView mDrawerList;
+    private ArrayAdapter<String> mAdapter;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private DrawerLayout mDrawerLayout;
+    private String mActivityTitle;
     //private Location usersLocation;
     public final String PREFS_NAME = "LoginPrefs";
 
@@ -65,6 +73,8 @@ public class MainActivity extends ActionBarActivity {
         if (!isNetworkAvailable())
             setContentView(R.layout.no_network_available);
         else {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
             displayRestaurants("Nearest Restaurants");
         }
         SharedPreferences settings = getSharedPreferences("LoginPrefs", 0);
@@ -82,22 +92,89 @@ public class MainActivity extends ActionBarActivity {
     private void displayRestaurants(String message) {
         if (restaurants.size() > 0) {
             setContentView(R.layout.activity_main_display);
+            mDrawerList = (ListView) findViewById(R.id.navList);
+            mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+            mActivityTitle = getTitle().toString();
             searchedRestaurantsText = (TextView) findViewById(R.id.searchedRestaurants);
             searchedRestaurantsText.setText(message);
-
-
             //populates the list view
-
             ArrayAdapter<Restaurant> adapter = new RestaurantsAdapter();
             ListView list = (ListView) findViewById(R.id.restaurantListView);
             list.setAdapter(adapter);
-
+            addDrawerItems();
             handleClicks();
+            setUpDrawer();
         } else {
             setContentView(R.layout.no_restaurants_to_display_layout);
         }
 
     }
+
+    private void setUpDrawer() {
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.string.drawer_open, R.string.drawer_close) {
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                //getSupportActionBar().setTitle("Navigation!");
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                //getSupportActionBar().setTitle(mActivityTitle);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.post(new Runnable() {
+
+            @Override
+            public void run() {
+
+                mDrawerToggle.syncState();
+
+            }
+
+        });
+
+
+    }
+
+    public void addDrawerItems() {
+        //http://blog.teamtreehouse.com/add-navigation-drawer-android
+        String[] osArray = {"My Bookings","Log out"};
+        mAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,osArray);
+        mDrawerList.setAdapter(mAdapter);
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(position == 0)
+                {
+                    Intent intent = new Intent(MainActivity.this, User_Bookings_Activity.class);
+                    intent.putExtra("fromBooking", false);
+                    startActivity(intent);
+                }
+                else
+                {
+                    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.remove("loggedIn");
+                    editor.commit();
+                    Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
+    }
+
+
+
 
     public void handleClicks() {
         ListView list = (ListView) findViewById(R.id.restaurantListView);
@@ -128,12 +205,27 @@ public class MainActivity extends ActionBarActivity {
         moveTaskToBack(true);
     }
 
+//    @Override
+//    protected void onPostCreate(Bundle savedInstanceState) {
+//        super.onPostCreate(savedInstanceState);
+//        mDrawerToggle.syncState();
+//    }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
@@ -156,7 +248,7 @@ public class MainActivity extends ActionBarActivity {
                             public void run() {
                                 System.out.println("Size when result is returned is " + restaurants.size());
                                 determineActionBasedOnRestaurantsSize("Could not find any wheelchair accessible restaurants",
-                                        "Wheelchair Accessible Restaurant");
+                                        "Wheelchair Accessible Restaurants");
                                 pd.dismiss();
                                 // To dismiss the dialog
                             }
@@ -225,36 +317,7 @@ public class MainActivity extends ActionBarActivity {
             popup.show();//showing popup menu
 
             return true;
-        } else if (id == R.id.action_options) {
-            View v = (View) findViewById(R.id.action_options);
-            PopupMenu popup = new PopupMenu(getApplicationContext(), v);
-            popup.getMenuInflater().inflate(R.menu.options_popup_menu, popup.getMenu());
-
-            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem item) {
-                    if (item.getItemId() == R.id.logoutOption) {
-                        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-                        SharedPreferences.Editor editor = settings.edit();
-                        editor.remove("loggedIn");
-                        editor.commit();
-                        Intent intent = new Intent(MainActivity.this, SignInActivity.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Intent intent = new Intent(MainActivity.this, User_Bookings_Activity.class);
-                        intent.putExtra("fromBooking", false);
-                        startActivity(intent);
-                    }
-
-                    return true;
-                }
-            });
-
-            popup.show();//showing popup menu
-
-            return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -375,7 +438,7 @@ public class MainActivity extends ActionBarActivity {
 
             Restaurant r = restaurants.get(position);
             rat = (TextView) v.findViewById(R.id.restaurantRating);
-            rat.setText(convertToTitleCase(r.getName()) + " has no reviews");
+            rat.setText("No reviews");
 
             for (int i = 0; i < reviews.size(); i++) {
                 if (reviews.get(i).getRestID().equals(r.getId()))
@@ -398,7 +461,6 @@ public class MainActivity extends ActionBarActivity {
 
 
             ImageView im = (ImageView) v.findViewById(R.id.restaurantImage);
-            System.out.println("REST APPIMAGE FILE LINK: " + r.getAppImage());
             Picasso.with(MainActivity.this)
                     .load(r.getAppImage())
                     .placeholder(R.drawable.ic_launcher)
