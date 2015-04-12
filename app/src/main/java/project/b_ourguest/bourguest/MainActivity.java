@@ -73,8 +73,7 @@ public class MainActivity extends ActionBarActivity {
         if (!isNetworkAvailable())
             setContentView(R.layout.no_network_available);
         else {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
+
             displayRestaurants("Nearest Restaurants");
         }
         SharedPreferences settings = getSharedPreferences("LoginPrefs", 0);
@@ -92,6 +91,8 @@ public class MainActivity extends ActionBarActivity {
     private void displayRestaurants(String message) {
         if (restaurants.size() > 0) {
             setContentView(R.layout.activity_main_display);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
             mDrawerList = (ListView) findViewById(R.id.navList);
             mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
             mActivityTitle = getTitle().toString();
