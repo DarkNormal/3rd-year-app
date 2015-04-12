@@ -6,13 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.util.Pair;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,7 +40,7 @@ public class BookingActivity extends ActionBarActivity {
     private ArrayList<tableObject> tableview = DatabaseOperations.getTables();
     private ArrayList<tableObject> selected = new ArrayList<tableObject>();
     private ArrayList<Floorplan> fplan = DatabaseOperations.getFloorplans();
-    private int k=0;
+    private int k = 0;
     int a = 0;
     private int day, month, year, time;
     private long timeInMillis;
@@ -83,7 +82,7 @@ public class BookingActivity extends ActionBarActivity {
                             RelativeLayout.LayoutParams.WRAP_CONTENT);
                     rlp.addRule(RelativeLayout.CENTER_HORIZONTAL);
                     te = new TextView(this);
-                    te.setTextAppearance(this,android.R.style.TextAppearance_Large);
+                    te.setTextAppearance(this, android.R.style.TextAppearance_Large);
                     te.setId(View.generateViewId());
                     te.setText(fplan.get(a).getPlanName());
                     te.setLayoutParams(rlp);
@@ -95,7 +94,7 @@ public class BookingActivity extends ActionBarActivity {
                     rlp.addRule(RelativeLayout.CENTER_HORIZONTAL);
                     rlp.addRule(RelativeLayout.BELOW, sv.getId());
                     te = new TextView(this);
-                    te.setTextAppearance(this,android.R.style.TextAppearance_Large);
+                    te.setTextAppearance(this, android.R.style.TextAppearance_Large);
                     te.setId(View.generateViewId());
                     te.setText(fplan.get(a).getPlanName());
                     te.setLayoutParams(rlp);
@@ -152,8 +151,8 @@ public class BookingActivity extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.book){
-            if(selected.size() == 0)
+        if (id == R.id.book) {
+            if (selected.size() == 0)
                 Toast.makeText(BookingActivity.this, "No tables were selected", Toast.LENGTH_SHORT).show();
             else {
                 db.confimBookings(selected);
@@ -161,8 +160,7 @@ public class BookingActivity extends ActionBarActivity {
                 h.postDelayed(new Runnable() {
                     public void run() {
                         pd.dismiss();
-                        if(DatabaseOperations.isFound())
-                        {
+                        if (DatabaseOperations.isFound()) {
                             new AlertDialog.Builder(BookingActivity.this)
                                     .setTitle("Booking Error")
                                     .setMessage("One or more of your tables has become unavailable")
@@ -174,9 +172,7 @@ public class BookingActivity extends ActionBarActivity {
 
                                     .setIcon(android.R.drawable.ic_dialog_alert)
                                     .show();
-                        }
-                        else
-                        {
+                        } else {
                             new AlertDialog.Builder(BookingActivity.this)
                                     .setTitle("Confirm Booking")
                                     .setMessage("Confirm")
@@ -184,17 +180,17 @@ public class BookingActivity extends ActionBarActivity {
                                         public void onClick(DialogInterface dialog, int which) {
                                             SharedPreferences settings = getSharedPreferences("LoginPrefs", 0);
                                             String userID = settings.getString("email", "").toString();
-                                            db.postBooking(selected, userID, day , month, year, time);
+                                            db.postBooking(selected, userID, day, month, year, time);
                                             Bookings b = new Bookings(selected.size(), userID);
                                             SignInActivity.getBookings().add(b);
                                             Intent intent = new Intent(BookingActivity.this, User_Bookings_Activity.class);
-                                            intent.putExtra("time",time);
-                                            intent.putExtra("userID",userID);
-                                            intent.putExtra("day",day);
-                                            intent.putExtra("month",month);
-                                            intent.putExtra("year",year);
-                                            intent.putExtra("timeInMillis",timeInMillis);
-                                            intent.putExtra("fromBooking",true);
+                                            intent.putExtra("time", time);
+                                            intent.putExtra("userID", userID);
+                                            intent.putExtra("day", day);
+                                            intent.putExtra("month", month);
+                                            intent.putExtra("year", year);
+                                            intent.putExtra("timeInMillis", timeInMillis);
+                                            intent.putExtra("fromBooking", true);
                                             startActivity(intent);
                                             finish();
                                         }
@@ -220,10 +216,9 @@ public class BookingActivity extends ActionBarActivity {
         char upperCaseLetter;
         name = "";
         String sub;
-        for(int i = 0; i < partOfName.length; i++)
-        {
+        for (int i = 0; i < partOfName.length; i++) {
             upperCaseLetter = Character.toUpperCase(partOfName[i].charAt(0));
-            sub = partOfName[i].substring(1,partOfName[i].length());
+            sub = partOfName[i].substring(1, partOfName[i].length());
             name = name + (upperCaseLetter + sub) + " ";
         }
         return name;
@@ -251,39 +246,85 @@ public class BookingActivity extends ActionBarActivity {
                 for (int j = 0; j < tableview.size(); j++) {
                     //  textView.setText(String.valueOf(j));
                     im.setBackgroundColor(Color.WHITE);
-                    if(fplan.get(a).getId() == tableview.get(j).getFloorplanID()) {
-                    if (tableview.get(j).getYcoord() == k && tableview.get(j).getXcoord() == i) {
-                        //System.out.println("Found match at " + k + "," + i + " color is " + tableview.get(k).getColor());
+                    if (fplan.get(a).getId() == tableview.get(j).getFloorplanID()) {
+                        if (tableview.get(j).getYcoord() == k && tableview.get(j).getXcoord() == i) {
+                            //System.out.println("Found match at " + k + "," + i + " color is " + tableview.get(k).getColor());
 
-                            if (tableview.get(j).getColor() == 1) {
-                                im.setImageResource(R.drawable.greentable);
-                                im.setTag(R.drawable.greentable);
-                                im.setContentDescription("" + j);
 
-                                im.setOnClickListener(new View.OnClickListener() {
-                                    public void onClick(View v) {
-                                        System.out.println(im.getContentDescription() + " conent desc");
-                                        if (im.getTag().toString().equals("2130837586")) {
-                                            im.setImageResource(R.drawable.blutable);
-                                            im.setTag(R.drawable.blutable);
-                                            selected.add(tableview.get(Integer.parseInt("" + im.getContentDescription())));
-                                        } else {
-                                            selected.remove(tableview.get(Integer.parseInt("" + im.getContentDescription())));
-                                            im.setImageResource(R.drawable.greentable);
-                                            im.setTag(R.drawable.greentable);
-                                        }
-
-                                    }
-                                });
-                                //System.out.println("color is set to 1");
+                            int capacity;       //capacity is to be used in the future
+                            /*following code sorts through the object type, from highest to lowest
+                            //within each size bracket 30,20,10 it sorts further and sets the appropriate image resource
+                            */
+                            if (tableview.get(j).getObjType() > 30) {
+                                capacity = tableview.get(j).getObjType() - 30;
+                                if (capacity == 2) {
+                                    im.setImageResource(R.drawable.tworndrot);
+                                    im.setTag(R.drawable.tworndrot);
+                                } else {
+                                    im.setImageResource(R.drawable.foursqtrot);
+                                    im.setTag(R.drawable.foursqtrot);
+                                }
+                            } else if (tableview.get(j).getObjType() > 20) {
+                                capacity = tableview.get(j).getObjType() - 20;
+                                if (capacity == 2) {
+                                    im.setImageResource(R.drawable.twornd);
+                                    im.setTag(R.drawable.twornd);
+                                } else {
+                                    im.setImageResource(R.drawable.foursqt);
+                                    im.setTag(R.drawable.foursqt);
+                                }
+                            } else if (tableview.get(j).getObjType() > 10) {
+                                capacity = tableview.get(j).getObjType() - 10;
+                                if (capacity == 2) {
+                                    im.setImageResource(R.drawable.twosqtrot);
+                                    im.setTag(R.drawable.twosqtrot);
+                                } else if (capacity == 4) {
+                                    im.setImageResource(R.drawable.fourrndrot);
+                                    im.setTag(R.drawable.fourrndrot);
+                                } else {
+                                    im.setImageResource(R.drawable.sixsqtrot);
+                                    im.setTag(R.drawable.sixsqtrot);
+                                }
                             } else {
+                                capacity = tableview.get(j).getObjType();
+                                if (capacity == 2) {
+                                    im.setImageResource(R.drawable.twosqt);
+                                    im.setTag(R.drawable.twosqt);
+                                } else if (capacity == 4) {
+                                    im.setImageResource(R.drawable.fourrnd);
+                                    im.setTag(R.drawable.fourrnd);
+                                } else {
+                                    im.setImageResource(R.drawable.sixsqt);
+                                    im.setTag(R.drawable.sixsqt);
 
-                                //System.out.println("color is set to 2");
-                                im.setImageResource(R.drawable.redtable);
+                                }
+
                             }
+                            //set a color filter of green to all the images
+                            final PorterDuffColorFilter green = new PorterDuffColorFilter(Color.argb(100, 0, 255, 0), PorterDuff.Mode.SRC_ATOP);
+                            im.setColorFilter(green);
+                            im.setContentDescription("" + j);
+                            if (tableview.get(j).getColor() == 2) {     //sets color filter to red if any are booked (with color of 2)
+                                im.setColorFilter(Color.argb(100,255,0,0));
+                            }
+
+                            im.setOnClickListener(new View.OnClickListener() {
+                                public void onClick(View v) {
+                                    final PorterDuffColorFilter blue = new PorterDuffColorFilter(Color.argb(100, 0, 0, 255), PorterDuff.Mode.SRC_ATOP);
+                                    System.out.println(im.getContentDescription() + " content desc");
+                                    //this method of changing color filters cuts out the image swaps we were doing
+                                    //if we didn't do this we would have 30+ images to swap through, red green and blue
+                                    if (im.getColorFilter().equals(green)) {
+                                        im.setColorFilter(blue);
+                                        selected.add(tableview.get(Integer.parseInt("" + im.getContentDescription())));
+                                    } else if (im.getColorFilter().equals(blue)) {
+                                        im.setColorFilter(green);
+                                        selected.remove(tableview.get(Integer.parseInt("" + im.getContentDescription())));
+                                    }
+
+                                }
+                            });
                         }
-
-
                     }
 
                 }
