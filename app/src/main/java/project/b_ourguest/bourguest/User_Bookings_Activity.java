@@ -25,7 +25,7 @@ import project.b_ourguest.bourguest.ui.ConfirmBookingFrag;
 public class User_Bookings_Activity extends ActionBarActivity {
     private List<Bookings> bookings = SignInActivity.getBookings();
     boolean fromBooking;
-    private int time,day,month,year;
+    private int time,day,month,year,numPeople;
     private long timeInMillis;
     private FragmentManager fragmentManager;
     private ConfirmBookingFrag frag;
@@ -44,6 +44,8 @@ public class User_Bookings_Activity extends ActionBarActivity {
         day = extras.getInt("day");
         month = extras.getInt("month");
         year = extras.getInt("year");
+        int numTables = extras.getInt("numTables");
+        numPeople = extras.getInt("numPeople");
         timeInMillis = extras.getLong("timeInMillis");
 
         if(fromBooking == true)
@@ -53,6 +55,8 @@ public class User_Bookings_Activity extends ActionBarActivity {
             bundle.putInt("time", time);
             bundle.putInt("day", day);
             bundle.putInt("month", month);
+            bundle.putInt("numTables",numTables);
+            bundle.putInt("numPeople", numPeople);
             bundle.putInt("year", year);
             bundle.putLong("timeInMillis",timeInMillis);
             fragmentManager = getFragmentManager();
@@ -121,12 +125,24 @@ public class User_Bookings_Activity extends ActionBarActivity {
             TextView user = (TextView) v.findViewById(R.id.usersID);
             user.setText(bookings.get(position).getUserID());
 
-
-
             TextView numTables = (TextView) v.findViewById(R.id.numTables);
             numTables.setText("Number of tables booked: " + bookings.get(position).getNumTables());
 
+            TextView numPeople = (TextView) v.findViewById(R.id.numPeople);
+            numPeople.setText("Number of guests: " + bookings.get(position).getNumPeople());
 
+            String ti = "" + bookings.get(position).getTime();
+            String string = "";
+            for(int i = 0; i < ti.length(); i++)
+            {
+                string += ti.charAt(i);
+                if(i == 1)
+                    string += ":";
+            }
+
+            TextView dateAndTime = (TextView) v.findViewById(R.id.dateAndTime);
+            dateAndTime.setText("Date: " + bookings.get(position).getDay() + "/" + (bookings.get(position).getMonth() + 1) + "/" +
+                    bookings.get(position).getYear() + "\tTime: " + string);
             return v;
         }
     }

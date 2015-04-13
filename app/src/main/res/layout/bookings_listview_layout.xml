@@ -22,7 +22,8 @@
             android:id="@+id/usersID"
             android:layout_marginLeft="89dp"
             android:paddingBottom="4dp"
-            />
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,6 +31,24 @@
             android:text="Overall Rating"
             android:layout_below="@+id/usersID"
             android:layout_alignStart="@+id/usersID" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/numPeople"
+            android:layout_below="@+id/numTables"
+            android:layout_alignStart="@+id/numTables"
+            android:layout_marginTop="2dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/dateAndTime"
+            android:layout_below="@+id/numPeople"
+            android:layout_alignStart="@+id/numPeople"
+            android:layout_marginTop="2dp" />
     </RelativeLayout>
 
 </LinearLayout>

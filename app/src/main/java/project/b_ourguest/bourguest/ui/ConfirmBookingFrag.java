@@ -38,6 +38,8 @@ public class ConfirmBookingFrag extends Fragment {
         int day = getArguments().getInt("day");
         int month = getArguments().getInt("month");
         int year = getArguments().getInt("year");
+        int numPeople = getArguments().getInt("numPeople");
+        int numTables = getArguments().getInt("numTables");
         long timeInMillis = getArguments().getLong("timeInMillis");
         TextView t = (TextView) v.findViewById(R.id.confirmation);
         String ti = "" + time;
@@ -49,7 +51,8 @@ public class ConfirmBookingFrag extends Fragment {
                 string += ":";
         }
 
-        t.setText("Booking Details \nEmail: " + userID + "\nTime: " + string + "\nDate: " + day + "/" + (month + 1) + "/" + year);
+        t.setText("Booking Details \nEmail: " + userID + "\nTime: " + string + "\nDate: " + day + "/" + (month + 1) + "/" + year +
+        "\nNumber of Tables: " + numTables + "\nNumber of guests: " + numPeople);
         timeInMillis += (time * 10) * 60 * 60;
         long endDate = timeInMillis + 2000 * 60 * 60;
         addReminder("Your reservation for " + MainActivity.getRestaurantToPass().getName(),"Reservation for "

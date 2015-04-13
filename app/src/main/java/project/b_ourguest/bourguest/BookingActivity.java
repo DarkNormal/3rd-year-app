@@ -41,7 +41,7 @@ public class BookingActivity extends ActionBarActivity {
     private ArrayList<tableObject> selected = new ArrayList<tableObject>();
     private ArrayList<Floorplan> fplan = DatabaseOperations.getFloorplans();
     private int k = 0;
-    int a = 0;
+    private int a = 0,totalPeople = 0;
     private int day, month, year, time;
     private long timeInMillis;
     private Handler h = new Handler();
@@ -180,8 +180,8 @@ public class BookingActivity extends ActionBarActivity {
                                         public void onClick(DialogInterface dialog, int which) {
                                             SharedPreferences settings = getSharedPreferences("LoginPrefs", 0);
                                             String userID = settings.getString("email", "").toString();
-                                            db.postBooking(selected, userID, day, month, year, time);
-                                            Bookings b = new Bookings(selected.size(), userID);
+                                            db.postBooking(selected, userID, day, month, year, time,totalPeople);
+                                            Bookings b = new Bookings(selected.size(), userID,totalPeople,day,month,year,time);
                                             SignInActivity.getBookings().add(b);
                                             Intent intent = new Intent(BookingActivity.this, User_Bookings_Activity.class);
                                             intent.putExtra("time", time);
@@ -190,6 +190,8 @@ public class BookingActivity extends ActionBarActivity {
                                             intent.putExtra("month", month);
                                             intent.putExtra("year", year);
                                             intent.putExtra("timeInMillis", timeInMillis);
+                                            intent.putExtra("numPeople", totalPeople);
+                                            intent.putExtra("numTables", selected.size());
                                             intent.putExtra("fromBooking", true);
                                             startActivity(intent);
                                             finish();
@@ -259,43 +261,43 @@ public class BookingActivity extends ActionBarActivity {
                                 capacity = tableview.get(j).getObjType() - 30;
                                 if (capacity == 2) {
                                     im.setImageResource(R.drawable.tworndrot);
-                                    im.setTag(R.drawable.tworndrot);
+                                    im.setTag(2);
                                 } else {
                                     im.setImageResource(R.drawable.foursqtrot);
-                                    im.setTag(R.drawable.foursqtrot);
+                                    im.setTag(4);
                                 }
                             } else if (tableview.get(j).getObjType() > 20) {
                                 capacity = tableview.get(j).getObjType() - 20;
                                 if (capacity == 2) {
                                     im.setImageResource(R.drawable.twornd);
-                                    im.setTag(R.drawable.twornd);
+                                    im.setTag(2);
                                 } else {
                                     im.setImageResource(R.drawable.foursqt);
-                                    im.setTag(R.drawable.foursqt);
+                                    im.setTag(4);
                                 }
                             } else if (tableview.get(j).getObjType() > 10) {
                                 capacity = tableview.get(j).getObjType() - 10;
                                 if (capacity == 2) {
                                     im.setImageResource(R.drawable.twosqtrot);
-                                    im.setTag(R.drawable.twosqtrot);
+                                    im.setTag(2);
                                 } else if (capacity == 4) {
                                     im.setImageResource(R.drawable.fourrndrot);
-                                    im.setTag(R.drawable.fourrndrot);
+                                    im.setTag(4);
                                 } else {
                                     im.setImageResource(R.drawable.sixsqtrot);
-                                    im.setTag(R.drawable.sixsqtrot);
+                                    im.setTag(6);
                                 }
                             } else {
                                 capacity = tableview.get(j).getObjType();
                                 if (capacity == 2) {
                                     im.setImageResource(R.drawable.twosqt);
-                                    im.setTag(R.drawable.twosqt);
+                                    im.setTag(2);
                                 } else if (capacity == 4) {
                                     im.setImageResource(R.drawable.fourrnd);
-                                    im.setTag(R.drawable.fourrnd);
+                                    im.setTag(4);
                                 } else {
                                     im.setImageResource(R.drawable.sixsqt);
-                                    im.setTag(R.drawable.sixsqt);
+                                    im.setTag(6);
 
                                 }
 
@@ -307,23 +309,26 @@ public class BookingActivity extends ActionBarActivity {
                             if (tableview.get(j).getColor() == 2) {     //sets color filter to red if any are booked (with color of 2)
                                 im.setColorFilter(Color.argb(100,255,0,0));
                             }
+                            else {
+                                im.setOnClickListener(new View.OnClickListener() {
+                                    public void onClick(View v) {
+                                        final PorterDuffColorFilter blue = new PorterDuffColorFilter(Color.argb(100, 0, 0, 255), PorterDuff.Mode.SRC_ATOP);
+                                        //this method of changing color filters cuts out the image swaps we were doing
+                                        //if we didn't do this we would have 30+ images to swap through, red green and blue
+                                        if (im.getColorFilter().equals(green)) {
+                                            im.setColorFilter(blue);
+                                            totalPeople += Integer.parseInt(im.getTag().toString());
+                                            selected.add(tableview.get(Integer.parseInt("" + im.getContentDescription())));
 
-                            im.setOnClickListener(new View.OnClickListener() {
-                                public void onClick(View v) {
-                                    final PorterDuffColorFilter blue = new PorterDuffColorFilter(Color.argb(100, 0, 0, 255), PorterDuff.Mode.SRC_ATOP);
-                                    System.out.println(im.getContentDescription() + " content desc");
-                                    //this method of changing color filters cuts out the image swaps we were doing
-                                    //if we didn't do this we would have 30+ images to swap through, red green and blue
-                                    if (im.getColorFilter().equals(green)) {
-                                        im.setColorFilter(blue);
-                                        selected.add(tableview.get(Integer.parseInt("" + im.getContentDescription())));
-                                    } else if (im.getColorFilter().equals(blue)) {
-                                        im.setColorFilter(green);
-                                        selected.remove(tableview.get(Integer.parseInt("" + im.getContentDescription())));
+                                        } else {
+                                            im.setColorFilter(green);
+                                            totalPeople -= Integer.parseInt(im.getTag().toString());
+                                            selected.remove(tableview.get(Integer.parseInt("" + im.getContentDescription())));
+                                        }
+
                                     }
-
-                                }
-                            });
+                                });
+                            }
                         }
                     }
 

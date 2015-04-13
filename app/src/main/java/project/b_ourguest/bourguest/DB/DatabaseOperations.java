@@ -211,7 +211,7 @@ public class DatabaseOperations {
         return floorplans;
     }
 
-    public void postBooking(ArrayList<tableObject> selected, String userID, int day, int month, int year, int time) {
+    public void postBooking(ArrayList<tableObject> selected, String userID, int day, int month, int year, int time,int numPeople) {
         System.out.println("day: " + day + " month " + month + " year " + year);
         for (int i = 0; i < selected.size(); i++) {
             ArrayList<Pair<String, String>> parameters = new ArrayList<Pair<String, String>>();
@@ -233,7 +233,7 @@ public class DatabaseOperations {
                 }
             });
         }
-        Bookings b = new Bookings(selected.size(), userID);
+        Bookings b = new Bookings(selected.size(), userID,numPeople,day,month,year,time);
         bookingsTable.insert(b, new TableOperationCallback<Bookings>() {
             public void onCompleted(Bookings entity,
                                     Exception exception,
