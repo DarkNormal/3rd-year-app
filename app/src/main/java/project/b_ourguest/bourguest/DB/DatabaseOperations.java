@@ -359,7 +359,8 @@ public class DatabaseOperations {
 
                 if (exception == null) {
                     signUpCode = 1; //meaning this sign up was legit
-                    System.out.println("heya CODE IS " + signUpCode + "--------------------------");
+                    SharedPreferences settings = c.getSharedPreferences("LoginPrefs", 0);
+                    settings.edit().putBoolean("accountVerified", false).apply();
                 } else {
                     if (exception.getCause().toString().contains("400"))
                         signUpCode = 400;

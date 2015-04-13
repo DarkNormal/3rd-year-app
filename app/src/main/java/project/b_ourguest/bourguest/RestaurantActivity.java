@@ -36,19 +36,15 @@ public class RestaurantActivity extends ActionBarActivity {
     // Declaring Your View and Variables
     Restaurant r = MainActivity.getRestaurantToPass();
     DatabaseOperations db = new DatabaseOperations();
-    private Handler h = new Handler();
     private Reviews review;
     private  double rating;
-    TableLayout tableLayout;
     private UserReviews userReview;
-    private  Dialog dialog;
     ViewPager pager;
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
     CharSequence Titles[] = {"Info", "Reviews", "Book"};
     int Numboftabs = 3;
     private RatingBar ratingBar;
-    private TextView txtRatingValue;
     private Button btnSubmit;
 
     @Override
