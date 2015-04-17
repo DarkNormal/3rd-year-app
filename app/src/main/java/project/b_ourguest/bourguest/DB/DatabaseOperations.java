@@ -49,6 +49,7 @@ public class DatabaseOperations {
     private boolean signIn;
     private static int signUpCode;
     private double distance = 0;
+    private String selectedArray = "";
     private static boolean found = false;
     private ArrayList<Reviews> rev = new ArrayList<Reviews>();
     private Context c;
@@ -213,15 +214,19 @@ public class DatabaseOperations {
 
     public void postBooking(ArrayList<tableObject> selected, String userID, int day, int month, int year, int time,int numPeople) {
         System.out.println("day: " + day + " month " + month + " year " + year);
-        for (int i = 0; i < selected.size(); i++) {
             ArrayList<Pair<String, String>> parameters = new ArrayList<Pair<String, String>>();
             parameters.add(new Pair<>("day", Integer.toString(day)));
             parameters.add(new Pair<>("month", Integer.toString(month)));
             parameters.add(new Pair<>("year", Integer.toString(year)));
-            parameters.add(new Pair<>("tabObjID", Integer.toString(selected.get(i).getId())));
             parameters.add(new Pair<>("time", Integer.toString(time)));
             parameters.add(new Pair<>("depart", Integer.toString(time + 200)));
             parameters.add(new Pair<>("userID",userID));
+
+        for(int i = 0; i < selected.size(); i++)
+        {
+            selectedArray += selected.get(i).getId() + "_";
+        }
+        parameters.add(new Pair<>("id",selectedArray));
             mClient.invokeApi("insertintotablebookings", null, "POST", parameters, new ApiJsonOperationCallback() {
                 @Override
                 public void onCompleted(JsonElement result, Exception exception, ServiceFilterResponse response) {
@@ -232,7 +237,7 @@ public class DatabaseOperations {
                     }
                 }
             });
-        }
+
         Bookings b = new Bookings(selected.size(), userID,numPeople,day,month,year,time);
         bookingsTable.insert(b, new TableOperationCallback<Bookings>() {
             public void onCompleted(Bookings entity,

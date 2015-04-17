@@ -46,12 +46,15 @@ public class BookingActivity extends ActionBarActivity {
     private long timeInMillis;
     private Handler h = new Handler();
     private ProgressDialog pd;
+    String userID;
     ScrollView sv;
     TextView te;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences settings = getSharedPreferences("LoginPrefs", 0);
+         userID = settings.getString("email", "").toString();
         RelativeLayout.LayoutParams rlp;
         ScrollView scroll = new ScrollView(this);
         setTitle(convertToTitleCase(MainActivity.getRestaurantToPass().getName()));
@@ -155,62 +158,53 @@ public class BookingActivity extends ActionBarActivity {
             if (selected.size() == 0)
                 Toast.makeText(BookingActivity.this, "No tables were selected", Toast.LENGTH_SHORT).show();
             else {
-                db.confimBookings(selected);
-                pd = ProgressDialog.show(BookingActivity.this, "Processing", "Validating your booking..");
-                h.postDelayed(new Runnable() {
-                    public void run() {
-                        pd.dismiss();
-                        if (DatabaseOperations.isFound()) {
-                            new AlertDialog.Builder(BookingActivity.this)
-                                    .setTitle("Booking Error")
-                                    .setMessage("One or more of your tables has become unavailable")
-                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // continue with delete
-                                        }
-                                    })
+                new AlertDialog.Builder(BookingActivity.this)
+                        .setTitle("Confirm Booking")
+                        .setMessage("Confirm")
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                db.postBooking(selected, userID, day, month, year, time,totalPeople);
+                                validateBooking();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .show();
 
-                                    .setIcon(android.R.drawable.ic_dialog_alert)
-                                    .show();
-                        } else {
-                            new AlertDialog.Builder(BookingActivity.this)
-                                    .setTitle("Confirm Booking")
-                                    .setMessage("Confirm")
-                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            SharedPreferences settings = getSharedPreferences("LoginPrefs", 0);
-                                            String userID = settings.getString("email", "").toString();
-                                            db.postBooking(selected, userID, day, month, year, time,totalPeople);
-                                            Bookings b = new Bookings(selected.size(), userID,totalPeople,day,month,year,time);
-                                            SignInActivity.getBookings().add(b);
-                                            Intent intent = new Intent(BookingActivity.this, User_Bookings_Activity.class);
-                                            intent.putExtra("time", time);
-                                            intent.putExtra("userID", userID);
-                                            intent.putExtra("day", day);
-                                            intent.putExtra("month", month);
-                                            intent.putExtra("year", year);
-                                            intent.putExtra("timeInMillis", timeInMillis);
-                                            intent.putExtra("numPeople", totalPeople);
-                                            intent.putExtra("numTables", selected.size());
-                                            intent.putExtra("fromBooking", true);
-                                            startActivity(intent);
-                                            finish();
-                                        }
-                                    })
-                                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            // do nothing
-                                        }
-                                    })
-                                    .show();
-                        }
 
-                    }
-                }, 3500);
             }
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void validateBooking() {
+            pd = ProgressDialog.show(BookingActivity.this, "Processing", "Validating your booking..");
+            h.postDelayed(new Runnable() {
+                public void run() {
+                    pd.dismiss();
+                    //check whether the insert was done successfully
+                    //if it wasnt tell the user of this error
+                    Bookings b = new Bookings(selected.size(), userID,totalPeople,day,month,year,time);
+                    SignInActivity.getBookings().add(b);
+                    Intent intent = new Intent(BookingActivity.this, User_Bookings_Activity.class);
+                    intent.putExtra("time", time);
+                    intent.putExtra("userID", userID);
+                    intent.putExtra("day", day);
+                    intent.putExtra("month", month);
+                    intent.putExtra("year", year);
+                    intent.putExtra("timeInMillis", timeInMillis);
+                    intent.putExtra("numPeople", totalPeople);
+                    intent.putExtra("numTables", selected.size());
+                    intent.putExtra("fromBooking", true);
+                    startActivity(intent);
+                    finish();
+                }
+            }, 3500);
+
     }
 
     public String convertToTitleCase(String name) {
