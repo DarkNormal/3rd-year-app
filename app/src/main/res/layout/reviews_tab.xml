@@ -13,7 +13,8 @@
         android:onClick="submitReview"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="64dp" />
+        android:layout_marginTop="64dp"
+        android:textColor="#ff16d9ff" />
 
     <RelativeLayout
         android:layout_width="fill_parent"

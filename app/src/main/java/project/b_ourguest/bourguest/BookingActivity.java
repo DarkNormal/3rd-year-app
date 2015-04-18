@@ -188,7 +188,7 @@ public class BookingActivity extends ActionBarActivity {
                     pd.dismiss();
                     //check whether the insert was done successfully
                     //if it wasnt tell the user of this error
-                    Bookings b = new Bookings(selected.size(), userID,totalPeople,day,month,year,time);
+                    Bookings b = new Bookings(selected.size(), userID,totalPeople,day,month,year,time,MainActivity.getRestaurantToPass().getId());
                     SignInActivity.getBookings().add(b);
                     Intent intent = new Intent(BookingActivity.this, User_Bookings_Activity.class);
                     intent.putExtra("time", time);

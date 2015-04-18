@@ -12,6 +12,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
@@ -52,7 +53,9 @@ public class MainActivity extends ActionBarActivity {
     private List<Restaurant> restaurants = StartActivity.getRestaurants();
     private ArrayList<Reviews> reviews = StartActivity.getReviews();
     private TextView searchedRestaurantsText;
+    private String message;
     private String userID;
+    private SwipeRefreshLayout swipeContainer;
     private static Restaurant restaurantToPass;
     String[] type = {"American", "BBQ", "Chinese", "Family Friendly", "Healthy Option", "Indian", "Italian",
             "Portuguese", "Seafood", "Something Different", "Steakhouse", "Thai", "Traditional"};
@@ -95,7 +98,6 @@ public class MainActivity extends ActionBarActivity {
             getSupportActionBar().setHomeButtonEnabled(true);
             mDrawerList = (ListView) findViewById(R.id.navList);
             mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-            mActivityTitle = getTitle().toString();
             searchedRestaurantsText = (TextView) findViewById(R.id.searchedRestaurants);
             searchedRestaurantsText.setText(message);
             //populates the list view
@@ -105,6 +107,26 @@ public class MainActivity extends ActionBarActivity {
             addDrawerItems();
             handleClicks();
             setUpDrawer();
+
+            //https://github.com/codepath/android_guides/wiki/Implementing-Pull-to-Refresh-Guide
+             swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+            // Setup refresh listener which triggers new data loading
+            swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    // Your code to refresh the list here.
+                    // Make sure you call swipeContainer.setRefreshing(false)
+                    // once the network request has completed successfully.
+                    //fetchTimelineAsync(0);
+                    System.out.println("REFRESHING----------------------------");
+                    refresh();
+                }
+            });
+            // Configure the refreshing colors
+            swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                    android.R.color.holo_green_light,
+                    android.R.color.holo_orange_light,
+                    android.R.color.holo_red_light);
         } else {
             setContentView(R.layout.no_restaurants_to_display_layout);
         }
@@ -360,6 +382,32 @@ public class MainActivity extends ActionBarActivity {
             }
         }, 3000);
         displayRestaurants(message);
+    }
+    public void refresh()
+    {
+         message = "";
+        reviews = db.getRating();
+        if (tryAgain == 0) {
+            message = "Nearest Restaurant";
+            restaurants = db.getRestaurants();
+        } else if (tryAgain == 1) {
+            message = "Wheelchair Accessible Restaurant";
+            restaurants = db.searchDatabaseForWheelchairFriendlyRestaurants();
+        } else if (tryAgain == 2) {
+            message = "Restaurant called " + name;
+            restaurants = db.searchByName(name);
+        } else {
+            message = type[pos] + " Restaurant";
+            restaurants = db.searchByType(type[pos]);
+        }
+
+        h.postDelayed(new Runnable() {
+            public void run() {
+                displayRestaurants(message);
+                swipeContainer.setRefreshing(false);
+            }
+        }, 3000);
+
     }
 
     public void searchNameDialog() {

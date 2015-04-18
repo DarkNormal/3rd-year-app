@@ -54,7 +54,6 @@ public class RestaurantActivity extends ActionBarActivity {
         getSupportActionBar().setElevation(0);
         setTitle(convertToTitleCase(r.getName()));
 
-
 // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
                 adapter = new ViewPagerAdapter(getSupportFragmentManager(), Titles, Numboftabs);
 

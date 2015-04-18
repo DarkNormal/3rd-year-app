@@ -17,6 +17,7 @@ import com.microsoft.windowsazure.mobileservices.TableQueryCallback;
 import java.util.ArrayList;
 import java.util.List;
 
+import project.b_ourguest.bourguest.MainActivity;
 import project.b_ourguest.bourguest.Model.Bookings;
 import project.b_ourguest.bourguest.Model.Floorplan;
 import project.b_ourguest.bourguest.Model.Restaurant;
@@ -213,7 +214,6 @@ public class DatabaseOperations {
     }
 
     public void postBooking(ArrayList<tableObject> selected, String userID, int day, int month, int year, int time,int numPeople) {
-        System.out.println("day: " + day + " month " + month + " year " + year);
             ArrayList<Pair<String, String>> parameters = new ArrayList<Pair<String, String>>();
             parameters.add(new Pair<>("day", Integer.toString(day)));
             parameters.add(new Pair<>("month", Integer.toString(month)));
@@ -238,7 +238,7 @@ public class DatabaseOperations {
                 }
             });
 
-        Bookings b = new Bookings(selected.size(), userID,numPeople,day,month,year,time);
+        Bookings b = new Bookings(selected.size(), userID,numPeople,day,month,year,time, MainActivity.getRestaurantToPass().getId());
         bookingsTable.insert(b, new TableOperationCallback<Bookings>() {
             public void onCompleted(Bookings entity,
                                     Exception exception,
@@ -380,7 +380,6 @@ public class DatabaseOperations {
     }
 
     public void sendReview(Reviews r, UserReviews u) {
-        System.out.println(r.getId() + " " + r.getRating() + " " + u.getId() + " " + u.getRestaurantID() + " " + u.getUserID());
         reviewsTable.insert(r, new TableOperationCallback<Reviews>() {
             public void onCompleted(Reviews entity,
                                     Exception exception,
@@ -459,7 +458,7 @@ public class DatabaseOperations {
                                 System.out.println(reviewExists + " no review existed");
                             } else {
                                 System.out.println("REVIEW EXISTS---------------");
-                                System.out.println(result.get(0).getUserID() + ", " + result.get(0).getRestaurantID());
+
                                 reviewExists = true;
                                 System.out.println(reviewExists + " review existed");
                             }
@@ -505,26 +504,6 @@ public class DatabaseOperations {
 
     public ArrayList<Restaurant> searchByName(String name) {
         name.toLowerCase();
-//        restaurantsTable.where().field("name").eq(name)
-//                .execute(new TableQueryCallback<Restaurant>() {
-//
-//                    public void onCompleted(List<Restaurant> result, int count,
-//                                            Exception exception, ServiceFilterResponse response) {
-//                        if (exception == null) {
-//                            if (result.size() == 0) //meaning the name typed was not found
-//                            {
-//
-//                            } else {
-//                                restaurants.clear();
-//                                for (Restaurant item : result) {
-//                                    getDistanceBasedOnUsersLocation(item);
-//                                    item.setDistance(distance);
-//                                    restaurants.add(item);
-//                                }
-//                            }
-//                        }
-//                    }
-//                });
 
         ArrayList<Pair<String, String>> parameters = new ArrayList<Pair<String, String>>();
         parameters.add(new Pair<>("name",name));

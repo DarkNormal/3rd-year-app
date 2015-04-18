@@ -12,8 +12,9 @@ public class Bookings {
     private int year;
     private int time;
     private String userID;
+    private String restID;
 
-    public Bookings( int numTables, String userID,int numPeople,int day,int month,int year,int time) {
+    public Bookings( int numTables, String userID,int numPeople,int day,int month,int year,int time,String restID) {
         this.numTables = numTables;
         this.userID = userID;
         this.numPeople = numPeople;
@@ -21,6 +22,10 @@ public class Bookings {
         this.month = month;
         this.year = year;
         this.time = time;
+        this.restID = restID;
+    }
+    public String getRestID() {
+        return restID;
     }
     public int getDay() {
         return day;

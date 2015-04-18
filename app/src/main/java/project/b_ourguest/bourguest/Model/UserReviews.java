@@ -6,16 +6,16 @@ package project.b_ourguest.bourguest.Model;
 public class UserReviews {
     private String id;
     private String userID;
-    private String restaurantID;
+    private String restID;
 
     public UserReviews(String i,String r)
     {
         userID = i;
-        restaurantID = r;
+        restID = r;
     }
 
-    public String getRestaurantID() {
-        return restaurantID;
+    public String getRestID() {
+        return restID;
     }
 
     public String getId() {
