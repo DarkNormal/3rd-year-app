@@ -43,7 +43,6 @@ public class DatabaseOperations {
     private static MobileServiceTable<tableObjectBookings> tableObjectBookingsTable = StartActivity.getTableObjectBookingsTable();
     private ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
     private ArrayList<Bookings> bookings = new ArrayList<Bookings>();
-    private static String returnString = "Tables ";
     private static ArrayList<Floorplan> floorplans = new ArrayList<Floorplan>();
     private static ArrayList<tableObject> tables = new ArrayList<tableObject>();
     private static boolean reviewExists;
@@ -51,7 +50,6 @@ public class DatabaseOperations {
     private static int signUpCode;
     private double distance = 0;
     private String selectedArray = "";
-    private static boolean found = false;
     private ArrayList<Reviews> rev = new ArrayList<Reviews>();
     private Context c;
     public DatabaseOperations() {
@@ -59,36 +57,56 @@ public class DatabaseOperations {
     public DatabaseOperations(Context ctx) {
         c = ctx;
     }
-
-
     //http://azure.microsoft.com/en-us/documentation/articles/mobile-services-android-how-to-use-client-library/
     //https://msdn.microsoft.com/library/azure/jj554212.aspx
-    private String time;
     private int day, month, year, intTime, i = 0;
     String u;
 
-    public ArrayList<Restaurant> getRestaurants() //should get nearest restaurants
+    public ArrayList<Restaurant> getRestaurants(double longitude,double latitude) //should get nearest restaurants
     {
-        restaurantsTable.execute(new TableQueryCallback<Restaurant>() {
-            public void onCompleted(List<Restaurant> result, int count,
-                                    Exception exception, ServiceFilterResponse response) {
-                if (exception == null) {
+        ArrayList<Pair<String, String>> parameters = new ArrayList<Pair<String, String>>();
+        parameters.add(new Pair<>("longitude",Double.toString(longitude)));
+        parameters.add(new Pair<>("latitude",Double.toString(latitude)));
+        mClient.invokeApi("getnearestrestaurants", null, "GET", parameters, new ApiJsonOperationCallback() {
+            @Override
+            public void onCompleted(JsonElement result, Exception exception, ServiceFilterResponse response) {
+                try {
                     restaurants.clear();
-                    for (Restaurant item : result) {
-                        getDistanceBasedOnUsersLocation(item);
-                        item.setDistance(distance);
-                        if (distance < 3) {
-                            restaurants.add(item);
+                    Restaurant r;
+                    for (int j = 0; j < result.getAsJsonArray().size(); j++) {
+                        try {
+                            r = new Restaurant(result.getAsJsonArray().get(j).getAsJsonObject().get("id").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("restaurantName").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("bio").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("longitude").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("latitude").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("type1").toString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("wheelchair").getAsBoolean(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("appImage").toString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("type2").toString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("type3").toString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("phoneNum").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("openClose").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("Email").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("wifi").getAsBoolean(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("vegan").getAsBoolean(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("Distance").getAsDouble()
+                            );
+
+                            restaurants.add(r);
+
+                        }catch(Exception e){
+                            System.out.println("IN THIS CATCH");
+                            e.printStackTrace();
                         }
-                        System.out.println("Restaurant name: " + item.getName() + "\nRestaurant ID: " + item.getId());
-                        System.out.println("Distance: " + distance);
-                        System.out.println("SIZE OF RESTAURANT ARRAY " + restaurants.size());
                     }
-                } else {
-                    exception.printStackTrace();
+                } catch (Exception e) {
+
+                    e.printStackTrace();
                 }
             }
         });
+
         return restaurants;
     }
 
@@ -294,48 +312,7 @@ public class DatabaseOperations {
 
     }
 
-    public void confimBookings(final ArrayList<tableObject> bookings) {
-        System.out.println(bookings.size() + " is the bookings array size and i is " + i);
-        found = false;
-
-        for (i = 0; i < bookings.size(); i++) {
-            ArrayList<Pair<String, String>> parameters = new ArrayList<Pair<String, String>>();
-            parameters.add(new Pair<>("tabob", Integer.toString(bookings.get(i).getId())));
-            parameters.add(new Pair<>("dayTime", Integer.toString(day)));
-            parameters.add(new Pair<>("monthTime", Integer.toString(month)));
-            parameters.add(new Pair<>("yearTime", Integer.toString(year)));
-            parameters.add(new Pair<>("arrival", Integer.toString(intTime)));
-            parameters.add(new Pair<>("leaving", Integer.toString(intTime + 200)));
-            mClient.invokeApi("tablebookings", null, "GET", parameters, new ApiJsonOperationCallback() {
-                @Override
-                public void onCompleted(JsonElement result, Exception e, ServiceFilterResponse response) {
-                    System.out.println(result);
-                    int tableIDJSON;
-                    for (int j = 0; j < result.getAsJsonArray().size(); j++) {
-                        try {
-                            tableIDJSON = result.getAsJsonArray().get(j).getAsJsonObject().get("tabObjID").getAsInt();
-                            System.out.println(tableIDJSON + " is the json table id i got ya bish");
-                            for (int k = 0; k < bookings.size(); k++) {
-                                if (bookings.get(k).getId() == tableIDJSON) {
-                                    System.out.println("got a match with JSON ya bish");
-                                    found = true;
-                                    returnString += bookings.get(k).getId() + ",";
-                                }
-                            }
-                            returnString += " have already been booked";
-
-                        } catch (Exception error) {
-                            error.printStackTrace();
-                        }
-                    }
-
-                }
-            });
-        }
-    }
-
     public ArrayList<Reviews> getRating() {
-        System.out.println("REVIEWS QUERY BEING EXECUTED----------");
         reviewsTable.execute(new TableQueryCallback<Reviews>() {
             public void onCompleted(List<Reviews> result, int count,
                                     Exception exception, ServiceFilterResponse response) {
@@ -356,7 +333,6 @@ public class DatabaseOperations {
 
     public void signUserUp(String email, String password) {
         UsersTable u = new UsersTable(email, password,false);
-        System.out.println("HEYA_--------------------------");
         usersTable.insert(u, new TableOperationCallback<UsersTable>() {
             public void onCompleted(UsersTable entity,
                                     Exception exception,
@@ -375,8 +351,6 @@ public class DatabaseOperations {
                 }
             }
         });
-
-        System.out.println("This is return code CODE IS " + signUpCode + "--------------------------");
     }
 
     public void sendReview(Reviews r, UserReviews u) {
@@ -411,7 +385,6 @@ public class DatabaseOperations {
 
 
     public ArrayList<Restaurant> searchByType(String type) {
-        System.out.println(type + "-------------------------------------");
         restaurantsTable.where().field("type1").eq(type).or().field("type2").eq(type).or().field("type3").eq(type)
                 .execute(new TableQueryCallback<Restaurant>() {
 
@@ -420,18 +393,12 @@ public class DatabaseOperations {
                         if (exception == null) {
                             if (result.size() == 0) //meaning the name typed was not found
                             {
-                                System.out.println("FOUND NOTHING-------------------------------------");
                             } else {
                                 restaurants.clear();
-                                System.out.println("found restaurants with that type");
                                 for (Restaurant item : result) {
                                     getDistanceBasedOnUsersLocation(item);
                                     item.setDistance(distance);
                                     restaurants.add(item);
-
-                                    System.out.println("Restaurant name: " + item.getName() + "\nRestaurant ID: " + item.getId());
-                                    System.out.println("Distance: " + distance);
-
                                 }
                             }
                         } else {
@@ -439,12 +406,10 @@ public class DatabaseOperations {
                         }
                     }
                 });
-        System.out.println("number of restaurants with that type: " + restaurants.size());
         return restaurants;
     }
 
     public void getReview(String email, String restaurant) {
-        System.out.println("GETTING REVIEW -------------------------------------");
         userReviewsTable.where().field("userID").eq(email).and().field("restaurantID").eq(restaurant)
                 .execute(new TableQueryCallback<UserReviews>() {
 
@@ -453,11 +418,9 @@ public class DatabaseOperations {
                         if (exception == null) {
                             if (result.size() == 0) //meaning the name typed was not found
                             {
-                                System.out.println("NO REVIEW EXISTED---------------");
                                 reviewExists = false;
                                 System.out.println(reviewExists + " no review existed");
                             } else {
-                                System.out.println("REVIEW EXISTS---------------");
 
                                 reviewExists = true;
                                 System.out.println(reviewExists + " review existed");
@@ -465,13 +428,11 @@ public class DatabaseOperations {
                         }
                     }
                 });
-        System.out.println("FINISHED GETTING REVIEWS---------------");
         System.out.println(reviewExists);
 
     }
 
     public ArrayList<Restaurant> searchDatabaseForWheelchairFriendlyRestaurants() {
-        System.out.println("IN METHOD");
         restaurantsTable.where().field("wheelchair").eq(true)
                 .execute(new TableQueryCallback<Restaurant>() {
 
@@ -480,21 +441,17 @@ public class DatabaseOperations {
                         if (exception == null) {
                             if (result.size() == 0) //meaning wheelchair accessible restaurants couldn't be found
                             {
-                                System.out.println("GOT NOTHING");
                             } else {
-                                System.out.println("GOT SOMETHING");
                                 restaurants.clear();
                                 for (Restaurant item : result) {
                                     getDistanceBasedOnUsersLocation(item);
                                     item.setDistance(distance);
                                     restaurants.add(item);
                                 }
-                                System.out.println("Size is " + restaurants.size());
                             }
                         }
                     }
                 });
-        System.out.println("Size before return is " + restaurants.size());
         return restaurants;
     }
 
@@ -514,7 +471,6 @@ public class DatabaseOperations {
                 try {
                     restaurants.clear();
                     Restaurant r;
-                    System.out.println(result);
                     for (int j = 0; j < result.getAsJsonArray().size(); j++) {
                         try {
                             r = new Restaurant(result.getAsJsonArray().get(j).getAsJsonObject().get("id").getAsString(),
@@ -551,17 +507,9 @@ public class DatabaseOperations {
         return restaurants;
     }
 
-    public static boolean isFound() {
-        return found;
-    }
-
     public static boolean isReviewExists() {
         System.out.println(reviewExists + " IS REVIEWEXISTS");
         return reviewExists;
-    }
-
-    public static String getReturnString() {
-        return returnString;
     }
 
     public static ArrayList<tableObject> getTables() {

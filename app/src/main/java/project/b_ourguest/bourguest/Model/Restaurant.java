@@ -20,7 +20,30 @@ public class Restaurant {
     private String Email;
     private boolean wifi;
     private boolean vegan;
-    
+
+
+    public Restaurant(String id, String restaurantName, String bio, String longitude, String latitude, String type1,
+                      boolean wheelchair, String appImage,String type2, String type3,
+                       String phoneNum, String openClose, String email,
+                      boolean wifi, boolean vegan,double distance) {
+        this.id = id;
+        this.restaurantName = restaurantName;
+        this.bio = bio;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.type1 = type1;
+        this.type2 = type2;
+        this.type3 = type3;
+        this.wheelchair = wheelchair;
+        this.appImage = appImage;
+        this.phoneNum = phoneNum;
+        this.openClose = openClose;
+        Email = email;
+        this.wifi = wifi;
+        this.vegan = vegan;
+        this.distance = distance;
+    }
+
     public Restaurant(String id, String name, String bio, String longitude, String latitude, String t1, boolean wcA,
                       String appImage,String t2,String t3,String p,String o,String e,boolean wifi,boolean vegan){
         this.id = id;

@@ -72,13 +72,8 @@ public class StartActivity extends ActionBarActivity{
          .setInterval(10 * 1000)        // 10 seconds, in milliseconds
          .setFastestInterval(1 * 1000); // 1 second, in milliseconds*/
         
-        
-        //BackgroundOperations populateRestaurantArray = new BackgroundOperations();
-        //populateRestaurantArray.execute(restaurants);
-        
         DatabaseOperations db = new DatabaseOperations();
-        restaurants = db.getRestaurants();
-        System.out.println("GETTING REVIEWS----------");
+        restaurants = db.getRestaurants(53.284316, -6.391500);
         reviews = db.getRating();
         
         
@@ -122,7 +117,6 @@ public class StartActivity extends ActionBarActivity{
         {
             Toast.makeText(getApplicationContext(), "Client in StartActivity.java could not be initiated",
                            Toast.LENGTH_LONG).show();
-            System.out.println("START ACTIVITY ERROR");
             e.printStackTrace();
         }
     }

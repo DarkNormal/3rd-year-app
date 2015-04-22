@@ -66,7 +66,6 @@ public class MainActivity extends ActionBarActivity {
     private ArrayAdapter<String> mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
-    private String mActivityTitle;
     //private Location usersLocation;
     public final String PREFS_NAME = "LoginPrefs";
 
@@ -114,11 +113,6 @@ public class MainActivity extends ActionBarActivity {
             swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-                    // Your code to refresh the list here.
-                    // Make sure you call swipeContainer.setRefreshing(false)
-                    // once the network request has completed successfully.
-                    //fetchTimelineAsync(0);
-                    System.out.println("REFRESHING----------------------------");
                     refresh();
                 }
             });
@@ -200,16 +194,34 @@ public class MainActivity extends ActionBarActivity {
 
 
     public void handleClicks() {
+        try {
+
+
         ListView list = (ListView) findViewById(R.id.restaurantListView);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                restaurantToPass = restaurants.get(position);
-                db.getReview(userID, restaurantToPass.getId());
-                Intent intent = new Intent(getApplicationContext(), RestaurantActivity.class);
-                startActivity(intent);
+                try
+                {
+                    restaurantToPass = restaurants.get(position);
+                    db.getReview(userID, restaurantToPass.getId());
+                    Intent intent = new Intent(MainActivity.this, RestaurantActivity.class);
+                    startActivity(intent);
+                }catch(Exception e)
+                {
+                    System.out.println("TRYING TO CATCH EXCEPTION------------------------------");
+                    e.printStackTrace();
+                }
+
+
+
             }
         });
+        }catch(Exception e)
+        {
+            System.out.println("TRYING TO CATCH EXCEPTION");
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -228,11 +240,6 @@ public class MainActivity extends ActionBarActivity {
         moveTaskToBack(true);
     }
 
-//    @Override
-//    protected void onPostCreate(Bundle savedInstanceState) {
-//        super.onPostCreate(savedInstanceState);
-//        mDrawerToggle.syncState();
-//    }
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -269,7 +276,6 @@ public class MainActivity extends ActionBarActivity {
 
                         h.postDelayed(new Runnable() {
                             public void run() {
-                                System.out.println("Size when result is returned is " + restaurants.size());
                                 determineActionBasedOnRestaurantsSize("Could not find any wheelchair accessible restaurants",
                                         "Wheelchair Accessible Restaurants");
                                 pd.dismiss();
@@ -278,7 +284,6 @@ public class MainActivity extends ActionBarActivity {
                         }, 3000);
 
                     } else if (item.getItemId() == R.id.search_by_type) {
-                        System.out.println("TYPE---------------------------");
                         AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
                         alert.setTitle("Please choose from the types of restaurants");
 
@@ -295,9 +300,8 @@ public class MainActivity extends ActionBarActivity {
 
                                 h.postDelayed(new Runnable() {
                                     public void run() {
-                                        System.out.println("Size when result is returned is " + restaurants.size());
                                         determineActionBasedOnRestaurantsSize("No restaurants matched that type",
-                                                type[pos] + " Restaurant");
+                                                type[pos] + " Restaurant's");
                                         pd.dismiss();
                                         // To dismiss the dialog
                                     }
@@ -314,12 +318,11 @@ public class MainActivity extends ActionBarActivity {
                     } else if (item.getItemId() == R.id.search_nearest) {
                         tryAgain = 0;
                         //query the database for restaurants that have wheelchair access
-                        restaurants = db.getRestaurants();
+                        restaurants = db.getRestaurants(53.284316, -6.391500);
                         pd = ProgressDialog.show(MainActivity.this, "Loading", "Searching for nearest restaurants");
 
                         h.postDelayed(new Runnable() {
                             public void run() {
-                                System.out.println("Size when result is returned is " + restaurants.size());
                                 determineActionBasedOnRestaurantsSize("Could not find any local restaurants",
                                         "Nearest Restaurants");
                                 pd.dismiss();
@@ -345,7 +348,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void determineActionBasedOnRestaurantsSize(String message, String title) {
-        System.out.println("Size in mainActivity is " + restaurants.size());
         if (restaurants.size() == 0) //meaning the type was not found
         {
             Toast.makeText(MainActivity.this, message,
@@ -360,23 +362,22 @@ public class MainActivity extends ActionBarActivity {
         String message = "";
 
         if (tryAgain == 0) {
-            message = "Nearest Restaurant";
-            restaurants = db.getRestaurants();
+            message = "Nearest Restaurant's";
+            restaurants = db.getRestaurants(53.284316, -6.391500);
         } else if (tryAgain == 1) {
-            message = "Wheelchair Accessible Restaurant";
+            message = "Wheelchair Accessible Restaurant's";
             restaurants = db.searchDatabaseForWheelchairFriendlyRestaurants();
         } else if (tryAgain == 2) {
-            message = "Restaurant called " + name;
+            message = "Restaurant's called " + name;
             restaurants = db.searchByName(name);
         } else {
-            message = type[pos] + " Restaurant";
+            message = type[pos] + " Restaurant's";
             restaurants = db.searchByType(type[pos]);
         }
         pd = ProgressDialog.show(MainActivity.this, "Loading", "Wait while loading...");
 
         h.postDelayed(new Runnable() {
             public void run() {
-                System.out.println("Size when result is returned is " + restaurants.size());
                 pd.dismiss();
                 // To dismiss the dialog
             }
@@ -388,16 +389,16 @@ public class MainActivity extends ActionBarActivity {
          message = "";
         reviews = db.getRating();
         if (tryAgain == 0) {
-            message = "Nearest Restaurant";
-            restaurants = db.getRestaurants();
+            message = "Nearest Restaurant's";
+            restaurants = db.getRestaurants(53.284316, -6.391500);
         } else if (tryAgain == 1) {
-            message = "Wheelchair Accessible Restaurant";
+            message = "Wheelchair Accessible Restaurant's";
             restaurants = db.searchDatabaseForWheelchairFriendlyRestaurants();
         } else if (tryAgain == 2) {
-            message = "Restaurant called " + name;
+            message = "Restaurant's called " + name;
             restaurants = db.searchByName(name);
         } else {
-            message = type[pos] + " Restaurant";
+            message = type[pos] + " Restaurant's";
             restaurants = db.searchByType(type[pos]);
         }
 
@@ -430,9 +431,8 @@ public class MainActivity extends ActionBarActivity {
 
                 h.postDelayed(new Runnable() {
                     public void run() {
-                        System.out.println("Size when result is returned is " + restaurants.size());
                         determineActionBasedOnRestaurantsSize("No restaurants matched that name",
-                                "Restaurant called " + name);
+                                "Restaurant's called " + name);
                         pd.dismiss();
                         // To dismiss the dialog
                     }

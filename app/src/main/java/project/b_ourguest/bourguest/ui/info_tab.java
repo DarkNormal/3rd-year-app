@@ -35,7 +35,7 @@ public class info_tab extends Fragment {
     Restaurant r = MainActivity.getRestaurantToPass();
     MapView mMapView;
     GoogleMap map;
-    DecimalFormat df = new DecimalFormat("##.###");
+    DecimalFormat df = new DecimalFormat("##.##");
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
@@ -50,8 +50,9 @@ public class info_tab extends Fragment {
 
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
         try {
-            MapsInitializer.initialize(this.getActivity());
+            MapsInitializer.initialize(getActivity());
         } catch (Exception e) {
+            System.out.println("PROBLEM WITH GOOGLE MAP");
             e.printStackTrace();
         }
         LatLng location = new LatLng(Double.parseDouble(MainActivity.getRestaurantToPass().getLatitude()),
