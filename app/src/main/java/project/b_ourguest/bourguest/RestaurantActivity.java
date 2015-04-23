@@ -1,10 +1,6 @@
 package project.b_ourguest.bourguest;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -13,13 +9,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import project.b_ourguest.bourguest.DB.DatabaseOperations;
@@ -149,7 +141,6 @@ public class RestaurantActivity extends ActionBarActivity {
         userReview = new UserReviews(userID,r.getId());
         review = new Reviews(r.getId(),rating);
         db.sendReview(review,userReview);
-        System.out.println("SENT to DBOPERATIONS-------------------");
         TextView t = (TextView) findViewById(R.id.reviewText);
         t.setVisibility(View.VISIBLE);
         t.setText("You're review of " + rating + " stars for " + convertToTitleCase(r.getName()) + " was submitted");

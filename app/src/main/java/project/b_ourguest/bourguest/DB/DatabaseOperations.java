@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.util.Pair;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.microsoft.windowsazure.mobileservices.ApiJsonOperationCallback;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.MobileServiceTable;
@@ -24,7 +23,6 @@ import project.b_ourguest.bourguest.Model.Restaurant;
 import project.b_ourguest.bourguest.Model.Reviews;
 import project.b_ourguest.bourguest.Model.UsersTable;
 import project.b_ourguest.bourguest.Model.tableObject;
-import project.b_ourguest.bourguest.Model.tableObjectBookings;
 import project.b_ourguest.bourguest.StartActivity;
 import project.b_ourguest.bourguest.Model.UserReviews;
 
@@ -40,7 +38,6 @@ public class DatabaseOperations {
     private static MobileServiceTable<UserReviews> userReviewsTable = StartActivity.getUserReviewsTable();
     private static MobileServiceTable<Bookings> bookingsTable = StartActivity.getBookingsTable();
     private static MobileServiceTable<tableObject> tableObjectsTable = StartActivity.getTableObjectsTable();
-    private static MobileServiceTable<tableObjectBookings> tableObjectBookingsTable = StartActivity.getTableObjectBookingsTable();
     private ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
     private ArrayList<Bookings> bookings = new ArrayList<Bookings>();
     private static ArrayList<Floorplan> floorplans = new ArrayList<Floorplan>();
@@ -139,7 +136,6 @@ public class DatabaseOperations {
                                 }
                                 else
                                     settings.edit().putBoolean("accountVerified", false).apply();
-                                System.out.println("HELOOOOOOOOOOOOOOOOO" + settings.getBoolean("accountVerified", true));
                                 signIn = true;
 
                             }
@@ -152,7 +148,6 @@ public class DatabaseOperations {
     public ArrayList<Bookings> getBookingsForIndividualUser(String userID)
     {
         u = userID;
-        System.out.println("USER ID IN DB CLASS : " + u);
         bookings.clear();
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -164,8 +159,6 @@ public class DatabaseOperations {
                             public void onCompleted(List<Bookings> result, int count,
                                                     Exception exception, ServiceFilterResponse response) {
                                 if (exception == null) {
-                                    System.out.println("NO ERROR WHEN SEARCHING FOR BOOKINGS");
-
                                     for (Bookings item : result) {
                                         bookings.add(item);
 
@@ -183,29 +176,22 @@ public class DatabaseOperations {
     }
 
     public ArrayList<Floorplan> getFloorplans(int t, int d, int m, int y, String restID) {
-
         intTime = t;
-
         day = d;
         month = m;
         year = y;
-
         floorplanTable.where().field("restID").eq(restID).execute(new TableQueryCallback<Floorplan>() {
             public void onCompleted(List<Floorplan> result, int count,
                                     Exception exception, ServiceFilterResponse response) {
-                System.out.println("SEARCHING FLOORPLAN TABLE");
                 if (exception == null) {
                     floorplans.clear();
                     tables.clear();
                     for (Floorplan item : result) {
                         floorplans.add(item);
-                        System.out.println("floorplan id: " + item.getId() + "\nHeight: " + item.getHeight() +
-                                "\nWidth: " + item.getWidth() + "\nNumObjects: " + item.getNumObjects() +
-                                "\nRestaurantID: " + item.getRestaurantID());
                         tableObjectsTable.where().field("floorplanID").eq(item.getId()).execute(new TableQueryCallback<tableObject>() {
                             public void onCompleted(List<tableObject> result, int count,
                                                     Exception exception, ServiceFilterResponse response) {
-                                System.out.println("SEARCHING tableObjectsTable");
+
                                 if (exception == null) {
 
                                     for (tableObject table : result) {
@@ -219,7 +205,6 @@ public class DatabaseOperations {
                                 }
                             }
                         });
-                        System.out.println("FINISHED GETTING TABLES");
                     }
                 } else {
                     System.out.println("ERROR SEARCHING FLOORPLAN TABLE");
@@ -227,7 +212,6 @@ public class DatabaseOperations {
                 }
             }
         });
-        System.out.println("day: " + day + " month " + month + " year " + year);
         return floorplans;
     }
 
@@ -263,7 +247,6 @@ public class DatabaseOperations {
                                     ServiceFilterResponse response) {
 
                 if (exception == null) {
-                    System.out.println("Inserted booking to booking tables");
                 } else {
                     System.out.println("didnt insert booking to booking tables");
                     exception.printStackTrace();
@@ -275,7 +258,7 @@ public class DatabaseOperations {
 
 
     public void getObjBookings() {
-        System.out.println(tables.size() + " is the tables array size and i is " + i);
+        //System.out.println(tables.size() + " is the tables array size and i is " + i);
 
         for (i = 0; i < tables.size(); i++) {
             ArrayList<Pair<String, String>> parameters = new ArrayList<Pair<String, String>>();
@@ -288,15 +271,15 @@ public class DatabaseOperations {
             mClient.invokeApi("tablebookings", null, "GET", parameters, new ApiJsonOperationCallback() {
                 @Override
                 public void onCompleted(JsonElement result, Exception e, ServiceFilterResponse response) {
-                    System.out.println(result);
+                    //System.out.println(result);
                     int tableIDJSON;
                     for (int j = 0; j < result.getAsJsonArray().size(); j++) {
                         try {
                             tableIDJSON = result.getAsJsonArray().get(j).getAsJsonObject().get("tabObjID").getAsInt();
-                            System.out.println(tableIDJSON + " is the json table id i got ya bish");
+                            //System.out.println(tableIDJSON + " is the json table id i got ya bish");
                             for (int k = 0; k < tables.size(); k++) {
                                 if (tables.get(k).getId() == tableIDJSON) {
-                                    System.out.println("got a match with JSON ya bish");
+                                    //System.out.println("got a match with JSON ya bish");
                                     tables.get(k).setColor(2);
                                 }
                             }
@@ -317,7 +300,6 @@ public class DatabaseOperations {
             public void onCompleted(List<Reviews> result, int count,
                                     Exception exception, ServiceFilterResponse response) {
                 if (exception == null) {
-                    System.out.println("Reviews found");
                     for (Reviews item : result) {
                         rev.add(item);
 
@@ -508,7 +490,6 @@ public class DatabaseOperations {
     }
 
     public static boolean isReviewExists() {
-        System.out.println(reviewExists + " IS REVIEWEXISTS");
         return reviewExists;
     }
 

@@ -2,13 +2,10 @@ package project.b_ourguest.bourguest;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -16,7 +13,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import project.b_ourguest.bourguest.Model.Bookings;
-import project.b_ourguest.bourguest.Model.Restaurant;
 import project.b_ourguest.bourguest.ui.ConfirmBookingFrag;
 
 /**
@@ -77,19 +73,6 @@ public class User_Bookings_Activity extends ActionBarActivity {
         }
     }
 
-//    public void handleClicks() {
-//        ListView list = (ListView) findViewById(R.id.restaurantListView);
-//        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-//                restaurantToPass = restaurants.get(position);
-//                db.getReview(userID,restaurantToPass.getId());
-//                Intent intent =  new Intent(getApplicationContext(),RestaurantActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//    }
-
     public void confirm(View v)
     {
         fragmentManager.beginTransaction().remove(frag).commit();
@@ -117,11 +100,6 @@ public class User_Bookings_Activity extends ActionBarActivity {
             {
                 v = getLayoutInflater().inflate(R.layout.bookings_listview_layout, parent, false);
             }
-            //populate the list
-
-
-
-
             TextView user = (TextView) v.findViewById(R.id.usersID);
             user.setText(bookings.get(position).getUserID());
 

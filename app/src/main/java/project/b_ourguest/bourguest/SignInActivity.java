@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
 
 import project.b_ourguest.bourguest.DB.DatabaseOperations;
 import project.b_ourguest.bourguest.Model.Bookings;
-import project.b_ourguest.bourguest.Model.Restaurant;
 
 /**
  * Created by Robbie on 30/01/2015.
@@ -48,7 +47,6 @@ public class SignInActivity extends Activity {
             //https://github.com/junal/Android-SharedPreferences/blob/master/SharedPreferences/src/junalontherun/com/Login.java
              SharedPreferences settings = getSharedPreferences("LoginPrefs", 0);
             String userID = settings.getString("email", "").toString();
-            System.out.println("USER ID WHEN SETTING CONTENT VIEW OF SIGN IN: " + userID);
             bookings = db.getBookingsForIndividualUser(userID);
             if (settings.getString("loggedIn", "").toString().equals("loggedIn")) {
                 Intent intent = new Intent(SignInActivity.this, MainActivity.class);
@@ -86,7 +84,6 @@ public class SignInActivity extends Activity {
                     if(db2.validateSignIn(email.getText().toString(),password.getText().toString()))
                     {
                         keepUserLoggedIn(email.getText().toString());
-                        System.out.println("USER ID IN SIGN IN ACTIVITY2: " + email.getText().toString());
                         bookings = db.getBookingsForIndividualUser(email.getText().toString());
                         Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                         startActivity(intent);
@@ -97,8 +94,6 @@ public class SignInActivity extends Activity {
                             Toast.LENGTH_LONG).show();
                 pd.dismiss();
                 }
-
-                // To dismiss the dialog
 
         }, 2000);
 

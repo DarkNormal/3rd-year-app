@@ -23,7 +23,6 @@ import project.b_ourguest.bourguest.BookingActivity;
 import project.b_ourguest.bourguest.DB.DatabaseOperations;
 import project.b_ourguest.bourguest.MainActivity;
 import project.b_ourguest.bourguest.R;
-import project.b_ourguest.bourguest.RestaurantActivity;
 
 public class booking_tab extends Fragment {
     private Calendar calendar = Calendar.getInstance();
@@ -52,7 +51,6 @@ public class booking_tab extends Fragment {
 
                 if(cal.getDate() != date){
                     date = cal.getDate();
-                    System.out.println("DATE: " + date);
                     day = dayOfMonth;
                     mon = month;
                     yr = year;
@@ -90,8 +88,6 @@ public class booking_tab extends Fragment {
         PopupMenu popup = new PopupMenu(getActivity(), v);
         //Inflating the Popup using xml file
         popup.getMenuInflater().inflate(R.menu.times_menu, popup.getMenu());
-
-        //registering popup with OnMenuItemClickListener
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 time = item.getTitle().toString();
@@ -101,7 +97,6 @@ public class booking_tab extends Fragment {
                 pd = ProgressDialog.show(getActivity(), "Loading", "Building floorplan");
                 h.postDelayed(new Runnable() {
                     public void run() {
-                        System.out.println("GET OBJBOOKINGS CALLED");
                         db.getObjBookings();
 
                         // To dismiss the dialog

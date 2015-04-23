@@ -15,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,14 +28,9 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.microsoft.windowsazure.mobileservices.MobileServiceTable;
 import com.squareup.picasso.Picasso;
-
 import project.b_ourguest.bourguest.DB.DatabaseOperations;
 import project.b_ourguest.bourguest.Model.Restaurant;
 import project.b_ourguest.bourguest.Model.Reviews;
@@ -164,8 +160,8 @@ public class MainActivity extends ActionBarActivity {
 
     public void addDrawerItems() {
         //http://blog.teamtreehouse.com/add-navigation-drawer-android
-        String[] osArray = {"My Bookings","Log out"};
-        mAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,osArray);
+        String[] options = {"My Bookings","Log out"};
+        mAdapter=new ArrayAdapter<String>(this,R.layout.navdrawerlayout,R.id.listItem,options);
         mDrawerList.setAdapter(mAdapter);
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -194,34 +190,16 @@ public class MainActivity extends ActionBarActivity {
 
 
     public void handleClicks() {
-        try {
-
-
         ListView list = (ListView) findViewById(R.id.restaurantListView);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                try
-                {
                     restaurantToPass = restaurants.get(position);
                     db.getReview(userID, restaurantToPass.getId());
                     Intent intent = new Intent(MainActivity.this, RestaurantActivity.class);
                     startActivity(intent);
-                }catch(Exception e)
-                {
-                    System.out.println("TRYING TO CATCH EXCEPTION------------------------------");
-                    e.printStackTrace();
-                }
-
-
-
             }
         });
-        }catch(Exception e)
-        {
-            System.out.println("TRYING TO CATCH EXCEPTION");
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -260,8 +238,9 @@ public class MainActivity extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
             //Creating the instance of PopupMenu
+            Context wrapper = new ContextThemeWrapper(MainActivity.this, R.style.MyPopupMenu);
             View v = (View) findViewById(R.id.action_search);
-            PopupMenu popup = new PopupMenu(getApplicationContext(), v);
+            PopupMenu popup = new PopupMenu(wrapper, v);
             //Inflating the Popup using xml file
             popup.getMenuInflater().inflate(R.menu.search_popup_menu, popup.getMenu());
 

@@ -21,7 +21,6 @@ import project.b_ourguest.bourguest.Model.Reviews;
 import project.b_ourguest.bourguest.Model.UserReviews;
 import project.b_ourguest.bourguest.Model.UsersTable;
 import project.b_ourguest.bourguest.Model.tableObject;
-import project.b_ourguest.bourguest.Model.tableObjectBookings;
 
 
 public class StartActivity extends ActionBarActivity{
@@ -35,7 +34,6 @@ public class StartActivity extends ActionBarActivity{
     private static MobileServiceTable<Bookings> bookingsTable;
     private static MobileServiceTable<Floorplan> floorplanTable;
     private static MobileServiceTable<tableObject> tableObjectsTable;
-    private static MobileServiceTable<tableObjectBookings> tableObjectBookingsTable;
     //private GoogleApiClient mGoogleApiClient;
     //private final static int REQUEST_RESOLVE_ERROR = 1001;
     //private LocationRequest mLocationRequest;
@@ -111,7 +109,6 @@ public class StartActivity extends ActionBarActivity{
             userReviewsTable = mClient.getTable(UserReviews.class);
             floorplanTable = mClient.getTable(Floorplan.class);
             tableObjectsTable = mClient.getTable(tableObject.class);
-            tableObjectBookingsTable = mClient.getTable(tableObjectBookings.class);
             bookingsTable = mClient.getTable(Bookings.class);
         }catch(Exception e)
         {
@@ -141,9 +138,6 @@ public class StartActivity extends ActionBarActivity{
     }
     public static MobileServiceTable<tableObject> getTableObjectsTable() {
         return tableObjectsTable;
-    }
-    public static MobileServiceTable<tableObjectBookings> getTableObjectBookingsTable() {
-        return tableObjectBookingsTable;
     }
     public static MobileServiceTable<Bookings> getBookingsTable(){
         return bookingsTable;

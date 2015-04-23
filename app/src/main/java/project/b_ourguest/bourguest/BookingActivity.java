@@ -113,11 +113,9 @@ public class BookingActivity extends ActionBarActivity {
                 sv.setId(View.generateViewId());
                 sv.setLayoutParams(rlp);
 
-                System.out.println("fplan size: " + fplan.size());
                 int rl = fplan.get(a).getHeight();
 
                 int cl = fplan.get(a).getWidth();
-                System.out.println(rl + "  " + cl);
                 TableLayout tableLayout = createTableLayout(rl, cl);
                 HorizontalScrollView hsv = new HorizontalScrollView(this);
                 hsv.addView(tableLayout);
@@ -186,8 +184,6 @@ public class BookingActivity extends ActionBarActivity {
             h.postDelayed(new Runnable() {
                 public void run() {
                     pd.dismiss();
-                    //check whether the insert was done successfully
-                    //if it wasnt tell the user of this error
                     Bookings b = new Bookings(selected.size(), userID,totalPeople,day,month,year,time,MainActivity.getRestaurantToPass().getId());
                     SignInActivity.getBookings().add(b);
                     Intent intent = new Intent(BookingActivity.this, User_Bookings_Activity.class);
@@ -231,7 +227,6 @@ public class BookingActivity extends ActionBarActivity {
         tableRowParams.setMargins(2, 2, 2, 2);
 
         tableRowParams.weight = 2;
-        System.out.println(k + " value of k");
         for (k = 0; k < rowCount; k++) {
 
             TableRow tableRow = new TableRow(this);

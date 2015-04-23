@@ -3,7 +3,6 @@ package project.b_ourguest.bourguest.ui;
 /**
  * Created by Mark on 3/28/2015.
  */
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
