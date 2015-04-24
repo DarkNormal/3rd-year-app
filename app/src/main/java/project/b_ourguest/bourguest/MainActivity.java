@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.LruCache;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,14 +25,18 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.Volley;
+
 import java.util.ArrayList;
 import java.util.List;
-import com.squareup.picasso.Picasso;
 import project.b_ourguest.bourguest.DB.DatabaseOperations;
 import project.b_ourguest.bourguest.Model.Restaurant;
 import project.b_ourguest.bourguest.Model.Reviews;
@@ -41,7 +47,10 @@ import project.b_ourguest.bourguest.Model.Reviews;
  */
 public class MainActivity extends ActionBarActivity {
 
-    //azure services
+    private RequestQueue mRequestQueue;
+    private ImageLoader mImageLoader;
+    private static MainActivity mInstance;
+    private static Context mAppContext;
     DatabaseOperations db = new DatabaseOperations();
     private Handler h = new Handler();
     private ProgressDialog pd;
@@ -53,7 +62,7 @@ public class MainActivity extends ActionBarActivity {
     private String userID;
     private SwipeRefreshLayout swipeContainer;
     private static Restaurant restaurantToPass;
-    String[] type = {"American", "BBQ", "Chinese", "Family Friendly", "Healthy Option", "Indian", "Italian",
+    String[] type = {"American", "BBQ", "Chinese", "Family Friendly", "Healthy Option", "Indian", "Italian","Pizza",
             "Portuguese", "Seafood", "Something Different", "Steakhouse", "Thai", "Traditional"};
     int pos = 0;
     String name = "";
@@ -71,7 +80,18 @@ public class MainActivity extends ActionBarActivity {
         if (!isNetworkAvailable())
             setContentView(R.layout.no_network_available);
         else {
-
+            mInstance = this;
+            this.setAppContext(getApplicationContext());
+            mRequestQueue = Volley.newRequestQueue(MainActivity.this);
+            mImageLoader = new ImageLoader(mRequestQueue, new ImageLoader.ImageCache() {
+                private final LruCache<String, Bitmap> mCache = new LruCache<String, Bitmap>(10);
+                public void putBitmap(String url, Bitmap bitmap) {
+                    mCache.put(url, bitmap);
+                }
+                public Bitmap getBitmap(String url) {
+                    return mCache.get(url);
+                }
+            });
             displayRestaurants("Nearest Restaurants");
         }
         SharedPreferences settings = getSharedPreferences("LoginPrefs", 0);
@@ -432,6 +452,15 @@ public class MainActivity extends ActionBarActivity {
     public static Restaurant getRestaurantToPass() {
         return restaurantToPass;
     }
+    public static MainActivity getInstance(){
+        return mInstance;
+    }
+    public static Context getAppContext() {
+        return mAppContext;
+    }
+    public void setAppContext(Context mAppContext) {
+        this.mAppContext = mAppContext;
+    }
 
     public String convertToTitleCase(String name) {
         String[] partOfName = name.split(" ");
@@ -462,7 +491,8 @@ public class MainActivity extends ActionBarActivity {
             {
                 v = getLayoutInflater().inflate(R.layout.restaurants_listview_layout, parent, false);
             }
-            //populate the list
+            if(mImageLoader == null)
+                mImageLoader = VolleySingleton.getInstance().getImageLoader();
 
             Restaurant r = restaurants.get(position);
             rat = (TextView) v.findViewById(R.id.restaurantRating);
@@ -487,14 +517,12 @@ public class MainActivity extends ActionBarActivity {
             else
                 dist.setText("greater than 3 km from current location");
 
+            NetworkImageView im = (NetworkImageView) v.findViewById(R.id.restaurantImage);
+            if(r.getAppImage() != null)
+                im.setImageUrl(r.getAppImage(),mImageLoader);
 
-            ImageView im = (ImageView) v.findViewById(R.id.restaurantImage);
-            Picasso.with(MainActivity.this)
-                    .load(r.getAppImage())
-                    .placeholder(R.drawable.ic_launcher)
-                    .resize(100,100)
-                    .into(im);
-
+            im.setDefaultImageResId(R.drawable.ic_launcher);
+            im.setErrorImageResId(R.drawable.ic_launcher);
             return v;
         }
     }

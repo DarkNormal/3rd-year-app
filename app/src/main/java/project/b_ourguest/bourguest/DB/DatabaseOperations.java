@@ -79,7 +79,7 @@ public class DatabaseOperations {
                                     result.getAsJsonArray().get(j).getAsJsonObject().get("latitude").getAsString(),
                                     result.getAsJsonArray().get(j).getAsJsonObject().get("type1").toString(),
                                     result.getAsJsonArray().get(j).getAsJsonObject().get("wheelchair").getAsBoolean(),
-                                    result.getAsJsonArray().get(j).getAsJsonObject().get("appImage").toString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("appImage").getAsString(),
                                     result.getAsJsonArray().get(j).getAsJsonObject().get("type2").toString(),
                                     result.getAsJsonArray().get(j).getAsJsonObject().get("type3").toString(),
                                     result.getAsJsonArray().get(j).getAsJsonObject().get("phoneNum").getAsString(),
