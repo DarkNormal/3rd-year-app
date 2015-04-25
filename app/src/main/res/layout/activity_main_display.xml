@@ -35,7 +35,6 @@
             android:listSelector="@android:color/transparent"
             android:cacheColorHint="@android:color/transparent"
             android:headerDividersEnabled="true"
-            android:background="#F5F5F5"
             android:footerDividersEnabled="true"
             android:layout_alignParentStart="true"
              />

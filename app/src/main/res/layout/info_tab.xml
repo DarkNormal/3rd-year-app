@@ -14,6 +14,7 @@
         android:id="@+id/scrollView"
         android:layout_centerVertical="true"
         android:layout_below="@+id/mapView"
+        android:background="#ffffff"
         >
 
     <RelativeLayout

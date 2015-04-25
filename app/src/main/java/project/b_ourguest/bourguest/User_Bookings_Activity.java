@@ -55,12 +55,24 @@ public class User_Bookings_Activity extends ActionBarActivity {
             bundle.putInt("numPeople", numPeople);
             bundle.putInt("year", year);
             bundle.putLong("timeInMillis",timeInMillis);
-            fragmentManager = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            frag = new ConfirmBookingFrag();
-            frag.setArguments(bundle);
-            fragmentTransaction.add(R.id.fragmentContainer, frag, "CONFIRM BOOKING");
-            fragmentTransaction.commit();
+            frag = (ConfirmBookingFrag) getFragmentManager().findFragmentByTag("frag");
+            if(frag == null)
+            {
+                fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                frag = new ConfirmBookingFrag();
+                frag.setArguments(bundle);
+                fragmentTransaction.add(R.id.fragmentContainer, frag, "frag");
+                fragmentTransaction.commit();
+            }
+            else
+            {
+                fragmentManager = getFragmentManager();
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                ft.replace(R.id.fragmentContainer, frag);
+                ft.commit();
+            }
+
         }
         else {
             if (bookings.size() == 0) {
