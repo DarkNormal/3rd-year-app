@@ -140,7 +140,7 @@ public class BookingActivity extends ActionBarActivity {
             setContentView(R.layout.no_floorplan_layout);
             TextView t = (TextView) findViewById(R.id.noFloorplanToDisplay);
             t.setText(convertToTitleCase(MainActivity.getRestaurantToPass().getName()) +
-                    " has no floorplan to display. Below is there phone number if you wish to contact them.");
+                    " has no floorplan to display. Below is their phone number if you wish to contact them.");
 
             TextView t2 = (TextView) findViewById(R.id.restNum);
             t2.setTextColor(Color.parseColor("#ff8bd1ff"));

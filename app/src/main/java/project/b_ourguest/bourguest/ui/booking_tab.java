@@ -41,9 +41,8 @@ public class booking_tab extends Fragment {
         accountVerified = settings.getBoolean("accountVerified", false);
         cal = (CalendarView) v.findViewById(R.id.calendar);
         //The background color for the selected week.
-        cal.setSelectedWeekBackgroundColor(Color.parseColor("#ff2b8bff"));
-
-
+        cal.setSelectedWeekBackgroundColor(Color.parseColor("#00C853"));
+        cal.setWeekSeparatorLineColor(Color.parseColor("#ff2b8bff"));
         date = cal.getDate();
         cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {

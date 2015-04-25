@@ -180,7 +180,7 @@ public class DatabaseOperations {
         day = d;
         month = m;
         year = y;
-        floorplanTable.where().field("restID").eq(restID).execute(new TableQueryCallback<Floorplan>() {
+        floorplanTable.where().field("restID").eq(restID).and().field("active").eq(true).execute(new TableQueryCallback<Floorplan>() {
             public void onCompleted(List<Floorplan> result, int count,
                                     Exception exception, ServiceFilterResponse response) {
                 if (exception == null) {
