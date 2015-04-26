@@ -35,16 +35,19 @@ public class SignInActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //http://stackoverflow.com/questions/28265136/
-        //scrollview-not-displaying-all-elements-of-a-relative-layout?noredirect=1#comment44886941_28265136
         if(!isNetworkAvailable())
             setContentView(R.layout.no_network_available);
         else
         {
             setContentView(R.layout.login_layout);
-
-            //code for SharedPreferences was taken from
-            //https://github.com/junal/Android-SharedPreferences/blob/master/SharedPreferences/src/junalontherun/com/Login.java
+            /***************************************************************************************
+             *    Title: Android-SharedPreferences
+             *    Author: junal
+             *    Date: 20/1/2015
+             *    Code version: 1
+             *    Availability: https://github.com/junal/Android-SharedPreferences/blob/master/SharedPreferences/src/junalontherun/com/Login.java
+             *
+             ***************************************************************************************/
              SharedPreferences settings = getSharedPreferences("LoginPrefs", 0);
             String userID = settings.getString("email", "").toString();
             bookings = db.getBookingsForIndividualUser(userID);
@@ -56,7 +59,6 @@ public class SignInActivity extends Activity {
         }
     }
     private boolean isNetworkAvailable() {
-        //http://stackoverflow.com/questions/4238921/detect-whether-there-is-an-internet-connection-available-on-android
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();

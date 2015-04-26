@@ -46,7 +46,15 @@ public class booking_tab extends Fragment {
         date = cal.getDate();
         cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                //http://stackoverflow.com/questions/12641250/android-calendarview-ondatechangelistener?rq=1
+
+                /***************************************************************************************
+                 *    Title: Android: CalendarView OnDateChangeLIstener
+                 *    Author: Djomla1989
+                 *    Date: 17/2/2015
+                 *    Code version: 1
+                 *    Availability: http://stackoverflow.com/questions/12641250/android-calendarview-ondatechangelistener?rq=1
+                 *
+                 ***************************************************************************************/
 
                 if(cal.getDate() != date){
                     date = cal.getDate();

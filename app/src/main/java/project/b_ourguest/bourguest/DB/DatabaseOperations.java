@@ -54,8 +54,15 @@ public class DatabaseOperations {
     public DatabaseOperations(Context ctx) {
         c = ctx;
     }
-    //http://azure.microsoft.com/en-us/documentation/articles/mobile-services-android-how-to-use-client-library/
-    //https://msdn.microsoft.com/library/azure/jj554212.aspx
+    /***************************************************************************************
+     *    Title: How to use the Android client library for Mobile Services
+     *    Author: RickSaling
+     *    Date: 3/1/2015
+     *    Code version: 1
+     *    Availability: http://azure.microsoft.com/en-us/documentation/articles/mobile-services-android-how-to-use-client-library/
+     *
+     ***************************************************************************************/
+
     private int day, month, year, intTime, i = 0;
     String u;
 
@@ -258,8 +265,6 @@ public class DatabaseOperations {
 
 
     public void getObjBookings() {
-        //System.out.println(tables.size() + " is the tables array size and i is " + i);
-
         for (i = 0; i < tables.size(); i++) {
             ArrayList<Pair<String, String>> parameters = new ArrayList<Pair<String, String>>();
             parameters.add(new Pair<>("tabob", Integer.toString(tables.get(i).getId())));
@@ -271,15 +276,12 @@ public class DatabaseOperations {
             mClient.invokeApi("tablebookings", null, "GET", parameters, new ApiJsonOperationCallback() {
                 @Override
                 public void onCompleted(JsonElement result, Exception e, ServiceFilterResponse response) {
-                    //System.out.println(result);
                     int tableIDJSON;
                     for (int j = 0; j < result.getAsJsonArray().size(); j++) {
                         try {
                             tableIDJSON = result.getAsJsonArray().get(j).getAsJsonObject().get("tabObjID").getAsInt();
-                            //System.out.println(tableIDJSON + " is the json table id i got ya bish");
                             for (int k = 0; k < tables.size(); k++) {
                                 if (tables.get(k).getId() == tableIDJSON) {
-                                    //System.out.println("got a match with JSON ya bish");
                                     tables.get(k).setColor(2);
                                 }
                             }
@@ -398,7 +400,7 @@ public class DatabaseOperations {
                     public void onCompleted(List<UserReviews> result, int count,
                                             Exception exception, ServiceFilterResponse response) {
                         if (exception == null) {
-                            if (result.size() == 0) //meaning the name typed was not found
+                            if (result.size() == 0)
                             {
                                 reviewExists = false;
                                 System.out.println(reviewExists + " no review existed");

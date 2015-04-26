@@ -99,7 +99,15 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private boolean isNetworkAvailable() {
-        //http://stackoverflow.com/questions/4238921/detect-whether-there-is-an-internet-connection-available-on-android
+
+        /***************************************************************************************
+         *    Title: Detect whether there is an Internet connection available on Android
+         *    Author: Alexandre Jasmin
+         *    Date: 28/2/2015
+         *    Code version: 2
+         *    Availability: http://stackoverflow.com/questions/4238921/detect-whether-there-is-an-internet-connection-available-on-android
+         *
+         ***************************************************************************************/
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
@@ -122,8 +130,14 @@ public class MainActivity extends ActionBarActivity {
             addDrawerItems();
             handleClicks();
             setUpDrawer();
-
-            //https://github.com/codepath/android_guides/wiki/Implementing-Pull-to-Refresh-Guide
+            /***************************************************************************************
+             *    Title: Implementing Pull to Refresh Guide
+             *    Author: Nathan Esquenazi
+             *    Date: 14/4/2015
+             *    Code version: 20
+             *    Availability: https://github.com/codepath/android_guides/wiki/Implementing-Pull-to-Refresh-Guide
+             *
+             ***************************************************************************************/
              swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
             // Setup refresh listener which triggers new data loading
             swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -179,7 +193,14 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void addDrawerItems() {
-        //http://blog.teamtreehouse.com/add-navigation-drawer-android
+        /***************************************************************************************
+         *    Title: How to Add a Navigation Drawer in Android
+         *    Author: Ben Jakuben
+         *    Date: 1/4/2015
+         *    Code version: 1
+         *    Availability: http://blog.teamtreehouse.com/add-navigation-drawer-android
+         *
+         ***************************************************************************************/
         String[] options = {"My Bookings","Log out"};
         mAdapter=new ArrayAdapter<String>(this,R.layout.navdrawerlayout,R.id.listItem,options);
         mDrawerList.setAdapter(mAdapter);

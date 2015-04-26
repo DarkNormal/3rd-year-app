@@ -41,10 +41,7 @@ public class info_tab extends Fragment {
         View view = inflater.inflate(R.layout.info_tab, container, false);
         mMapView = (MapView) view.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
-
         map = mMapView.getMap();
-
-        //map.getUiSettings().setMyLocationButtonEnabled(false);
         map.setMyLocationEnabled(true);
 
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls

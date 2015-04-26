@@ -45,8 +45,14 @@ public class StartActivity extends ActionBarActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // code for making the start activity full screen
-        // http://www.techrepublic.com/article/give-android-users-an-immersive-experience-by-using-kitkats-full-screen-decor-flags/
+        /***************************************************************************************
+         *    Title: Give Android users an immersive experience by using KitKat's full screen decor flags
+         *    Author: William J. Francis
+         *    Date: 20/12/2015
+         *    Code version: 1
+         *    Availability: http://www.techrepublic.com/article/give-android-users-an-immersive-experience-by-using-kitkats-full-screen-decor-flags/
+         *
+         ***************************************************************************************/
         initiateClient();
         getWindow().getDecorView().setSystemUiVisibility(
                                                          View.SYSTEM_UI_FLAG_LAYOUT_STABLE

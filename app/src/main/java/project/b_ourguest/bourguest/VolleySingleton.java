@@ -1,6 +1,5 @@
 package project.b_ourguest.bourguest;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.LruCache;
 
@@ -12,7 +11,14 @@ import com.android.volley.toolbox.Volley;
  * Created by Robbie on 24/04/2015.
  */
 
-//http://cypressnorth.com/mobile-application-development/setting-android-google-volley-imageloader-networkimageview/
+/***************************************************************************************
+ *    Title: Setting up the Android Google Volley ImageLoader for NetworkImageView
+ *    Author: Matthew Mombrea
+ *    Date: 24/4/2015
+ *    Code version: 1
+ *    Availability: http://cypressnorth.com/mobile-application-development/setting-android-google-volley-imageloader-networkimageview/
+ *
+ ***************************************************************************************/
 
 public class VolleySingleton {
     private static VolleySingleton mInstance = null;
