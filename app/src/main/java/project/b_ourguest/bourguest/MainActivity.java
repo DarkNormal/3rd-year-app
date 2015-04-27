@@ -391,7 +391,7 @@ public class MainActivity extends ActionBarActivity {
 
         if (tryAgain == 0) {
             message = "Nearest Restaurant's";
-            restaurants = db.getRestaurants(53.284316, -6.391500);
+            restaurants = db.getRestaurants(StartActivity.getLat(), StartActivity.getLon());
         } else if (tryAgain == 1) {
             message = "Wheelchair Accessible Restaurant's";
             restaurants = db.searchDatabaseForWheelchairFriendlyRestaurants();

@@ -196,7 +196,6 @@ public class StartActivity extends ActionBarActivity implements
 
     @Override
      public void onConnected(Bundle bundle) {
-     System.out.println("OnConnected---------------------");
      loc = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
      if(loc != null)

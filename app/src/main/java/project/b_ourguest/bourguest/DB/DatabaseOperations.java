@@ -124,13 +124,13 @@ public class DatabaseOperations {
     }
 
     public void getDistanceBasedOnUsersLocation(Restaurant item) {
-        distance = 6371 * Math.acos(Math.cos(Math.toRadians(Double.parseDouble(item.getLongitude())))
-                * Math.cos(Math.toRadians(lon))
-                * Math.cos(Math.toRadians(lat)
-                - Math.toRadians(Double.parseDouble(item.getLatitude())))
-                + Math.sin(Math.toRadians(Double.parseDouble(item.getLongitude())))
-                * Math.sin(Math.toRadians(lon)));
-    }
+        double dLat = Math.toRadians(Double.parseDouble(item.getLatitude()) - lat);
+        double dLon = Math.toRadians(Double.parseDouble(item.getLongitude()) - lon);
+
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(Math.toRadians(lat)) * Math.cos(Math.toRadians(Double.parseDouble(item.getLatitude())));
+        double c = 2 * Math.asin(Math.sqrt(a));
+        distance = 6371 * c;
+     }
 
     public boolean validateSignIn(String email, String password) {
         usersTable.where().field("id").eq(email)

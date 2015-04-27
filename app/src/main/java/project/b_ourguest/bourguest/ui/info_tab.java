@@ -91,12 +91,11 @@ public class info_tab extends Fragment {
             TextView text = (TextView) view.findViewById(R.id.distanceFromYou);
             text.setVisibility(View.GONE);
             dist.setVisibility(View.GONE);
-            RelativeLayout rel = (RelativeLayout) view.findViewById(R.id.infoTabRelativLayout);
             RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.MATCH_PARENT,
-                    RelativeLayout.LayoutParams.FILL_PARENT);
-            rlp.addRule(RelativeLayout.BELOW, bio.getId());
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
             rlp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            rlp.addRule(RelativeLayout.BELOW, bio.getId());
             TextView t = (TextView) view.findViewById(R.id.contactDetails);
             t.setLayoutParams(rlp);
         }
