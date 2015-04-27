@@ -104,13 +104,10 @@ public class StartActivity extends ActionBarActivity implements
                             , StartActivity.this);
                     reviews = db.getRating();
                     restaurants = db.getRestaurants(loc.getLatitude(), loc.getLongitude());
-
-
                 }
                 catch(Exception e){
-                    Intent gpsOptionsIntent = new Intent(
-                            android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    startActivity(gpsOptionsIntent);
+                    Toast.makeText(getApplicationContext(), "Please enable location services",
+                            Toast.LENGTH_LONG).show();
                     DatabaseOperations db = new DatabaseOperations();
                     reviews = db.getRating();
                 }
@@ -161,8 +158,6 @@ public class StartActivity extends ActionBarActivity implements
             bookingsTable = mClient.getTable(Bookings.class);
         }catch(Exception e)
         {
-            Toast.makeText(getApplicationContext(), "Client in StartActivity.java could not be initiated",
-                           Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
     }
