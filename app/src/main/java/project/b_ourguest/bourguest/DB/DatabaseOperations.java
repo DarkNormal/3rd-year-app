@@ -1,6 +1,7 @@
 package project.b_ourguest.bourguest.DB;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Pair;
@@ -23,6 +24,7 @@ import project.b_ourguest.bourguest.Model.Restaurant;
 import project.b_ourguest.bourguest.Model.Reviews;
 import project.b_ourguest.bourguest.Model.UsersTable;
 import project.b_ourguest.bourguest.Model.tableObject;
+import project.b_ourguest.bourguest.SignInActivity;
 import project.b_ourguest.bourguest.StartActivity;
 import project.b_ourguest.bourguest.Model.UserReviews;
 
@@ -46,6 +48,7 @@ public class DatabaseOperations {
     private boolean signIn;
     private static int signUpCode;
     private double distance = 0;
+    private static double lat, lon;
     private String selectedArray = "";
     private ArrayList<Reviews> rev = new ArrayList<Reviews>();
     private Context c;
@@ -54,6 +57,12 @@ public class DatabaseOperations {
     public DatabaseOperations(Context ctx) {
         c = ctx;
     }
+    public DatabaseOperations(double latitude, double longitude,Context ctx) {
+        lat = latitude;
+        lon = longitude;
+        c = ctx;
+    }
+
     /***************************************************************************************
      *    Title: How to use the Android client library for Mobile Services
      *    Author: RickSaling
@@ -116,11 +125,11 @@ public class DatabaseOperations {
 
     public void getDistanceBasedOnUsersLocation(Restaurant item) {
         distance = 6371 * Math.acos(Math.cos(Math.toRadians(Double.parseDouble(item.getLongitude())))
-                * Math.cos(Math.toRadians(-6.391252))
-                * Math.cos(Math.toRadians(53.284412)
+                * Math.cos(Math.toRadians(lon))
+                * Math.cos(Math.toRadians(lat)
                 - Math.toRadians(Double.parseDouble(item.getLatitude())))
                 + Math.sin(Math.toRadians(Double.parseDouble(item.getLongitude())))
-                * Math.sin(Math.toRadians(-6.391252)));
+                * Math.sin(Math.toRadians(lon)));
     }
 
     public boolean validateSignIn(String email, String password) {
@@ -137,11 +146,9 @@ public class DatabaseOperations {
                             } else {
                                 SharedPreferences settings = c.getSharedPreferences("LoginPrefs", 0);
 
-                                if(result.get(0).isAccountVerified() == true)
-                                {
+                                if (result.get(0).isAccountVerified() == true) {
                                     settings.edit().putBoolean("accountVerified", true).apply();
-                                }
-                                else
+                                } else
                                     settings.edit().putBoolean("accountVerified", false).apply();
                                 signIn = true;
 
@@ -464,7 +471,7 @@ public class DatabaseOperations {
                                     result.getAsJsonArray().get(j).getAsJsonObject().get("latitude").getAsString(),
                                     result.getAsJsonArray().get(j).getAsJsonObject().get("type1").toString(),
                                     result.getAsJsonArray().get(j).getAsJsonObject().get("wheelchair").getAsBoolean(),
-                                    result.getAsJsonArray().get(j).getAsJsonObject().get("appImage").toString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("appImage").getAsString(),
                                     result.getAsJsonArray().get(j).getAsJsonObject().get("type2").toString(),
                                     result.getAsJsonArray().get(j).getAsJsonObject().get("type3").toString(),
                                     result.getAsJsonArray().get(j).getAsJsonObject().get("phoneNum").getAsString(),

@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -61,81 +62,71 @@ public class BookingActivity extends ActionBarActivity {
         blue = new PorterDuffColorFilter(Color.argb(220,41, 121, 255), PorterDuff.Mode.SRC_ATOP);
         RelativeLayout.LayoutParams rlp;
         ScrollView scroll = new ScrollView(this);
+        scroll.setBackgroundColor(Color.WHITE);
         setTitle(convertToTitleCase(MainActivity.getRestaurantToPass().getName()));
         RelativeLayout rel = new RelativeLayout(this);
-        rel.setBackgroundColor(Color.WHITE);
         rlp = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
-        rlp.setMargins(10,5,0,0);
+
+
 
         im = new ImageView(this);
         im.setImageResource(R.drawable.blank2);
         im.setId(View.generateViewId());
         im.setColorFilter(Color.argb(100,255,0,0));
-        im.setLayoutParams(rlp);
-        rlp = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        im.setPadding(10,10,0,0);
 
-        rlp.addRule(RelativeLayout.RIGHT_OF,im.getId());
         te = new TextView(this);
         te.setTextAppearance(this, android.R.style.TextAppearance_Large);
         te.setId(View.generateViewId());
         te.setText("Booked");
-        te.setLayoutParams(rlp);
-        rel.addView(im);
-        rel.addView(te);
-        //
-        rlp = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        rlp.setMargins(10,15,0,0);
+        LinearLayout lin1 = new LinearLayout(this);
+        lin1.setId(View.generateViewId());
+        lin1.addView(im);
+        lin1.addView(te);
+        rel.addView(lin1);
 
-        rlp.addRule(RelativeLayout.BELOW, im.getId());
+        rlp.addRule(RelativeLayout.BELOW, lin1.getId());
         im = new ImageView(this);
         im.setImageResource(R.drawable.blank2);
         im.setId(View.generateViewId());
         im.setColorFilter(green);
-        im.setLayoutParams(rlp);
-        rlp = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        ;
-        rlp.addRule(RelativeLayout.BELOW, te.getId());
-        rlp.addRule(RelativeLayout.RIGHT_OF,im.getId());
+        im.setPadding(10,10,0,0);
+
         te = new TextView(this);
         te.setTextAppearance(this, android.R.style.TextAppearance_Large);
         te.setId(View.generateViewId());
         te.setText("Available");
         te.setLayoutParams(rlp);
-        rel.addView(im);
-        rel.addView(te);
+        LinearLayout lin2 = new LinearLayout(this);
+        lin2.setId(View.generateViewId());
+        lin2.addView(im);
+        lin2.addView(te);
+        lin2.setLayoutParams(rlp);
+        rel.addView(lin2);
         //
         rlp = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
-        rlp.setMargins(10,15,0,0);
+        rlp.addRule(RelativeLayout.BELOW, lin2.getId());
 
-        rlp.addRule(RelativeLayout.BELOW, im.getId());
         im = new ImageView(this);
         im.setImageResource(R.drawable.blank2);
         im.setId(View.generateViewId());
         im.setColorFilter(blue);
-        im.setLayoutParams(rlp);
-        rlp = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        im.setPadding(10,10,0,0);
 
-        rlp.addRule(RelativeLayout.BELOW, te.getId());
-        rlp.addRule(RelativeLayout.RIGHT_OF,im.getId());
         te = new TextView(this);
         te.setTextAppearance(this, android.R.style.TextAppearance_Large);
         te.setId(View.generateViewId());
         te.setText("Selected");
-        te.setLayoutParams(rlp);
-        rel.addView(im);
-        rel.addView(te);
+        LinearLayout lin3 = new LinearLayout(this);
+        lin3.setId(View.generateViewId());
+        lin3.addView(im);
+        lin3.addView(te);
+        lin3.setLayoutParams(rlp);
+        rel.addView(lin3);
         if (fplan.size() == 0) {
             setContentView(R.layout.no_floorplan_layout);
             TextView t = (TextView) findViewById(R.id.noFloorplanToDisplay);
@@ -161,7 +152,7 @@ public class BookingActivity extends ActionBarActivity {
                             RelativeLayout.LayoutParams.WRAP_CONTENT,
                             RelativeLayout.LayoutParams.WRAP_CONTENT);
                     rlp.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                    rlp.addRule(RelativeLayout.BELOW, te.getId());
+                    rlp.addRule(RelativeLayout.BELOW, lin3.getId());
                     te = new TextView(this);
                     te.setTextAppearance(this, android.R.style.TextAppearance_Large);
                     te.setId(View.generateViewId());
@@ -370,14 +361,14 @@ public class BookingActivity extends ActionBarActivity {
                             im.setColorFilter(green);
                             im.setContentDescription("" + j);
                             if (tableview.get(j).getColor() == 2) {     //sets color filter to red if any are booked (with color of 2)
-                                im.setColorFilter(Color.argb(100,255,0,0));
+                                im.setColorFilter(Color.argb(100, 255, 0, 0));
                             }
                             else {
                                 im.setOnClickListener(new View.OnClickListener() {
                                     public void onClick(View v) {
                                         //this method of changing color filters cuts out the image swaps we were doing
                                         //if we didn't do this we would have 30+ images to swap through, red green and blue
-                                        final PorterDuffColorFilter blue = new PorterDuffColorFilter(Color.argb(220,41, 121, 255), PorterDuff.Mode.SRC_ATOP);
+                                        final PorterDuffColorFilter blue = new PorterDuffColorFilter(Color.argb(220, 41, 121, 255), PorterDuff.Mode.SRC_ATOP);
                                         if (im.getColorFilter().equals(green)) {
                                             im.setColorFilter(blue);
                                             totalPeople += Integer.parseInt(im.getTag().toString());

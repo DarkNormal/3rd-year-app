@@ -53,6 +53,7 @@ public class SignInActivity extends Activity {
             bookings = db.getBookingsForIndividualUser(userID);
             if (settings.getString("loggedIn", "").toString().equals("loggedIn")) {
                 Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+
                 startActivity(intent);
                 finish();
             }
@@ -75,6 +76,7 @@ public class SignInActivity extends Activity {
                 {
                     keepUserLoggedIn(email.getText().toString());
                     Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+
                     startActivity(intent);
                     finish();
 
@@ -88,6 +90,7 @@ public class SignInActivity extends Activity {
                         keepUserLoggedIn(email.getText().toString());
                         bookings = db.getBookingsForIndividualUser(email.getText().toString());
                         Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+
                         startActivity(intent);
                         finish();
                     }
@@ -127,6 +130,7 @@ public class SignInActivity extends Activity {
                             keepUserLoggedIn(email.getText().toString());
                             bookings = db.getBookingsForIndividualUser(email.getText().toString());
                             Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+
                             startActivity(intent);
                             finish();
                         } else if (DatabaseOperations.getSignUpCode() == 400) {

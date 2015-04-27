@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -29,6 +30,7 @@ import java.text.DecimalFormat;
 import project.b_ourguest.bourguest.MainActivity;
 import project.b_ourguest.bourguest.R;
 import project.b_ourguest.bourguest.Model.Restaurant;
+import project.b_ourguest.bourguest.StartActivity;
 
 public class info_tab extends Fragment {
     Restaurant r = MainActivity.getRestaurantToPass();
@@ -39,10 +41,14 @@ public class info_tab extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.info_tab, container, false);
-        mMapView = (MapView) view.findViewById(R.id.mapView);
-        mMapView.onCreate(savedInstanceState);
-        map = mMapView.getMap();
-        map.setMyLocationEnabled(true);
+        try {
+            mMapView = (MapView) view.findViewById(R.id.mapView);
+            mMapView.onCreate(savedInstanceState);
+            map = mMapView.getMap();
+            map.setMyLocationEnabled(true);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
         try {
@@ -78,8 +84,30 @@ public class info_tab extends Fragment {
 
         TextView bio = (TextView) view.findViewById(R.id.restaurantBio);
         bio.setText(r.getBio());
+
         TextView dist = (TextView) view.findViewById(R.id.distance);
-        dist.setText(df.format(r.getDistance()) + "km from you");
+        if(StartActivity.getLat() == 0 && StartActivity.getLon() == 0)
+        {
+            TextView text = (TextView) view.findViewById(R.id.distanceFromYou);
+            text.setVisibility(View.GONE);
+            dist.setVisibility(View.GONE);
+            RelativeLayout rel = (RelativeLayout) view.findViewById(R.id.infoTabRelativLayout);
+            RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.FILL_PARENT);
+            rlp.addRule(RelativeLayout.BELOW, bio.getId());
+            rlp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            TextView t = (TextView) view.findViewById(R.id.contactDetails);
+            t.setLayoutParams(rlp);
+        }
+        else
+        {
+            dist.setText(df.format(r.getDistance()) + "km from you");
+        }
+
+
+
+
         final TextView phone = (TextView) view.findViewById(R.id.phoneNum);
         phone.setText(r.getPhoneNum());
         phone.setOnClickListener(new View.OnClickListener() {

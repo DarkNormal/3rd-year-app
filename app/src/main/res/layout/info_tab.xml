@@ -24,29 +24,36 @@
         android:layout_alignTop="@+id/scrollView"
         android:layout_alignParentStart="true">
 
-        <ImageView
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/wifiLogo"
-            android:src="@drawable/ic_wifi"
-            android:layout_marginTop="8dp"
-             />
+            android:layout_height="fill_parent"
+            android:id="@+id/options"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/wheelchairLogo"
-            android:src="@drawable/ic_wheelchair"
-            android:layout_alignTop="@+id/leafLogo"
-            android:layout_toStartOf="@+id/leafLogo" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/wifiLogo"
+                android:src="@drawable/ic_wifi"
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/leafLogo"
-            android:src="@drawable/ic_leaf"
-            android:layout_above="@+id/about"
-            android:layout_alignEnd="@+id/contactDetails" />
+
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/wheelchairLogo"
+                android:src="@drawable/ic_wheelchair" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/leafLogo"
+                android:src="@drawable/ic_leaf" />
+            </LinearLayout>
+
 
 
         <TextView
@@ -55,7 +62,8 @@
             android:text="New Text"
             android:id="@+id/restaurantBio"
             android:layout_marginTop="2dp"
-            android:layout_below="@+id/about"/>
+            android:layout_below="@+id/about"
+            android:layout_centerHorizontal="true"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -63,16 +71,18 @@
             android:text="New Text"
             android:id="@+id/distance"
             android:layout_below="@+id/distanceFromYou"
-            android:layout_marginTop="2dp" />
+            android:layout_marginTop="2dp"
+            android:layout_centerHorizontal="true"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/about"
             android:text="New Text"
-            android:layout_below="@+id/wifiLogo"
+            android:layout_below="@+id/options"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#2979FF" />
+            android:textColor="#2979FF"
+            android:layout_centerHorizontal="true"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -81,10 +91,10 @@
             android:layout_marginTop="10dp"
             android:id="@+id/distanceFromYou"
             android:layout_below="@+id/restaurantBio"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true"
+            android:layout_alignParentStart="false"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#2979FF"/>
+            android:textColor="#2979FF"
+            android:layout_centerHorizontal="true"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -92,10 +102,11 @@
             android:text="Contact Details"
             android:id="@+id/contactDetails"
            android:layout_below="@+id/distance"
-            android:layout_alignParentStart="true"
+            android:layout_alignParentStart="false"
             android:layout_marginTop="10dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#2979FF"/>
+            android:textColor="#2979FF"
+            android:layout_centerHorizontal="true"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -105,7 +116,8 @@
             android:layout_below="@+id/contactDetails"
             android:layout_marginTop="2dp"
             android:textColor="#ff8bd1ff"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:layout_centerHorizontal="true"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -113,6 +125,7 @@
             android:id="@+id/email"
             android:layout_below="@+id/phoneNum"
             android:layout_marginTop="2dp"
+            android:layout_centerHorizontal="true"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -123,6 +136,7 @@
             android:layout_marginTop="10dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#2979FF"
+            android:layout_centerHorizontal="true"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -130,6 +144,7 @@
             android:id="@+id/openingHours"
             android:layout_below="@+id/openClose"
             android:layout_marginTop="2dp"
+            android:layout_centerHorizontal="true"
             />
 
     </RelativeLayout>

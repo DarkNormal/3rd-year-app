@@ -1,12 +1,19 @@
 package project.b_ourguest.bourguest;
 
 import android.content.Intent;
+import android.content.IntentSender;
+import android.location.Location;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
 import com.microsoft.windowsazure.mobileservices.MobileServiceTable;
 
@@ -23,7 +30,11 @@ import project.b_ourguest.bourguest.Model.UsersTable;
 import project.b_ourguest.bourguest.Model.tableObject;
 
 
-public class StartActivity extends ActionBarActivity{
+public class StartActivity extends ActionBarActivity implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener
+{
     
     private Handler h = new Handler();
     private static MobileServiceClient mClient;
@@ -34,12 +45,22 @@ public class StartActivity extends ActionBarActivity{
     private static MobileServiceTable<Bookings> bookingsTable;
     private static MobileServiceTable<Floorplan> floorplanTable;
     private static MobileServiceTable<tableObject> tableObjectsTable;
-    //private GoogleApiClient mGoogleApiClient;
-    //private final static int REQUEST_RESOLVE_ERROR = 1001;
-    //private LocationRequest mLocationRequest;
-    //private boolean loggedIn = true;
+    private GoogleApiClient mGoogleApiClient;
+    private final static int REQUEST_RESOLVE_ERROR = 1001;
+    private LocationRequest mLocationRequest;
     private static List<Restaurant> restaurants;
     private static ArrayList<Reviews> reviews;
+    private Location loc;
+
+    public static double getLon() {
+        return lon;
+    }
+
+    public static double getLat() {
+        return lat;
+    }
+
+    private static double lat,lon;
     
     
     @Override
@@ -64,7 +85,7 @@ public class StartActivity extends ActionBarActivity{
         
         setContentView(R.layout.activity_main);
         
-        /*mGoogleApiClient = new GoogleApiClient.Builder(this)
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
          .addConnectionCallbacks(this)
          .addOnConnectionFailedListener(this)
          .addApi(LocationServices.API)
@@ -74,26 +95,48 @@ public class StartActivity extends ActionBarActivity{
          mLocationRequest = LocationRequest.create()
          .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
          .setInterval(10 * 1000)        // 10 seconds, in milliseconds
-         .setFastestInterval(1 * 1000); // 1 second, in milliseconds*/
-        
-        DatabaseOperations db = new DatabaseOperations();
-        restaurants = db.getRestaurants(53.284316, -6.391500);
-        reviews = db.getRating();
-        
-        
+         .setFastestInterval(1 * 1000); // 1 second, in milliseconds
+
+        h.postDelayed(new Runnable() {
+            public void run() {
+                try {
+                    DatabaseOperations db = new DatabaseOperations(loc.getLatitude(), loc.getLongitude()
+                            , StartActivity.this);
+                    reviews = db.getRating();
+                    restaurants = db.getRestaurants(loc.getLatitude(), loc.getLongitude());
+
+
+                }
+                catch(Exception e){
+                    Intent gpsOptionsIntent = new Intent(
+                            android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(gpsOptionsIntent);
+                    DatabaseOperations db = new DatabaseOperations();
+                    reviews = db.getRating();
+                }
+            }
+        }, 1500);
         h.postDelayed(new Runnable() {
             public void run() {
                 finish(); //this prevents users going back to this screen
                 Intent intent = new Intent(StartActivity.this, SignInActivity.class);
+                try {
+                    lat = loc.getLatitude();
+                    lon = loc.getLongitude();
+                }catch(Exception e){
+                    lat = 0;
+                    lon = 0;
+                }
                 startActivity(intent);
             }
         }, 5000);
+
     }
     public static MobileServiceClient getMobileServiceClient()
     {
         return mClient;
     }
-    /*@Override
+    @Override
      protected void onStart() {
      super.onStart();
      
@@ -104,7 +147,7 @@ public class StartActivity extends ActionBarActivity{
      protected void onStop() {
      mGoogleApiClient.disconnect();
      super.onStop();
-     }*/
+     }
     
     private void initiateClient() {
         try {
@@ -150,35 +193,30 @@ public class StartActivity extends ActionBarActivity{
     }
 
     public static ArrayList<Reviews> getReviews() {return reviews;}
-    
-    /*@Override
+
+    @Override
      public void onConnected(Bundle bundle) {
      System.out.println("OnConnected---------------------");
-     Location loc = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-     
+     loc = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
      if(loc != null)
      {
-     Toast.makeText(MainActivity.this,"LONGITUDE: " + loc.getLongitude() + "\n" +
-     "LATITUDE: " + loc.getLatitude(),Toast.LENGTH_LONG).show();
+
      }
      else
      {
      LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
      }
-     
+
      }
-     
+
      @Override
      public void onConnectionSuspended(int i) {
-     System.out.println("OnConnectionSuspended---------------------");
-     Toast.makeText(MainActivity.this, "Google location service suspended",
-     Toast.LENGTH_LONG).show();
+
      }
-     
+
      @Override
      public void onConnectionFailed(ConnectionResult connectionResult) {
-     System.out.println("ERROR---------------------" + connectionResult.getErrorCode());
-     Toast.makeText(MainActivity.this,"Location services connection failed ",Toast.LENGTH_LONG).show();
      if (connectionResult.hasResolution()) {
      try {
      connectionResult.startResolutionForResult(this, REQUEST_RESOLVE_ERROR);
@@ -187,12 +225,14 @@ public class StartActivity extends ActionBarActivity{
      mGoogleApiClient.connect();
      }
      }
-     
+
      }
-     
+
      @Override
-     public void onLocationChanged(Location loc) {
-     Toast.makeText(MainActivity.this,"LONGITUDE: " + loc.getLongitude() + "\n" +
-     "LATITUDE: " + loc.getLatitude(),Toast.LENGTH_LONG).show();
-     }*/
+     public void onLocationChanged(Location l) {
+     loc = l;
+
+     }
+
+
 }

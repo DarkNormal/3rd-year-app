@@ -74,6 +74,7 @@ public class MainActivity extends ActionBarActivity {
     //private Location usersLocation;
     public final String PREFS_NAME = "LoginPrefs";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,45 +116,51 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void displayRestaurants(String message) {
-        if (restaurants.size() > 0) {
-            setContentView(R.layout.activity_main_display);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
-            mDrawerList = (ListView) findViewById(R.id.navList);
-            mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-            searchedRestaurantsText = (TextView) findViewById(R.id.searchedRestaurants);
-            searchedRestaurantsText.setText(message);
-            //populates the list view
-            ArrayAdapter<Restaurant> adapter = new RestaurantsAdapter();
-            ListView list = (ListView) findViewById(R.id.restaurantListView);
-            list.setAdapter(adapter);
-            addDrawerItems();
-            handleClicks();
-            setUpDrawer();
-            /***************************************************************************************
-             *    Title: Implementing Pull to Refresh Guide
-             *    Author: Nathan Esquenazi
-             *    Date: 14/4/2015
-             *    Code version: 20
-             *    Availability: https://github.com/codepath/android_guides/wiki/Implementing-Pull-to-Refresh-Guide
-             *
-             ***************************************************************************************/
-             swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
-            // Setup refresh listener which triggers new data loading
-            swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    refresh();
-                }
-            });
-            // Configure the refreshing colors
-            swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                    android.R.color.holo_green_light,
-                    android.R.color.holo_orange_light,
-                    android.R.color.holo_red_light);
-        } else {
-            setContentView(R.layout.no_restaurants_to_display_layout);
+        try {
+            if (restaurants.size() > 0) {
+                setContentView(R.layout.activity_main_display);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setHomeButtonEnabled(true);
+                mDrawerList = (ListView) findViewById(R.id.navList);
+                mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+                searchedRestaurantsText = (TextView) findViewById(R.id.searchedRestaurants);
+                searchedRestaurantsText.setText(message);
+                //populates the list view
+                ArrayAdapter<Restaurant> adapter = new RestaurantsAdapter();
+                ListView list = (ListView) findViewById(R.id.restaurantListView);
+                list.setAdapter(adapter);
+                addDrawerItems();
+                handleClicks();
+                setUpDrawer();
+                /***************************************************************************************
+                 *    Title: Implementing Pull to Refresh Guide
+                 *    Author: Nathan Esquenazi
+                 *    Date: 14/4/2015
+                 *    Code version: 20
+                 *    Availability: https://github.com/codepath/android_guides/wiki/Implementing-Pull-to-Refresh-Guide
+                 *
+                 ***************************************************************************************/
+                swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+                // Setup refresh listener which triggers new data loading
+                swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        refresh();
+                    }
+                });
+                // Configure the refreshing colors
+                swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                        android.R.color.holo_green_light,
+                        android.R.color.holo_orange_light,
+                        android.R.color.holo_red_light);
+            } else {
+                setContentView(R.layout.no_restaurants_to_display_layout);
+            }
+        }catch(Exception e)
+        {
+            setContentView(R.layout.no_location);
         }
+
 
     }
 
@@ -272,9 +279,7 @@ public class MainActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
+
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
@@ -338,7 +343,7 @@ public class MainActivity extends ActionBarActivity {
                     } else if (item.getItemId() == R.id.search_nearest) {
                         tryAgain = 0;
                         //query the database for restaurants that have wheelchair access
-                        restaurants = db.getRestaurants(53.284316, -6.391500);
+                        restaurants = db.getRestaurants(StartActivity.getLat(), StartActivity.getLon());
                         pd = ProgressDialog.show(MainActivity.this, "Loading", "Searching for nearest restaurants");
 
                         h.postDelayed(new Runnable() {
@@ -362,6 +367,9 @@ public class MainActivity extends ActionBarActivity {
 
             popup.show();//showing popup menu
 
+            return true;
+        }
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -410,7 +418,7 @@ public class MainActivity extends ActionBarActivity {
         reviews = db.getRating();
         if (tryAgain == 0) {
             message = "Nearest Restaurant's";
-            restaurants = db.getRestaurants(53.284316, -6.391500);
+            restaurants = db.getRestaurants(StartActivity.getLat(), StartActivity.getLon());
         } else if (tryAgain == 1) {
             message = "Wheelchair Accessible Restaurant's";
             restaurants = db.searchDatabaseForWheelchairFriendlyRestaurants();
@@ -542,7 +550,6 @@ public class MainActivity extends ActionBarActivity {
             if(r.getAppImage() != null)
                 im.setImageUrl(r.getAppImage(),mImageLoader);
 
-            im.setDefaultImageResId(R.drawable.ic_launcher);
             im.setErrorImageResId(R.drawable.ic_launcher);
             return v;
         }
