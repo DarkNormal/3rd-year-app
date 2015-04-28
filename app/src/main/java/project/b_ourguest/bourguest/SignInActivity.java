@@ -119,7 +119,7 @@ public class SignInActivity extends Activity {
 
             if (isValidEmail(email.getText().toString()) && isValidPassword(pword.getText().toString())) {
                 pd = ProgressDialog.show(SignInActivity.this, "Signing up", "Verifying details");
-                db.signUserUp(email.getText().toString(), pword.getText().toString());
+                db2.signUserUp(email.getText().toString(), pword.getText().toString());
 
                 h.postDelayed(new Runnable() {
                     public void run() {

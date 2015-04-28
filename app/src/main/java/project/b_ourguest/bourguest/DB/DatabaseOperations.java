@@ -57,10 +57,9 @@ public class DatabaseOperations {
     public DatabaseOperations(Context ctx) {
         c = ctx;
     }
-    public DatabaseOperations(double latitude, double longitude,Context ctx) {
+    public DatabaseOperations(double latitude, double longitude) {
         lat = latitude;
         lon = longitude;
-        c = ctx;
     }
 
     /***************************************************************************************
@@ -127,7 +126,9 @@ public class DatabaseOperations {
         double dLat = Math.toRadians(Double.parseDouble(item.getLatitude()) - lat);
         double dLon = Math.toRadians(Double.parseDouble(item.getLongitude()) - lon);
 
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(Math.toRadians(lat)) * Math.cos(Math.toRadians(Double.parseDouble(item.getLatitude())));
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2)
+       * Math.sin(dLon / 2) * Math.cos(Math.toRadians(lat)) *
+       Math.cos(Math.toRadians(Double.parseDouble(item.getLatitude())));
         double c = 2 * Math.asin(Math.sqrt(a));
         distance = 6371 * c;
      }

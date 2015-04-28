@@ -86,22 +86,21 @@ public class StartActivity extends ActionBarActivity implements
         setContentView(R.layout.activity_main);
         
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-         .addConnectionCallbacks(this)
-         .addOnConnectionFailedListener(this)
-         .addApi(LocationServices.API)
-         .build();
-         //create an instance of Google API Client using GoogleApiClient.Builder. Use the builder to add the LocationServices API
-         
-         mLocationRequest = LocationRequest.create()
-         .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-         .setInterval(10 * 1000)        // 10 seconds, in milliseconds
-         .setFastestInterval(1 * 1000); // 1 second, in milliseconds
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        //create an instance of Google API Client using GoogleApiClient.Builder. Use the builder to add the LocationServices API
+
+        mLocationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(10 * 1000)        // 10 seconds, in milliseconds
+                .setFastestInterval(1 * 1000); // 1 second, in milliseconds
 
         h.postDelayed(new Runnable() {
             public void run() {
                 try {
-                    DatabaseOperations db = new DatabaseOperations(loc.getLatitude(), loc.getLongitude()
-                            , StartActivity.this);
+                    DatabaseOperations db = new DatabaseOperations(loc.getLatitude(), loc.getLongitude());
                     reviews = db.getRating();
                     restaurants = db.getRestaurants(loc.getLatitude(), loc.getLongitude());
                 }

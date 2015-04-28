@@ -5,9 +5,11 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -34,6 +36,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +52,14 @@ import project.b_ourguest.bourguest.Model.Reviews;
 /**
  * Created by Robbie on 16/12/2014.
  */
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener {
 
+    private GoogleApiClient mGoogleApiClient;
+    private final static int REQUEST_RESOLVE_ERROR = 1001;
+    private LocationRequest mLocationRequest;
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
     private static MainActivity mInstance;
@@ -73,11 +86,12 @@ public class MainActivity extends ActionBarActivity {
     private DrawerLayout mDrawerLayout;
     //private Location usersLocation;
     public final String PREFS_NAME = "LoginPrefs";
-
+    private Location loc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (!isNetworkAvailable())
             setContentView(R.layout.no_network_available);
         else {
@@ -342,8 +356,7 @@ public class MainActivity extends ActionBarActivity {
                         alert.show();
                     } else if (item.getItemId() == R.id.search_nearest) {
                         tryAgain = 0;
-                        //query the database for restaurants that have wheelchair access
-                        restaurants = db.getRestaurants(StartActivity.getLat(), StartActivity.getLon());
+                        getNearest();
                         pd = ProgressDialog.show(MainActivity.this, "Loading", "Searching for nearest restaurants");
 
                         h.postDelayed(new Runnable() {
@@ -375,8 +388,47 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    void getNearest()
+    {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        mGoogleApiClient.connect();
+        //create an instance of Google API Client using GoogleApiClient.Builder. Use the builder to add the LocationServices API
+
+        mLocationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(10 * 1000)        // 10 seconds, in milliseconds
+                .setFastestInterval(1 * 1000); // 1 second, in milliseconds
+        h.postDelayed(new Runnable() {
+            public void run() {
+                try {
+                    DatabaseOperations db = new DatabaseOperations(loc.getLatitude(), loc.getLongitude());
+                    restaurants = db.getRestaurants(loc.getLatitude(), loc.getLongitude());
+                }
+                catch(Exception e){
+                    Toast.makeText(getApplicationContext(), "Please enable location services",
+                            Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+            }
+        }, 1500);
+    }
+
+
+    @Override
+    protected void onStop() {
+        if(mGoogleApiClient != null)
+            mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
     private void determineActionBasedOnRestaurantsSize(String message, String title) {
-        if (restaurants.size() == 0) //meaning the type was not found
+        if(restaurants == null)
+            setContentView(R.layout.no_restaurants_to_display_layout);
+        else if (restaurants.size() == 0)
         {
             Toast.makeText(MainActivity.this, message,
                     Toast.LENGTH_LONG).show();
@@ -391,7 +443,7 @@ public class MainActivity extends ActionBarActivity {
 
         if (tryAgain == 0) {
             message = "Nearest Restaurant's";
-            restaurants = db.getRestaurants(StartActivity.getLat(), StartActivity.getLon());
+            getNearest();
         } else if (tryAgain == 1) {
             message = "Wheelchair Accessible Restaurant's";
             restaurants = db.searchDatabaseForWheelchairFriendlyRestaurants();
@@ -418,7 +470,7 @@ public class MainActivity extends ActionBarActivity {
         reviews = db.getRating();
         if (tryAgain == 0) {
             message = "Nearest Restaurant's";
-            restaurants = db.getRestaurants(StartActivity.getLat(), StartActivity.getLon());
+            getNearest();
         } else if (tryAgain == 1) {
             message = "Wheelchair Accessible Restaurant's";
             restaurants = db.searchDatabaseForWheelchairFriendlyRestaurants();
@@ -502,6 +554,45 @@ public class MainActivity extends ActionBarActivity {
             name = name + (upperCaseLetter + sub) + " ";
         }
         return name;
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        loc = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+        if(loc != null)
+        {
+
+        }
+        else
+        {
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        }
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        if (connectionResult.hasResolution()) {
+            try {
+                connectionResult.startResolutionForResult(this, REQUEST_RESOLVE_ERROR);
+            } catch (IntentSender.SendIntentException e) {
+                // There was an error with the resolution intent. Try again.
+                mGoogleApiClient.connect();
+            }
+        }
+
+    }
+
+    @Override
+    public void onLocationChanged(Location l) {
+        loc = l;
+
     }
 
 
