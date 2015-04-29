@@ -6,7 +6,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Please enable location services and restart the application in order to gain the full benefits of B-Our Guest"
+        android:text="Please enable location services to find out the distance from you
+and restaurants and to find out the restaurants closest to you."
         android:id="@+id/textView3"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"

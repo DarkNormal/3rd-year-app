@@ -19,4 +19,8 @@
         android:id="@+id/search_nearest"
         android:title="Search nearest restaurants"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/top_rated"
+        android:title="Top rated restaurants"
+        app:showAsAction="ifRoom" />
 </menu>

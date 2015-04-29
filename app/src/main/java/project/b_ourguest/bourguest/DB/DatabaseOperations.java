@@ -133,6 +133,50 @@ public class DatabaseOperations {
         distance = 6371 * c;
      }
 
+    public ArrayList<Restaurant> getTopRated()
+    {
+
+        mClient.invokeApi("searchfivestar", null, "GET", null, new ApiJsonOperationCallback() {
+            @Override
+            public void onCompleted(JsonElement result, Exception exception, ServiceFilterResponse response) {
+                try {
+                    restaurants.clear();
+                    Restaurant r;
+                    for (int j = 0; j < result.getAsJsonArray().size(); j++) {
+                        try {
+                            r = new Restaurant(result.getAsJsonArray().get(j).getAsJsonObject().get("id").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("restaurantName").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("bio").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("longitude").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("latitude").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("type1").toString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("wheelchair").getAsBoolean(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("appImage").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("type2").toString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("type3").toString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("phoneNum").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("openClose").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("Email").getAsString(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("wifi").getAsBoolean(),
+                                    result.getAsJsonArray().get(j).getAsJsonObject().get("vegan").getAsBoolean()
+                            );
+                            getDistanceBasedOnUsersLocation(r);
+                            r.setDistance(distance);
+                            restaurants.add(r);
+
+                        }catch(Exception e){
+                            System.out.println("IN THIS CATCH");
+                            e.printStackTrace();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        return restaurants;
+    }
+
     public boolean validateSignIn(String email, String password) {
         usersTable.where().field("id").eq(email)
                 .and().field("password").eq(password)

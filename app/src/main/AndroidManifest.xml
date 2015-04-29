@@ -48,6 +48,8 @@
         </activity>
         <activity android:name=".User_Bookings_Activity">
         </activity>
+        <activity android:name=".FAQActivity">
+        </activity>
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyDqAIR_0nLUaDAMkTZuc6G1uUSqG3mhFxU" />

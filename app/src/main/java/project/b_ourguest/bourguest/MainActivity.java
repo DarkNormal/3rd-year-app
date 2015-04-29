@@ -222,7 +222,7 @@ public class MainActivity extends ActionBarActivity implements
          *    Availability: http://blog.teamtreehouse.com/add-navigation-drawer-android
          *
          ***************************************************************************************/
-        String[] options = {"My Bookings","Log out"};
+        String[] options = {"My Bookings","Log out","FAQs"};
         mAdapter=new ArrayAdapter<String>(this,R.layout.navdrawerlayout,R.id.listItem,options);
         mDrawerList.setAdapter(mAdapter);
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -234,7 +234,7 @@ public class MainActivity extends ActionBarActivity implements
                     intent.putExtra("fromBooking", false);
                     startActivity(intent);
                 }
-                else
+                else if(position == 1)
                 {
                     SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
                     SharedPreferences.Editor editor = settings.edit();
@@ -243,6 +243,11 @@ public class MainActivity extends ActionBarActivity implements
                     Intent intent = new Intent(MainActivity.this, SignInActivity.class);
                     startActivity(intent);
                     finish();
+                }
+                else
+                {
+                    Intent intent = new Intent(MainActivity.this, FAQActivity.class);
+                    startActivity(intent);
                 }
             }
         });
@@ -340,7 +345,7 @@ public class MainActivity extends ActionBarActivity implements
                                 h.postDelayed(new Runnable() {
                                     public void run() {
                                         determineActionBasedOnRestaurantsSize("No restaurants matched that type",
-                                                type[pos] + " Restaurant's");
+                                                type[pos] + " Restaurants");
                                         pd.dismiss();
                                         // To dismiss the dialog
                                     }
@@ -367,7 +372,30 @@ public class MainActivity extends ActionBarActivity implements
                                 // To dismiss the dialog
                             }
                         }, 3000);
-                    } else {
+                    }
+                    else if(item.getItemId() == R.id.top_rated){
+                        tryAgain = 4;
+                        try {
+                            restaurants.clear();
+                        }catch(Exception e)
+                        {
+                            setContentView(R.layout.no_restaurants_to_display_layout);
+                        }
+
+                        restaurants = db.getTopRated();
+
+                        pd = ProgressDialog.show(MainActivity.this, "Loading", "Searching for top rated restaurants");
+
+                        h.postDelayed(new Runnable() {
+                            public void run() {
+                                determineActionBasedOnRestaurantsSize("No five star restaurants",
+                                        "Top rated restaurants");
+                                pd.dismiss();
+                                // To dismiss the dialog
+                            }
+                        }, 3500);
+                    }
+                    else {
                         searchNameDialog(); //creates a dialog for a user to enter the name
                         //of the restaurant they are looking for
                         //the name they type is then sent to the database to retrieve
@@ -442,16 +470,22 @@ public class MainActivity extends ActionBarActivity implements
         String message = "";
 
         if (tryAgain == 0) {
-            message = "Nearest Restaurant's";
+            message = "Nearest Restaurants";
             getNearest();
         } else if (tryAgain == 1) {
-            message = "Wheelchair Accessible Restaurant's";
+            message = "Wheelchair Accessible Restaurants";
             restaurants = db.searchDatabaseForWheelchairFriendlyRestaurants();
         } else if (tryAgain == 2) {
-            message = "Restaurant's called " + name;
+            message = "Restaurants called " + name;
             restaurants = db.searchByName(name);
-        } else {
-            message = type[pos] + " Restaurant's";
+        }
+        else if(tryAgain == 4) {
+            message = "Top rated restaurants";
+            restaurants = db.getTopRated();
+
+        }else
+         {
+            message = type[pos] + " Restaurants";
             restaurants = db.searchByType(type[pos]);
         }
         pd = ProgressDialog.show(MainActivity.this, "Loading", "Wait while loading...");
@@ -469,16 +503,20 @@ public class MainActivity extends ActionBarActivity implements
          message = "";
         reviews = db.getRating();
         if (tryAgain == 0) {
-            message = "Nearest Restaurant's";
+            message = "Nearest Restaurants";
             getNearest();
         } else if (tryAgain == 1) {
-            message = "Wheelchair Accessible Restaurant's";
+            message = "Wheelchair Accessible Restaurants";
             restaurants = db.searchDatabaseForWheelchairFriendlyRestaurants();
         } else if (tryAgain == 2) {
-            message = "Restaurant's called " + name;
+            message = "Restaurants called " + name;
             restaurants = db.searchByName(name);
-        } else {
-            message = type[pos] + " Restaurant's";
+        } else if(tryAgain == 4) {
+            message = "Top rated restaurants";
+            restaurants = db.getTopRated();
+        }else
+         {
+            message = type[pos] + " Restaurants";
             restaurants = db.searchByType(type[pos]);
         }
 
@@ -512,7 +550,7 @@ public class MainActivity extends ActionBarActivity implements
                 h.postDelayed(new Runnable() {
                     public void run() {
                         determineActionBasedOnRestaurantsSize("No restaurants matched that name",
-                                "Restaurant's called " + name);
+                                "Restaurants called " + name);
                         pd.dismiss();
                         // To dismiss the dialog
                     }

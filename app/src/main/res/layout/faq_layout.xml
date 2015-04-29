@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/scrollView"
+    android:layout_centerVertical="true"
+    android:layout_below="@+id/mapView"
+    android:background="#ffffff"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffffff">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancelling a booking"
+        android:id="@+id/textView4"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="To cancel a booking please contact the restaurant you made the booking with."
+        android:id="@+id/textView5"
+        android:layout_below="@+id/textView4"
+        android:layout_marginTop="2dp"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Getting directions to a restaurant"
+        android:id="@+id/textView6"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textView5"
+        android:layout_marginTop="2dp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_below="@+id/textView6"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="2dp"
+        android:src="@drawable/maptut"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="To get directions to your restaurant click on the red pin/marker which is the restaurants location. Click on the blue direction button circled in the image above. This will open Google maps and give you directions."
+        android:id="@+id/textView7"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/imageView"
+        android:layout_marginTop="2dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Restaurant Information"
+        android:id="@+id/textView8"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textView7"
+        android:layout_marginTop="2dp"/>
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/wifiLogo2"
+        android:src="@drawable/ic_wifi"
+        android:layout_below="@+id/textView8"
+        android:layout_marginTop="2dp"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="This image indicates that the restaurant has wifi for its users."
+        android:id="@+id/textView9"
+        android:layout_below="@+id/wifiLogo2"
+        android:layout_marginTop="2dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/wheelchairLogo2"
+        android:src="@drawable/ic_wheelchair"
+        android:layout_below="@+id/textView9"
+        android:layout_marginTop="2dp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="This image indicates that the restaurant is wheelchair accessible."
+        android:id="@+id/textView10"
+        android:layout_below="@+id/wheelchairLogo2"
+        android:layout_marginTop="2dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/leafLogo2"
+        android:src="@drawable/ic_leaf"
+        android:layout_below="@+id/textView10"
+        android:layout_marginTop="2dp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="This image indicates that the restaurant caters for vegans."
+        android:id="@+id/textView11"
+        android:layout_below="@+id/leafLogo2"
+        android:layout_marginTop="2dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Making a booking"
+        android:id="@+id/textView12"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textView11"
+        android:layout_marginTop="2dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Having selected a date and time for your booking from the calendar on the
+restaurants page you will be presented with the restaurants floor plan (if they have one).
+As you can see from the image below, some tables are booked and some are available.
+Tables you have selected are marked in blue. To book these tables simply select 'Book'
+in the top right hand corner. If your selected tables are ok to book then
+you will be presented with a booking confirmation page and you will receive an
+email confirming your booking."
+        android:id="@+id/textView13"
+        android:layout_below="@+id/textView12"
+        android:layout_marginTop="2dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView2"
+        android:layout_below="@+id/textView13"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="2dp"
+        android:src="@drawable/booking"/>
+
+</RelativeLayout>
+    </ScrollView>
