@@ -51,15 +51,6 @@ public class StartActivity extends ActionBarActivity implements
     private static List<Restaurant> restaurants;
     private static ArrayList<Reviews> reviews;
     private Location loc;
-
-    public static double getLon() {
-        return lon;
-    }
-
-    public static double getLat() {
-        return lat;
-    }
-
     private static double lat,lon;
     
     
@@ -227,5 +218,14 @@ public class StartActivity extends ActionBarActivity implements
 
      }
 
+    public static double getLon() {
+        return lon;
+    }
+
+    public static double getLat() {
+        return lat;
+    }
+    public static void setLat(double la){lat = la;}
+    public static void setLon(double lo){lon = lo;}
 
 }

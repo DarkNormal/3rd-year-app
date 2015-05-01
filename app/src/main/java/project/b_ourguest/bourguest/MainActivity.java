@@ -435,11 +435,14 @@ public class MainActivity extends ActionBarActivity implements
                 try {
                     DatabaseOperations db = new DatabaseOperations(loc.getLatitude(), loc.getLongitude());
                     restaurants = db.getRestaurants(loc.getLatitude(), loc.getLongitude());
+                    StartActivity.setLat(loc.getLatitude());
+                    StartActivity.setLon(loc.getLongitude());
                 }
                 catch(Exception e){
                     Toast.makeText(getApplicationContext(), "Please enable location services",
                             Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
+                    StartActivity.setLat(0);
+                    StartActivity.setLon(0);
                 }
             }
         }, 1500);

@@ -62,6 +62,7 @@ public class info_tab extends Fragment {
         // Updates the location and zoom of the MapView
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(location, 12);
         //Zoom may get a bit annoying, consider setting it to pre-zoomed / no animation
+
         Marker loc = map.addMarker(new MarkerOptions().position(location).title(r.getName()));
         map.animateCamera(cameraUpdate);
         if(!r.isWifi())

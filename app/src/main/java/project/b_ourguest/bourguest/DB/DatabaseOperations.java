@@ -446,7 +446,7 @@ public class DatabaseOperations {
     }
 
     public void getReview(String email, String restaurant) {
-        userReviewsTable.where().field("userID").eq(email).and().field("restaurantID").eq(restaurant)
+        userReviewsTable.where().field("userID").eq(email).and().field("restID").eq(restaurant)
                 .execute(new TableQueryCallback<UserReviews>() {
 
                     public void onCompleted(List<UserReviews> result, int count,
